@@ -1,5 +1,5 @@
-<?php
-require_once __DIR__ . '/php/db_config.php';
+﻿<?php
+require_once __DIR__ . '/db_config.php';
 
 // Fetch all submissions from database
 $pdo = getDbConnection();
@@ -11,8 +11,8 @@ $submissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html>
 <head>
 <title>View Submissions - ELEV8</title>
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../css/main.css">
 <style>
   .submissions-table {
     margin-top: 2rem;
@@ -26,7 +26,6 @@ $submissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
     font-size: 0.85rem;
   }
 
-  /* Keep modal details readable against Bootstrap's light modal background */
   #viewModal .modal-content,
   #viewModal .modal-body,
   #viewModal .modal-body p,
@@ -38,24 +37,24 @@ $submissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
 
 <video class="background-video" autoplay muted loop>
-  <source src="imgs&vid/background.mp4" type="video/mp4">
+  <source src="../assets/videos/background.mp4" type="video/mp4">
 </video>
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="index.html">
-    <img src="imgs&vid/logo.png" class="logo" alt="logo">
-</a>
+    <a class="navbar-brand" href="../index.html">
+      <img src="../assets/images/common/logo.png" class="logo" alt="logo">
+    </a>
     <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="menu">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="programs.html">Programs</a></li>
-        <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
-        <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="../about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="../programs.html">Programs</a></li>
+        <li class="nav-item"><a class="nav-link" href="../gallery.html">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="../feedback.html">Feedback</a></li>
         <li class="nav-item"><a class="nav-link" href="submissions.php">View Data</a></li>
       </ul>
     </div>
@@ -105,7 +104,7 @@ $submissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
       <?php else: ?>
         <div class="alert alert-info" role="alert">
-          No submissions found. <a href="feedback.html" class="alert-link">Submit your feedback</a>
+          No submissions found. <a href="../feedback.html" class="alert-link">Submit your feedback</a>
         </div>
       <?php endif; ?>
 
@@ -139,10 +138,10 @@ $submissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
   </div>
 </footer>
 
-<script src="js/bootstrap.bundle.min.js"></script>
+<script src="../js/bootstrap.bundle.min.js"></script>
 <script>
   function viewSubmission(id) {
-    fetch('php/read_submissions.php?id=' + id)
+    fetch('read_submissions.php?id=' + id)
       .then(response => response.json())
       .then(data => {
         if (data.success) {
@@ -170,7 +169,7 @@ $submissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
       formData.append('id', id);
       formData.append('_method', 'DELETE');
 
-      fetch('php/delete_submission.php', {
+      fetch('delete_submission.php', {
         method: 'POST',
         body: formData
       })
@@ -186,16 +185,12 @@ $submissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
       .catch(error => console.error('Error:', error));
     }
   }
-</script>
-<script>
-// highlight current page link in navbar
+
   document.addEventListener('DOMContentLoaded', function() {
     const links = document.querySelectorAll('.navbar-nav .nav-link');
     const current = window.location.pathname.split('/').pop();
     links.forEach(link => {
-      if (link.getAttribute('href') === current) {
-        link.classList.add('active');
-      }
+      if (link.getAttribute('href') === current) link.classList.add('active');
     });
   });
 </script>

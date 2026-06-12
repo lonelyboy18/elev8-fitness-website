@@ -1,13 +1,13 @@
-<?php
-require_once __DIR__ . '/php/db_config.php';
+﻿<?php
+require_once __DIR__ . '/db_config.php';
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
 <title>Database Status - ELEV8</title>
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../css/main.css">
 <style>
   .status-card {
     background: rgba(255,255,255,0.1);
@@ -33,22 +33,22 @@ require_once __DIR__ . '/php/db_config.php';
 <body>
 
 <video class="background-video" autoplay muted loop>
-  <source src="imgs&vid/background.mp4" type="video/mp4">
+  <source src="../assets/videos/background.mp4" type="video/mp4">
 </video>
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="index.html">
-    <img src="imgs&vid/logo.png" class="logo" alt="logo">
-</a>
+    <a class="navbar-brand" href="../index.html">
+      <img src="../assets/images/common/logo.png" class="logo" alt="logo">
+    </a>
     <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="menu">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="submissions.php">View Data</a></li>
-        <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
+        <li class="nav-item"><a class="nav-link" href="../feedback.html">Feedback</a></li>
       </ul>
     </div>
   </div>
@@ -150,7 +150,7 @@ require_once __DIR__ . '/php/db_config.php';
 
       <div class="alert alert-info mt-4">
         <h5>Ready to Test?</h5>
-        <p>1. Fill out the <a href="feedback.html" class="alert-link">Feedback Form</a> to CREATE a submission</p>
+        <p>1. Fill out the <a href="../feedback.html" class="alert-link">Feedback Form</a> to CREATE a submission</p>
         <p>2. Go to <a href="submissions.php" class="alert-link">View Data</a> to READ all submissions</p>
         <p>3. Click DELETE to remove a submission</p>
       </div>
@@ -163,6 +163,6 @@ require_once __DIR__ . '/php/db_config.php';
   © 2026 ELEV8 | Database Integration Complete
 </footer>
 
-<script src="js/bootstrap.bundle.min.js"></script>
+<script src="../js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

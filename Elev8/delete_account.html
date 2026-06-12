@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -6,28 +6,28 @@
 <title>Delete Account - ELEV8</title>
 <meta name="description" content="Manage your ELEV8 account settings.">
 <meta name="theme-color" content="#03141A">
-<link rel="icon" href="imgs&vid/logo.png" type="image/png">
+<link rel="icon" href="assets/images/common/logo.png" type="image/png">
 <meta property="og:type" content="website">
-<meta property="og:image" content="imgs&vid/logo.png">
+<meta property="og:image" content="assets/images/common/logo.png">
 <meta property="og:locale" content="en_IN">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
 <video class="background-video" autoplay muted loop playsinline aria-hidden="true">
-  <source src="imgs&vid/background.mp4" type="video/mp4">
+  <source src="assets/videos/background.mp4" type="video/mp4">
 </video>
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" aria-label="Main navigation">
   <div class="container">
     <a class="navbar-brand" href="index.html">
-    <img src="imgs&vid/logo.png" class="logo" alt="ELEV8 Calisthenics & Fitness Studio">
-</a>
+      <img src="assets/images/common/logo.png" class="logo" alt="ELEV8 Calisthenics & Fitness Studio">
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -38,7 +38,7 @@
         <li class="nav-item"><a class="nav-link" href="programs.html">Programs</a></li>
         <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
         <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
-        <li class="nav-item"><a class="nav-link" href="submissions.php">View Data</a></li>
+        <li class="nav-item"><a class="nav-link" href="php/submissions.php">View Data</a></li>
       </ul>
     </div>
   </div>
@@ -53,17 +53,14 @@
 
         <form id="deleteAccountForm" onsubmit="validateDeleteAccount(event)">
 
-          <!-- Email Field -->
           <label for="email" class="form-label">Email</label>
           <input type="email" name="email" id="email" class="form-control mb-1" placeholder="Email">
           <div class="error-text" id="emailError">Email is required!</div>
 
-          <!-- Password Field -->
           <label for="password" class="form-label mt-3">Password</label>
           <input type="password" name="password" id="password" class="form-control mb-1" placeholder="Password">
           <div class="error-text" id="passwordError">Password is required!</div>
 
-          <!-- Confirmation Checkbox -->
           <div class="form-check mt-4 mb-1">
             <input class="form-check-input" type="checkbox" name="confirmDelete" id="confirmDelete">
             <label class="form-check-label" for="confirmDelete">
@@ -113,7 +110,6 @@
 </footer>
 
 <script src="js/bootstrap.bundle.min.js"></script>
-<script src="validations.js"></script>
-<script src="enhance.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
