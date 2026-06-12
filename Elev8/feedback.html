@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback - ELEV8</title>
+<meta name="description" content="Share your ELEV8 experience. Your feedback helps Goa's premium calisthenics studio keep improving.">
+<meta name="theme-color" content="#03141A">
+<link rel="icon" href="imgs&vid/logo.png" type="image/png">
+<meta property="og:type" content="website">
+<meta property="og:image" content="imgs&vid/logo.png">
+<meta property="og:locale" content="en_IN">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<video class="background-video" autoplay muted loop playsinline aria-hidden="true">
+  <source src="imgs&vid/background.mp4" type="video/mp4">
+</video>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" aria-label="Main navigation">
+  <div class="container">
+  <a class="navbar-brand" href="index.html">
+    <img src="imgs&vid/logo.png" class="logo" alt="ELEV8 Calisthenics & Fitness Studio">
+</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto">
+       <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="programs.html">Programs</a></li>
+        <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
+        <li class="nav-item"><a class="nav-link" href="submissions.php">View Data</a></li>
+        <li class="nav-item ms-lg-3 mt-2 mt-lg-0"><a class="btn btn-success" href="sign_up.html">Join Now</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main id="main" class="container mt-5 pt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg">
+        <div class="card-body p-5">
+
+<h2 class="text-success text-center mb-4">
+Give us your feedback — it helps us grow!
+</h2>
+
+<form id="feedbackForm" method="POST" onsubmit="submitFeedbackForm(event)">
+
+<h5 class="mt-4">Your Information</h5>
+
+<label class="form-label">First Name</label>
+<input type="text" name="firstName" id="firstName"
+    class="form-control mb-1"
+  placeholder="Your first name">
+<div class="error-text mb-3" id="firstNameError">First name is required!</div>
+
+<label class="form-label">Middle Name</label>
+<input type="text" name="middleName" id="middleName"
+  class="form-control mb-1"
+  placeholder="Your middle name">
+<div class="error-text mb-3" id="middleNameError">Middle name should contain only letters!</div>
+
+<label class="form-label">Last Name</label>
+<input type="text" name="lastName" id="lastName"
+  class="form-control mb-1"
+  placeholder="Your last name">
+<div class="error-text mb-3" id="lastNameError">Last name is required!</div>
+
+<label class="form-label">Age</label>
+<input type="number" name="age" id="age"
+  class="form-control mb-1"
+       placeholder="Your age">
+<div class="error-text mb-3" id="ageError">Please enter a valid age between 10 and 100!</div>
+
+<label class="form-label">DOB</label>
+<input type="date" name="dob" id="dob"
+  class="form-control mb-1">
+<div class="error-text mb-3" id="dobError">Date of birth is required!</div>
+
+<label class="form-label">Email</label>
+<input type="email" name="email" id="email"
+    class="form-control mb-1"
+  placeholder="Your email">
+<div class="error-text mb-3" id="emailError">Email is required!</div>
+
+<label class="form-label">Phone Number</label>
+<input type="text" name="phone" id="phone"
+    class="form-control mb-1"
+  placeholder="Your phone number">
+<div class="error-text mb-3" id="phoneError">Phone number is required!</div>
+
+<label class="form-label">Feedback Category</label>
+<select name="suggestionCategory" id="suggestionCategory"
+  class="form-select mb-1">
+  <option value="">Select</option>
+  <option value="training">Training</option>
+  <option value="coaching">Coaching</option>
+  <option value="facility">Facility</option>
+  <option value="schedule">Schedule</option>
+  <option value="other">Other</option>
+</select>
+<div class="error-text mb-3" id="categoryError">Please select a category!</div>
+
+<h5 class="mt-4">Feedback & Rating</h5>
+
+<div class="rating-stats">
+  <p>Average Rating: <span class="avg-rating" id="avgRating">0.0</span> / 5</p>
+  <small class="text-muted">Based on <span id="ratingCount">0</span> ratings</small>
+</div>
+
+<label class="form-label">Rate Your Experience:</label>
+<div class="star-rating" id="starRating">
+  <span class="star" data-value="1">😢</span>
+  <span class="star" data-value="2">😞</span>
+  <span class="star" data-value="3">😐</span>
+  <span class="star" data-value="4">😊</span>
+  <span class="star" data-value="5">😄</span>
+</div>
+
+<div class="rating-feedback" id="ratingFeedback"></div>
+<input type="hidden" name="rating" id="ratingValue">
+<div class="error-text text-center mb-3" id="ratingError">Please rate your experience!</div>
+
+<label class="form-label mt-4">Your Feedback</label>
+<textarea name="feedback" id="feedback"
+          class="form-control mb-1"
+          rows="5"
+          placeholder="Tell us what you think..."></textarea>
+<div class="error-text mb-3" id="feedbackError">Feedback is required!</div>
+
+<button type="submit" class="btn btn-success w-100">
+Submit Feedback
+</button>
+
+</form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>© 2026 ELEV8 | Goa</p>
+  <div class="social-links">
+    <a href="https://www.instagram.com/elev8.goa/" target="_blank" rel="noopener noreferrer">Instagram</a>
+    <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+  </div>
+</footer>
+
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="validations.js"></script>
+
+<script src="enhance.js"></script>
+</body>
+</html>

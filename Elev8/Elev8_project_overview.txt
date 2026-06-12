@@ -1,0 +1,260 @@
+ELEV8 PROJECT OVERVIEW (START TO END)
+Updated: March 16, 2026
+
+====================================================================
+1) PROJECT INTRODUCTION
+====================================================================
+ELEV8 is a full-stack fitness website assignment built to demonstrate:
+- Frontend page design and responsive layout
+- JavaScript-based form validation and interaction
+- PHP backend API design
+- MySQL database integration
+- CRUD operations for user feedback
+
+This document explains the complete project flow from initial setup to final execution.
+
+====================================================================
+2) PROJECT GOALS
+====================================================================
+Core goals:
+- Build a multi-page fitness website with consistent UI/UX
+- Collect feedback through a validated form
+- Store and retrieve feedback from database
+- Provide update and delete operations for records
+- Keep project organized with clear file structure
+
+Expected outcomes:
+- Users can browse content pages smoothly
+- Users can submit valid feedback
+- Admin/developer can view and manage submissions
+- System runs locally on XAMPP without external service dependencies
+
+====================================================================
+3) TECHNOLOGY STACK
+====================================================================
+Frontend:
+- HTML5
+- CSS3
+- Bootstrap 5 (local files in css/ and js/)
+- JavaScript (validations.js)
+
+Backend:
+- PHP (API endpoints in php/)
+- PDO for secure database queries
+
+Database:
+- MySQL/MariaDB via XAMPP
+- Schema file: elev8_mysql.sql
+
+Local environment:
+- XAMPP (Apache + MySQL)
+- Browser (Chrome/Edge/Firefox)
+
+====================================================================
+4) CURRENT PROJECT STRUCTURE
+====================================================================
+Root files:
+- about.html
+- DATABASE_SETUP.md
+- delete_account.html
+- ELEV8 Website - Technical Overview.txt
+- elev8_mysql.sql
+- Elev8_project_overview.txt
+- feedback.html
+- gallery.html
+- index.html
+- programs.html
+- sign_in.html
+- sign_up.html
+- status.php
+- style.css
+- submissions.php
+- validations.js
+
+Directories:
+- css/ (Bootstrap CSS and sourcemaps)
+- js/ (Bootstrap JS and sourcemaps)
+- imgs&vid/ (images and videos)
+- php/ (backend endpoints and DB config)
+
+php/ contents:
+- create_submission.php
+- db_config.php
+- delete_submission.php
+- delete_user.php
+- login_user.php
+- read_submissions.php
+- register_user.php
+- update_submission.php
+
+====================================================================
+5) END-TO-END USER JOURNEY
+====================================================================
+Step 1: User visits home page
+- URL: /index.html
+- User sees branding, navigation, and calls to action
+
+Step 2: User explores the website
+- About: /about.html
+- Programs: /programs.html
+- Gallery: /gallery.html
+
+Step 3: User opens feedback form
+- URL: /feedback.html
+- User fills form fields (name, email, phone, feedback, rating, etc.)
+
+Step 4: Frontend validation runs
+- File: validations.js
+- Checks required fields, format rules, and rating selection
+- Invalid inputs show errors before request is sent
+
+Step 5: Submission request to backend
+- Endpoint: php/create_submission.php
+- Method: POST
+- Data is validated and saved to database
+
+Step 6: User/admin views records
+- URL: /submissions.php
+- Records are listed from latest to oldest
+
+Step 7: Record-level operations
+- Read one record: php/read_submissions.php
+- Update record: php/update_submission.php
+- Delete record: php/delete_submission.php
+
+====================================================================
+6) PAGE-BY-PAGE PURPOSE
+====================================================================
+- index.html: Landing page and first impression
+- about.html: Brand story and mission
+- programs.html: Program details and pricing
+- gallery.html: Visual showcase of training culture
+- feedback.html: Main form for collecting user feedback
+- submissions.php: Management table for saved feedback
+- sign_up.html: Registration interface
+- sign_in.html: Login interface
+- delete_account.html: Account removal interface
+- status.php: Quick database/service health check
+
+====================================================================
+7) DATABASE FLOW (START TO END)
+====================================================================
+Initialization:
+- db_config.php handles database connection setup
+- System uses PDO connection for all queries
+
+Create flow:
+- feedback.html -> validations.js -> create_submission.php -> MySQL insert
+
+Read flow:
+- submissions.php list rendering
+- read_submissions.php for detail fetch
+
+Update flow:
+- update_submission.php receives edited values and updates row
+
+Delete flow:
+- delete_submission.php removes row by ID
+
+Schema source:
+- elev8_mysql.sql defines required tables and structure
+
+====================================================================
+8) API SUMMARY
+====================================================================
+- php/create_submission.php
+  Purpose: Create new feedback record
+  Method: POST
+
+- php/read_submissions.php
+  Purpose: Read one or multiple feedback records
+  Method: GET
+
+- php/update_submission.php
+  Purpose: Update existing feedback record
+  Method: POST (method override pattern may be used)
+
+- php/delete_submission.php
+  Purpose: Delete feedback record
+  Method: POST (method override pattern may be used)
+
+- php/register_user.php
+  Purpose: User registration endpoint
+
+- php/login_user.php
+  Purpose: User login endpoint
+
+- php/delete_user.php
+  Purpose: User account deletion endpoint
+
+====================================================================
+9) LOCAL SETUP GUIDE (START TO RUN)
+====================================================================
+1. Place project in:
+   C:\xampp\htdocs\Elev8 assignment
+
+2. Open XAMPP Control Panel
+   - Start Apache
+   - Start MySQL
+
+3. Open the website in browser:
+   - Home: http://localhost/Elev8 assignment/index.html
+   - Feedback: http://localhost/Elev8 assignment/feedback.html
+   - Submissions: http://localhost/Elev8 assignment/submissions.php
+   - Status: http://localhost/Elev8 assignment/status.php
+
+4. Check database:
+   - http://localhost/phpmyadmin
+   - Verify tables and inserted records
+
+====================================================================
+10) TEST CHECKLIST
+====================================================================
+Frontend checks:
+- Navigation links open correct pages
+- Layout remains responsive on mobile and desktop
+- Form validation blocks invalid input
+
+Backend checks:
+- Feedback create API returns success JSON
+- Submissions page displays inserted data
+- Update and delete endpoints change database records correctly
+- status.php confirms DB connectivity
+
+Database checks:
+- Data stored in expected columns
+- Timestamp fields update as expected
+- Invalid inputs are rejected safely
+
+====================================================================
+11) PROJECT STRENGTHS
+====================================================================
+- Organized multi-page structure
+- Local Bootstrap assets (no CDN dependency required)
+- Practical form validation and user feedback handling
+- Clear backend separation in php directory
+- CRUD-ready feedback management flow
+
+====================================================================
+12) IMPROVEMENTS FOR NEXT VERSION
+====================================================================
+Recommended upgrades:
+- Strong password hashing and auth session management
+- CSRF protection on form/API actions
+- Role-based access (admin vs normal user)
+- Pagination and search in submissions.php
+- Better API status codes and centralized error handling
+- Logging and audit trail for update/delete operations
+
+====================================================================
+13) PROJECT COMPLETION SUMMARY
+====================================================================
+From start to end, ELEV8 covers:
+- Planning and structuring a web project
+- Building responsive frontend interfaces
+- Connecting frontend forms to backend APIs
+- Persisting and managing data with MySQL
+- Running and testing a complete local web application
+
+This project demonstrates a full assignment lifecycle: design, build, validate,
+integrate, test, and document.
