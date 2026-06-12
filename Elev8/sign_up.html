@@ -6,28 +6,28 @@
 <title>Register - ELEV8</title>
 <meta name="description" content="Create your ELEV8 account and start your calisthenics journey in Goa today.">
 <meta name="theme-color" content="#03141A">
-<link rel="icon" href="imgs&vid/logo.png" type="image/png">
+<link rel="icon" href="assets/images/common/logo.png" type="image/png">
 <meta property="og:type" content="website">
-<meta property="og:image" content="imgs&vid/logo.png">
+<meta property="og:image" content="assets/images/common/logo.png">
 <meta property="og:locale" content="en_IN">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
 <video class="background-video" autoplay muted loop playsinline aria-hidden="true">
-  <source src="imgs&vid/background.mp4" type="video/mp4">
+  <source src="assets/videos/background.mp4" type="video/mp4">
 </video>
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" aria-label="Main navigation">
   <div class="container">
-  <a class="navbar-brand" href="index.html">
-    <img src="imgs&vid/logo.png" class="logo" alt="ELEV8 Calisthenics & Fitness Studio">
-</a>
+    <a class="navbar-brand" href="index.html">
+      <img src="assets/images/common/logo.png" class="logo" alt="ELEV8 Calisthenics & Fitness Studio">
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -39,7 +39,6 @@
         <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
         <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
         <li class="nav-item"><a class="nav-link" href="submissions.php">View Data</a></li>
-
       </ul>
     </div>
   </div>
@@ -53,32 +52,26 @@
 
         <form id="signupForm" onsubmit="validateSignUp(event)">
 
-          <!-- Name Field -->
           <label for="name" class="form-label">Name</label>
           <input type="text" name="name" id="name" class="form-control mb-1" placeholder="Full Name">
           <div class="error-text" id="nameError">Name is required!</div>
 
-          <!-- Email Field -->
           <label for="email" class="form-label mt-3">Email</label>
           <input type="email" name="email" id="email" class="form-control mb-1" placeholder="Email">
           <div class="error-text" id="emailError">Email is required!</div>
 
-          <!-- Mobile Field -->
           <label for="mobile" class="form-label mt-3">Mobile</label>
           <input type="text" name="mobile" id="mobile" class="form-control mb-1" placeholder="Mobile number">
           <div class="error-text" id="mobileError">Mobile number is required!</div>
 
-          <!-- Password Field -->
           <label for="password" class="form-label mt-3">Password</label>
           <input type="password" name="password" id="password" class="form-control mb-1" placeholder="Password">
           <div class="error-text" id="passwordError">Password is required!</div>
 
-          <!-- Confirm Password Field -->
           <label for="confirmPassword" class="form-label mt-3">Confirm Password</label>
           <input type="password" name="confirmPassword" id="confirmPassword" class="form-control mb-1" placeholder="Confirm Password">
           <div class="error-text" id="confirmPasswordError">Please confirm password!</div>
 
-          <!-- Gender Field -->
           <label for="gender" class="form-label mt-3">Gender</label>
           <div class="mb-3">
             <div class="form-check form-check-inline">
@@ -92,12 +85,9 @@
           </div>
           <div class="error-text" id="genderError">Please select your gender!</div>
 
-          <!-- Terms and Conditions -->
           <div class="form-check mb-3">
             <input class="form-check-input" type="checkbox" name="terms" id="terms">
-            <label class="form-check-label" for="terms">
-              I agree to the terms and conditions
-            </label>
+            <label class="form-check-label" for="terms">I agree to the terms and conditions</label>
           </div>
           <div class="error-text" id="termsError">Please accept the terms and conditions!</div>
 
@@ -141,8 +131,7 @@
   </div>
 </footer>
 
-<script src="js/bootstrap.bundle.min.js"></script>
-<script src="validations.js"></script>
-<script src="enhance.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/main.js"></script>
 </body>
 </html>
