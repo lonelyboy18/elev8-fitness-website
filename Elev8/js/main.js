@@ -123,23 +123,6 @@ function initCounters() {
 // Forms
 // ============================================================
 
-function parseJsonResponse(response) {
-  return response.text().then(function (text) {
-    try {
-      return JSON.parse(text);
-    } catch (e) {
-      throw new Error(text || 'Invalid JSON response from server');
-    }
-  });
-}
-
-function showAuthMessage(containerId, message, isSuccess) {
-  var box = document.getElementById(containerId);
-  if (!box) return;
-  box.className = isSuccess ? 'alert alert-success mt-3 mb-2' : 'alert alert-danger mt-3 mb-2';
-  box.textContent = message;
-  box.style.display = 'block';
-}
 
 function validateSignUp(event) {
   event.preventDefault();
@@ -236,27 +219,12 @@ function validateSignUp(event) {
   if (!terms.checked) { termsError.classList.add('show'); isValid = false; }
 
   if (isValid) {
-    var form = document.getElementById('signupForm');
-    var formData = new FormData(form);
-
-    fetch('php/register_user.php', { method: 'POST', body: formData })
-      .then(parseJsonResponse)
-      .then(function (data) {
-        if (!data.success) {
-          showAuthMessage('signupMessage', data.message || 'Registration failed', false);
-          return;
-        }
-        showAuthMessage('signupMessage', data.message || 'Registration successful', true);
-        var modal = new bootstrap.Modal(document.getElementById('successModal'));
-        modal.show();
-        form.reset();
-        modal._element.addEventListener('hidden.bs.modal', function () {
-          window.location.href = 'sign_in.html';
-        }, { once: true });
-      })
-      .catch(function (error) {
-        showAuthMessage('signupMessage', 'Registration failed. Please check XAMPP Apache/MySQL and try again. Details: ' + error.message, false);
-      });
+    var modal = new bootstrap.Modal(document.getElementById('successModal'));
+    modal.show();
+    document.getElementById('signupForm').reset();
+    modal._element.addEventListener('hidden.bs.modal', function () {
+      window.location.href = 'sign_in.html';
+    }, { once: true });
   }
 
   return false;
@@ -300,26 +268,11 @@ function validateSignIn(event) {
   }
 
   if (isValid) {
-    var form = document.getElementById('signinForm');
-    var formData = new FormData(form);
-
-    fetch('php/login_user.php', { method: 'POST', body: formData })
-      .then(parseJsonResponse)
-      .then(function (data) {
-        if (!data.success) {
-          showAuthMessage('signinMessage', data.message || 'Sign in failed', false);
-          return;
-        }
-        showAuthMessage('signinMessage', data.message || 'Sign in successful', true);
-        var modal = new bootstrap.Modal(document.getElementById('successModal'));
-        modal.show();
-        modal._element.addEventListener('hidden.bs.modal', function () {
-          window.location.href = 'index.html';
-        }, { once: true });
-      })
-      .catch(function (error) {
-        showAuthMessage('signinMessage', 'Sign in failed. Please check XAMPP Apache/MySQL and try again. Details: ' + error.message, false);
-      });
+    var modal = new bootstrap.Modal(document.getElementById('successModal'));
+    modal.show();
+    modal._element.addEventListener('hidden.bs.modal', function () {
+      window.location.href = 'index.html';
+    }, { once: true });
   }
 
   return false;
@@ -371,24 +324,9 @@ function validateDeleteAccount(event) {
   }
 
   if (isValid) {
-    var form = document.getElementById('deleteAccountForm');
-    var formData = new FormData(form);
-
-    fetch('php/delete_user.php', { method: 'POST', body: formData })
-      .then(parseJsonResponse)
-      .then(function (data) {
-        if (!data.success) {
-          showAuthMessage('deleteMessage', data.message || 'Account deletion failed', false);
-          return;
-        }
-        showAuthMessage('deleteMessage', data.message || 'Account deleted successfully', true);
-        var modal = new bootstrap.Modal(document.getElementById('successModal'));
-        modal.show();
-        form.reset();
-      })
-      .catch(function (error) {
-        showAuthMessage('deleteMessage', 'Account deletion failed. Please check XAMPP Apache/MySQL and try again. Details: ' + error.message, false);
-      });
+    var modal = new bootstrap.Modal(document.getElementById('successModal'));
+    modal.show();
+    document.getElementById('deleteAccountForm').reset();
   }
 
   return false;
@@ -518,30 +456,19 @@ function validateFeedbackForm() {
 
 function submitFeedbackForm(event) {
   event.preventDefault();
-
   if (!validateFeedbackForm()) return false;
 
   var form = document.getElementById('feedbackForm');
-  var formData = new FormData(form);
+  form.reset();
 
-  fetch('php/create_submission.php', { method: 'POST', body: formData })
-    .then(function (response) {
-      return response.text().then(function (text) {
-        try { return JSON.parse(text); }
-        catch (e) { throw new Error(text || 'Invalid JSON response from server'); }
-      });
-    })
-    .then(function (data) {
-      if (data.success) {
-        alert('Thank you! Your feedback has been submitted successfully.');
-        window.location.href = 'submissions.php';
-      } else {
-        alert('Error: ' + data.message);
-      }
-    })
-    .catch(function (error) {
-      alert('Submission failed. Please check XAMPP Apache/MySQL and try again. Details: ' + error.message);
-    });
+  var stars = document.querySelectorAll('.star');
+  stars.forEach(function (s) { s.classList.remove('active'); s.style.filter = ''; });
+  var ratingFeedback = document.getElementById('ratingFeedback');
+  if (ratingFeedback) { ratingFeedback.textContent = ''; ratingFeedback.style.display = 'none'; }
+  var ratingValue = document.getElementById('ratingValue');
+  if (ratingValue) ratingValue.value = '';
+
+  alert('Thank you! Your feedback has been submitted successfully.');
 }
 
 
