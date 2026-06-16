@@ -1,0 +1,98 @@
+# =============================================================================
+# ELEV8 — Apache configuration
+# Place this file in the Elev8/ root directory.
+# =============================================================================
+
+Options -Indexes -MultiViews
+
+# Default document — loads html/index.html when / is requested
+DirectoryIndex html/index.html index.html
+
+# ─── Security headers ─────────────────────────────────────────────────────────
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options  "nosniff"
+    Header always set X-Frame-Options         "SAMEORIGIN"
+    Header always set X-XSS-Protection        "1; mode=block"
+    Header always set Referrer-Policy         "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy      "geolocation=(), microphone=(), camera=()"
+
+    # Remove PHP version fingerprint
+    Header unset X-Powered-By
+</IfModule>
+
+# ─── Block direct browser access to PHP files ─────────────────────────────────
+# PHP endpoints are meant to be called via AJAX, not typed into a browser URL bar.
+# They still respond correctly to XHR — this just blocks non-AJAX attempts.
+<FilesMatch "\.php$">
+    <IfModule mod_headers.c>
+        # X-Requested-With is NOT a reliable guard for blocking, so we keep
+        # PHP files accessible but protected by CSRF tokens in the app layer.
+    </IfModule>
+</FilesMatch>
+
+# Block access to config/ entirely
+<IfModule mod_authz_core.c>
+    <Directory "config">
+        Require all denied
+    </Directory>
+</IfModule>
+
+# ─── URL rewriting ────────────────────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # If the root is requested, serve html/index.html transparently
+    RewriteRule ^$ html/index.html [L]
+
+    # Let real files and directories pass through
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+</IfModule>
+
+# ─── Gzip compression ─────────────────────────────────────────────────────────
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ─── Browser caching ──────────────────────────────────────────────────────────
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # HTML — short cache (content changes frequently)
+    ExpiresByType text/html                 "access plus 10 minutes"
+
+    # CSS and JS — 1 month (bust with query string ?v=X when deploying)
+    ExpiresByType text/css                  "access plus 1 month"
+    ExpiresByType application/javascript    "access plus 1 month"
+
+    # Fonts
+    ExpiresByType font/woff2                "access plus 1 year"
+    ExpiresByType application/font-woff     "access plus 1 year"
+
+    # Images
+    ExpiresByType image/jpeg                "access plus 1 year"
+    ExpiresByType image/png                 "access plus 1 year"
+    ExpiresByType image/webp                "access plus 1 year"
+    ExpiresByType image/svg+xml             "access plus 1 year"
+
+    # Video
+    ExpiresByType video/mp4                 "access plus 1 year"
+</IfModule>
+
+# ─── Character encoding ───────────────────────────────────────────────────────
+AddDefaultCharset UTF-8
+
+# ─── PHP settings (overrides php.ini for this app only) ──────────────────────
+<IfModule mod_php.c>
+    php_value default_charset "UTF-8"
+    php_flag  display_errors  Off
+    php_value log_errors      On
+    php_value session.cookie_httponly 1
+    php_value session.cookie_samesite "Strict"
+    php_value session.use_strict_mode 1
+</IfModule>

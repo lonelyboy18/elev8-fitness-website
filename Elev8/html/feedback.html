@@ -1,15 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Feedback - ELEV8</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feedback — ELEV8</title>
 <meta name="description" content="Share your ELEV8 experience. Your feedback helps Goa's premium calisthenics studio keep improving.">
 <meta name="theme-color" content="#03141A">
 <link rel="icon" href="../assets/images/common/elev8-icon-symbol.png" type="image/png">
-<meta property="og:type" content="website">
-<meta property="og:image" content="../assets/images/common/elev8-brand-logo.png">
-<meta property="og:locale" content="en_IN">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -28,130 +25,95 @@
     <a class="navbar-brand" href="index.html">
       <img src="../assets/images/common/elev8-brand-logo.png" class="logo" alt="ELEV8 Calisthenics & Fitness Studio">
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+            aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="menu">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
         <li class="nav-item"><a class="nav-link" href="programs.html">Programs</a></li>
         <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
         <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
-        <li class="nav-item ms-lg-3 mt-2 mt-lg-0"><a class="btn btn-success" href="sign_up.html">Join Now</a></li>
+        <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+          <a class="btn btn-success" href="sign_up.html">Join Now</a>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 
-<main id="main" class="container mt-5 pt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card shadow-lg">
-        <div class="card-body p-5">
+<main id="main" class="auth-container" style="min-height:100vh; padding-top:110px; padding-bottom:60px;">
+  <div class="auth-card" style="max-width:520px;">
+    <div class="glass-card">
 
-<h2 class="text-success text-center mb-4">
-Give us your feedback — it helps us grow!
-</h2>
-
-<form id="feedbackForm" method="POST" onsubmit="submitFeedbackForm(event)">
-
-<h5 class="mt-4">Your Information</h5>
-
-<label class="form-label">First Name</label>
-<input type="text" name="firstName" id="firstName"
-    class="form-control mb-1"
-  placeholder="Your first name">
-<div class="error-text mb-3" id="firstNameError">First name is required!</div>
-
-<label class="form-label">Middle Name</label>
-<input type="text" name="middleName" id="middleName"
-  class="form-control mb-1"
-  placeholder="Your middle name">
-<div class="error-text mb-3" id="middleNameError">Middle name should contain only letters!</div>
-
-<label class="form-label">Last Name</label>
-<input type="text" name="lastName" id="lastName"
-  class="form-control mb-1"
-  placeholder="Your last name">
-<div class="error-text mb-3" id="lastNameError">Last name is required!</div>
-
-<label class="form-label">Age</label>
-<input type="number" name="age" id="age"
-  class="form-control mb-1"
-       placeholder="Your age">
-<div class="error-text mb-3" id="ageError">Please enter a valid age between 10 and 100!</div>
-
-<label class="form-label">DOB</label>
-<input type="date" name="dob" id="dob"
-  class="form-control mb-1">
-<div class="error-text mb-3" id="dobError">Date of birth is required!</div>
-
-<label class="form-label">Email</label>
-<input type="email" name="email" id="email"
-    class="form-control mb-1"
-  placeholder="Your email">
-<div class="error-text mb-3" id="emailError">Email is required!</div>
-
-<label class="form-label">Phone Number</label>
-<input type="text" name="phone" id="phone"
-    class="form-control mb-1"
-  placeholder="Your phone number">
-<div class="error-text mb-3" id="phoneError">Phone number is required!</div>
-
-<label class="form-label">Feedback Category</label>
-<select name="suggestionCategory" id="suggestionCategory"
-  class="form-select mb-1">
-  <option value="">Select</option>
-  <option value="training">Training</option>
-  <option value="coaching">Coaching</option>
-  <option value="facility">Facility</option>
-  <option value="schedule">Schedule</option>
-  <option value="other">Other</option>
-</select>
-<div class="error-text mb-3" id="categoryError">Please select a category!</div>
-
-<h5 class="mt-4">Feedback & Rating</h5>
-
-<div class="rating-stats">
-  <p>Average Rating: <span class="avg-rating" id="avgRating">0.0</span> / 5</p>
-  <small class="text-muted">Based on <span id="ratingCount">0</span> ratings</small>
-</div>
-
-<label class="form-label">Rate Your Experience:</label>
-<div class="star-rating" id="starRating">
-  <span class="star" data-value="1">😢</span>
-  <span class="star" data-value="2">😞</span>
-  <span class="star" data-value="3">😐</span>
-  <span class="star" data-value="4">😊</span>
-  <span class="star" data-value="5">😄</span>
-</div>
-
-<div class="rating-feedback" id="ratingFeedback"></div>
-<input type="hidden" name="rating" id="ratingValue">
-<div class="error-text text-center mb-3" id="ratingError">Please rate your experience!</div>
-
-<label class="form-label mt-4">Your Feedback</label>
-<textarea name="feedback" id="feedback"
-          class="form-control mb-1"
-          rows="5"
-          placeholder="Tell us what you think..."></textarea>
-<div class="error-text mb-3" id="feedbackError">Feedback is required!</div>
-
-<button type="submit" class="btn btn-success w-100">
-Submit Feedback
-</button>
-
-</form>
-
-        </div>
+      <!-- Header -->
+      <div class="auth-header">
+        <span class="eyebrow" style="justify-content:center;">Your Voice Matters</span>
+        <h1 class="auth-title">Give Us Feedback</h1>
+        <p class="auth-sub">Help us keep improving for the ELEV8 community.</p>
       </div>
-    </div>
-  </div>
+
+      <!-- Live rating stats (populated by JS from rating_stats.php) -->
+      <div class="rating-stats-bar" id="ratingStatBar">
+        <span class="rating-avg" id="liveAvg">—</span>
+        <span class="rating-stars-display">★★★★★</span>
+        <span class="rating-count" id="liveCount">loading…</span>
+      </div>
+
+      <form id="feedbackForm" novalidate autocomplete="off">
+
+        <!-- Name -->
+        <div class="elev8-field">
+          <input type="text" id="fb-name" name="name" placeholder=" " maxlength="120">
+          <label for="fb-name">Your Name</label>
+          <span class="field-err" id="fb-nameErr" role="alert"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="elev8-field">
+          <input type="email" id="fb-email" name="email" placeholder=" ">
+          <label for="fb-email">Email Address</label>
+          <span class="field-err" id="fb-emailErr" role="alert"></span>
+        </div>
+
+        <!-- Emoji star rating -->
+        <div class="elev8-field" style="border:none; padding:0;">
+          <p class="plan-field-label" style="margin-bottom:0.8rem;">Rate Your Experience</p>
+          <div class="star-rating" id="starRating" role="radiogroup" aria-label="Rating">
+            <span class="star" data-value="1" role="radio" aria-label="1 star" tabindex="0">😢</span>
+            <span class="star" data-value="2" role="radio" aria-label="2 stars" tabindex="0">😞</span>
+            <span class="star" data-value="3" role="radio" aria-label="3 stars" tabindex="0">😐</span>
+            <span class="star" data-value="4" role="radio" aria-label="4 stars" tabindex="0">😊</span>
+            <span class="star" data-value="5" role="radio" aria-label="5 stars" tabindex="0">😄</span>
+          </div>
+          <div class="rating-feedback" id="ratingFeedback" aria-live="polite"></div>
+          <input type="hidden" id="ratingValue" name="rating">
+          <span class="field-err" id="fb-ratingErr" role="alert"></span>
+        </div>
+
+        <!-- Message -->
+        <div class="elev8-field">
+          <textarea id="fb-feedback" name="feedback" placeholder=" " rows="4"
+                    maxlength="5000"></textarea>
+          <label for="fb-feedback">Your Feedback</label>
+          <span class="field-err" id="fb-feedbackErr" role="alert"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100 mt-1" id="feedbackBtn">
+          Submit Feedback
+        </button>
+
+      </form>
+    </div><!-- /glass-card -->
+  </div><!-- /auth-card -->
 </main>
 
 <footer>
-  <p>© 2026 ELEV8 | Goa</p>
+  <p>© 2026 ELEV8 Calisthenics &amp; Fitness Studio · Goa, India</p>
   <div class="social-links">
     <a href="https://www.instagram.com/elev8.goa/" target="_blank" rel="noopener noreferrer">Instagram</a>
     <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer">WhatsApp</a>

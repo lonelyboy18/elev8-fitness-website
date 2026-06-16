@@ -1,15 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Register - ELEV8</title>
+<title>Join ELEV8 — Create Account</title>
 <meta name="description" content="Create your ELEV8 account and start your calisthenics journey in Goa today.">
 <meta name="theme-color" content="#03141A">
 <link rel="icon" href="../assets/images/common/elev8-icon-symbol.png" type="image/png">
-<meta property="og:type" content="website">
-<meta property="og:image" content="../assets/images/common/elev8-brand-logo.png">
-<meta property="og:locale" content="en_IN">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -28,16 +25,19 @@
     <a class="navbar-brand" href="index.html">
       <img src="../assets/images/common/elev8-brand-logo.png" class="logo" alt="ELEV8 Calisthenics & Fitness Studio">
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+            aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="menu">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
         <li class="nav-item"><a class="nav-link" href="programs.html">Programs</a></li>
         <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
         <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
+        <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
       </ul>
     </div>
   </div>
@@ -45,85 +45,92 @@
 
 <main id="main" class="auth-container">
   <div class="auth-card">
-    <div class="card shadow-lg">
-      <div class="card-body p-5">
-        <h2 class="text-success text-center mb-4">Register</h2>
+    <div class="glass-card">
 
-        <form id="signupForm" onsubmit="validateSignUp(event)">
-
-          <label for="name" class="form-label">Name</label>
-          <input type="text" name="name" id="name" class="form-control mb-1" placeholder="Full Name">
-          <div class="error-text" id="nameError">Name is required!</div>
-
-          <label for="email" class="form-label mt-3">Email</label>
-          <input type="email" name="email" id="email" class="form-control mb-1" placeholder="Email">
-          <div class="error-text" id="emailError">Email is required!</div>
-
-          <label for="mobile" class="form-label mt-3">Mobile</label>
-          <input type="text" name="mobile" id="mobile" class="form-control mb-1" placeholder="Mobile number">
-          <div class="error-text" id="mobileError">Mobile number is required!</div>
-
-          <label for="password" class="form-label mt-3">Password</label>
-          <input type="password" name="password" id="password" class="form-control mb-1" placeholder="Password">
-          <div class="error-text" id="passwordError">Password is required!</div>
-
-          <label for="confirmPassword" class="form-label mt-3">Confirm Password</label>
-          <input type="password" name="confirmPassword" id="confirmPassword" class="form-control mb-1" placeholder="Confirm Password">
-          <div class="error-text" id="confirmPasswordError">Please confirm password!</div>
-
-          <label for="gender" class="form-label mt-3">Gender</label>
-          <div class="mb-3">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="gender" id="male" value="male">
-              <label class="form-check-label" for="male">Male</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="gender" id="female" value="female">
-              <label class="form-check-label" for="female">Female</label>
-            </div>
-          </div>
-          <div class="error-text" id="genderError">Please select your gender!</div>
-
-          <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" name="terms" id="terms">
-            <label class="form-check-label" for="terms">I agree to the terms and conditions</label>
-          </div>
-          <div class="error-text" id="termsError">Please accept the terms and conditions!</div>
-
-          <div id="signupMessage" class="alert mt-3 mb-2" style="display:none;" role="alert"></div>
-
-          <button type="submit" class="btn btn-success w-100">Sign Up</button>
-
-          <p class="text-center text-muted mt-3">Already have an account? <a href="sign_in.html" class="text-success fw-bold">Sign In</a></p>
-
-        </form>
+      <!-- Header -->
+      <div class="auth-header">
+        <span class="eyebrow" style="justify-content:center;">Begin Your Journey</span>
+        <h1 class="auth-title">Create Account</h1>
+        <p class="auth-sub">Join Goa's premium calisthenics studio.</p>
       </div>
-    </div>
-  </div>
+
+      <form id="signupForm" novalidate autocomplete="off">
+
+        <!-- Name -->
+        <div class="elev8-field">
+          <input type="text" id="su-name" name="name" placeholder=" "
+                 autocomplete="name" maxlength="120">
+          <label for="su-name">Full Name</label>
+          <span class="field-err" id="su-nameErr" role="alert"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="elev8-field">
+          <input type="email" id="su-email" name="email" placeholder=" "
+                 autocomplete="email">
+          <label for="su-email">Email Address</label>
+          <span class="field-err" id="su-emailErr" role="alert"></span>
+        </div>
+
+        <!-- Mobile -->
+        <div class="elev8-field">
+          <input type="tel" id="su-mobile" name="mobile" placeholder=" "
+                 autocomplete="tel" maxlength="10" inputmode="numeric">
+          <label for="su-mobile">Mobile Number (10 digits)</label>
+          <span class="field-err" id="su-mobileErr" role="alert"></span>
+        </div>
+
+        <!-- Password + strength meter -->
+        <div class="elev8-field">
+          <input type="password" id="su-password" name="password" placeholder=" "
+                 autocomplete="new-password">
+          <label for="su-password">Password (min. 8 characters)</label>
+          <div class="strength-track" aria-hidden="true">
+            <div class="strength-bar" id="strengthBar"></div>
+          </div>
+          <span class="strength-label" id="strengthLabel" aria-live="polite"></span>
+          <span class="field-err" id="su-passwordErr" role="alert"></span>
+        </div>
+
+        <!-- Program selection -->
+        <div class="elev8-field plan-field">
+          <p class="plan-field-label">Choose Your Program</p>
+          <div class="plan-grid">
+            <label class="plan-card">
+              <input type="radio" name="plan" value="bft">
+              <span class="plan-content">
+                <strong class="plan-abbr">BFT</strong>
+                <span class="plan-name">Bodyweight Functional Training</span>
+                <span class="plan-price">from ₹2,100&thinsp;/&thinsp;mo</span>
+              </span>
+            </label>
+            <label class="plan-card">
+              <input type="radio" name="plan" value="cst">
+              <span class="plan-content">
+                <strong class="plan-abbr">CST</strong>
+                <span class="plan-name">Calisthenics Skill Training</span>
+                <span class="plan-price">from ₹2,300&thinsp;/&thinsp;mo</span>
+              </span>
+            </label>
+          </div>
+          <span class="field-err" id="su-planErr" role="alert"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100 mt-1" id="signupBtn">
+          Create Account
+        </button>
+
+        <p class="auth-switch">Already a member?
+          <a href="sign_in.html">Sign in</a>
+        </p>
+
+      </form>
+    </div><!-- /glass-card -->
+  </div><!-- /auth-card -->
 </main>
 
-<!-- Success Modal -->
-<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-success text-white">
-        <h5 class="modal-title" id="successLabel">Welcome to ELEV8!</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body text-center">
-        <h6>Registration successful!</h6>
-        <p>Welcome to ELEV8. You're now ready to start your fitness journey.</p>
-        <p class="text-muted">Train Hard. Stay Strong. Elevate Yourself.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <footer>
-  <p>© 2026 ELEV8 | Goa</p>
+  <p>© 2026 ELEV8 Calisthenics &amp; Fitness Studio · Goa, India</p>
   <div class="social-links">
     <a href="https://www.instagram.com/elev8.goa/" target="_blank" rel="noopener noreferrer">Instagram</a>
     <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer">WhatsApp</a>

@@ -1,15 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Delete Account - ELEV8</title>
-<meta name="description" content="Manage your ELEV8 account settings.">
+<title>Delete Account — ELEV8</title>
+<meta name="description" content="Permanently delete your ELEV8 account.">
 <meta name="theme-color" content="#03141A">
 <link rel="icon" href="../assets/images/common/elev8-icon-symbol.png" type="image/png">
-<meta property="og:type" content="website">
-<meta property="og:image" content="../assets/images/common/elev8-brand-logo.png">
-<meta property="og:locale" content="en_IN">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -28,16 +25,19 @@
     <a class="navbar-brand" href="index.html">
       <img src="../assets/images/common/elev8-brand-logo.png" class="logo" alt="ELEV8 Calisthenics & Fitness Studio">
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+            aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="menu">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
         <li class="nav-item"><a class="nav-link" href="programs.html">Programs</a></li>
         <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
         <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
+        <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
       </ul>
     </div>
   </div>
@@ -45,63 +45,69 @@
 
 <main id="main" class="auth-container">
   <div class="auth-card">
-    <div class="card shadow-lg border-danger">
-      <div class="card-body p-5">
-        <h2 class="text-danger text-center mb-2">Delete Account</h2>
-        <p class="text-center text-muted small mb-4">This action cannot be undone</p>
+    <div class="glass-card glass-card--danger">
 
-        <form id="deleteAccountForm" onsubmit="validateDeleteAccount(event)">
-
-          <label for="email" class="form-label">Email</label>
-          <input type="email" name="email" id="email" class="form-control mb-1" placeholder="Email">
-          <div class="error-text" id="emailError">Email is required!</div>
-
-          <label for="password" class="form-label mt-3">Password</label>
-          <input type="password" name="password" id="password" class="form-control mb-1" placeholder="Password">
-          <div class="error-text" id="passwordError">Password is required!</div>
-
-          <div class="form-check mt-4 mb-1">
-            <input class="form-check-input" type="checkbox" name="confirmDelete" id="confirmDelete">
-            <label class="form-check-label" for="confirmDelete">
-              I understand and want to delete my account permanently
-            </label>
-          </div>
-          <div class="error-text" id="confirmDeleteError">Please confirm to delete your account!</div>
-
-          <div id="deleteMessage" class="alert mt-3 mb-2" style="display:none;" role="alert"></div>
-
-          <button type="submit" class="btn btn-danger w-100 mt-4">Delete Account</button>
-
-          <p class="text-center text-muted mt-3"><a href="sign_in.html" class="text-dark fw-bold">Go back to Sign In</a></p>
-
-        </form>
+      <!-- Header -->
+      <div class="auth-header">
+        <div class="danger-icon" aria-hidden="true">⚠️</div>
+        <h1 class="auth-title" style="color:#ef4444;">Delete Account</h1>
+        <p class="auth-sub">This action is permanent and cannot be undone.</p>
       </div>
-    </div>
-  </div>
+
+      <!-- Warning box -->
+      <div class="danger-notice">
+        <strong>What will be deleted:</strong>
+        <ul>
+          <li>Your profile and login credentials</li>
+          <li>Your program enrollment history</li>
+          <li>All personal data stored by ELEV8</li>
+        </ul>
+      </div>
+
+      <form id="deleteAccountForm" novalidate autocomplete="off">
+
+        <!-- Email -->
+        <div class="elev8-field">
+          <input type="email" id="da-email" name="email" placeholder=" "
+                 autocomplete="email">
+          <label for="da-email">Email Address</label>
+          <span class="field-err" id="da-emailErr" role="alert"></span>
+        </div>
+
+        <!-- Password -->
+        <div class="elev8-field">
+          <input type="password" id="da-password" name="password" placeholder=" "
+                 autocomplete="current-password">
+          <label for="da-password">Password</label>
+          <span class="field-err" id="da-passwordErr" role="alert"></span>
+        </div>
+
+        <!-- Confirmation checkbox -->
+        <div class="elev8-check">
+          <input type="checkbox" id="da-confirm" name="confirm">
+          <label for="da-confirm">
+            I understand this will permanently delete my account and all my data.
+          </label>
+        </div>
+        <span class="field-err" id="da-confirmErr" role="alert"
+              style="margin-top:-0.6rem; display:block; margin-bottom:1rem;"></span>
+
+        <button type="submit" class="btn btn-danger w-100 mt-1" id="deleteBtn">
+          Permanently Delete Account
+        </button>
+
+        <p class="auth-switch mt-3">
+          Changed your mind?
+          <a href="sign_in.html">Go back to Sign In</a>
+        </p>
+
+      </form>
+    </div><!-- /glass-card -->
+  </div><!-- /auth-card -->
 </main>
 
-<!-- Success Modal -->
-<div class="modal fade" id="successModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title">Account Deleted</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body text-center">
-        <h6>Your account has been deleted!</h6>
-        <p>We're sorry to see you go. Your account and all data have been permanently deleted.</p>
-        <p class="text-muted">Thank you for being part of ELEV8.</p>
-      </div>
-      <div class="modal-footer">
-        <a href="index.html" type="button" class="btn btn-danger">Go to Home</a>
-      </div>
-    </div>
-  </div>
-</div>
-
 <footer>
-  <p>© 2026 ELEV8 | Goa</p>
+  <p>© 2026 ELEV8 Calisthenics &amp; Fitness Studio · Goa, India</p>
   <div class="social-links">
     <a href="https://www.instagram.com/elev8.goa/" target="_blank" rel="noopener noreferrer">Instagram</a>
     <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer">WhatsApp</a>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Dashboard — ELEV8 Calisthenics & Fitness Studio</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#03141A">
+<link rel="icon" href="../assets/images/common/elev8-icon-symbol.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<video class="background-video" autoplay muted loop playsinline aria-hidden="true">
+  <source src="../assets/videos/hero-background-loop.mp4" type="video/mp4">
+</video>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" aria-label="Main navigation">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <img src="../assets/images/common/elev8-brand-logo.png" class="logo" alt="ELEV8 Calisthenics & Fitness Studio">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="programs.html">Programs</a></li>
+        <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
+        <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+          <button class="btn btn-outline-success btn-sm" id="navLogoutBtn">Sign Out</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main id="main" class="dash-main">
+
+  <!-- Auth guard: shown while session is being verified -->
+  <div id="authGuard" class="auth-guard-overlay" aria-live="polite">
+    <div class="auth-guard-inner">
+      <div class="auth-guard-spinner"></div>
+      <p class="auth-guard-text">Verifying session…</p>
+    </div>
+  </div>
+
+  <!-- Dashboard (hidden until auth confirmed) -->
+  <div id="dashContent" class="dash-container" style="display:none;" aria-hidden="true">
+
+    <!-- ── Hero Bar ──────────────────────────────────────── -->
+    <div class="dash-hero">
+      <div class="dash-hero-left">
+        <div class="dash-avatar" id="dashAvatar" aria-hidden="true">?</div>
+        <div class="dash-hero-text">
+          <p class="dash-greeting" id="dashGreeting">Good morning,</p>
+          <h1 class="dash-name" id="dashName">Loading…</h1>
+          <span class="dash-plan-pill" id="dashPlanPill">—</span>
+        </div>
+      </div>
+      <button class="btn btn-ghost" id="dashLogoutBtn">← Sign Out</button>
+    </div>
+
+    <!-- ── Stats Strip ───────────────────────────────────── -->
+    <div class="dash-stats" role="list">
+      <div class="dash-stat" role="listitem">
+        <span class="dash-stat-val" id="statBkMonth">—</span>
+        <span class="dash-stat-key">Bookings this month</span>
+      </div>
+      <div class="dash-stat" role="listitem">
+        <span class="dash-stat-val" id="statSubStatus">—</span>
+        <span class="dash-stat-key">Subscription</span>
+      </div>
+      <div class="dash-stat" role="listitem">
+        <span class="dash-stat-val" id="statExpiry">—</span>
+        <span class="dash-stat-key">Expires</span>
+      </div>
+      <div class="dash-stat" role="listitem">
+        <span class="dash-stat-val" id="statMemberSince">—</span>
+        <span class="dash-stat-key">Member since</span>
+      </div>
+    </div>
+
+    <!-- ── Tab Navigation ────────────────────────────────── -->
+    <div class="dash-tabs-wrap">
+      <ul class="nav dash-tabs" id="dashTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="dash-tab active" id="tab-bookings-btn"
+                  role="tab" aria-selected="true" aria-controls="tabBookings"
+                  data-bs-toggle="tab" data-bs-target="#tabBookings" type="button">
+            Bookings
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="dash-tab" id="tab-payments-btn"
+                  role="tab" aria-selected="false" aria-controls="tabPayments"
+                  data-bs-toggle="tab" data-bs-target="#tabPayments" type="button">
+            Payments
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="dash-tab" id="tab-profile-btn"
+                  role="tab" aria-selected="false" aria-controls="tabProfile"
+                  data-bs-toggle="tab" data-bs-target="#tabProfile" type="button">
+            Profile
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ── Tab Content ───────────────────────────────────── -->
+    <div class="tab-content dash-tab-body">
+
+      <!-- Bookings Tab -->
+      <div class="tab-pane fade show active" id="tabBookings" role="tabpanel" aria-labelledby="tab-bookings-btn">
+        <div class="dash-panel-header">
+          <h2 class="dash-panel-title">My Bookings</h2>
+          <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#bookModal">
+            + Book a Class
+          </button>
+        </div>
+        <div id="bookingsList" class="bookings-list" aria-live="polite">
+          <div class="dash-empty">Loading bookings…</div>
+        </div>
+      </div>
+
+      <!-- Payments Tab -->
+      <div class="tab-pane fade" id="tabPayments" role="tabpanel" aria-labelledby="tab-payments-btn">
+        <div class="dash-panel-header">
+          <h2 class="dash-panel-title">Payments</h2>
+          <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#payModal">
+            + Subscribe
+          </button>
+        </div>
+        <div id="paymentsList" class="payments-list" aria-live="polite">
+          <div class="dash-empty">Loading payments…</div>
+        </div>
+      </div>
+
+      <!-- Profile Tab -->
+      <div class="tab-pane fade" id="tabProfile" role="tabpanel" aria-labelledby="tab-profile-btn">
+        <div class="dash-panel-header">
+          <h2 class="dash-panel-title">Edit Profile</h2>
+        </div>
+        <div class="profile-edit-wrap">
+          <div class="profile-avatar-lg" id="profileAvatarLg" aria-hidden="true">?</div>
+          <form id="profileForm" novalidate class="profile-form">
+            <div class="elev8-field">
+              <input type="text" id="pf-name" name="name" placeholder=" " maxlength="120" autocomplete="name">
+              <label for="pf-name">Full Name</label>
+              <span class="field-err" id="pf-nameErr" role="alert"></span>
+            </div>
+            <div class="elev8-field">
+              <input type="email" id="pf-email" placeholder=" " disabled autocomplete="email">
+              <label for="pf-email">Email (contact support to change)</label>
+            </div>
+            <div class="elev8-field">
+              <input type="tel" id="pf-mobile" name="mobile" placeholder=" " maxlength="10" inputmode="numeric" autocomplete="tel">
+              <label for="pf-mobile">Mobile Number</label>
+              <span class="field-err" id="pf-mobileErr" role="alert"></span>
+            </div>
+            <button type="submit" class="btn btn-success" id="profileBtn">Save Changes</button>
+          </form>
+        </div>
+      </div>
+
+    </div><!-- /tab-content -->
+  </div><!-- /dashContent -->
+
+</main><!-- /main -->
+
+
+<!-- ╔══════════════════════════════════════════════════╗ -->
+<!-- ║             BOOK A CLASS MODAL                  ║ -->
+<!-- ╚══════════════════════════════════════════════════╝ -->
+<div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content glass-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bookModalLabel">Book a Class</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="bookingForm" novalidate>
+
+          <!-- Class Type -->
+          <div class="mb-4">
+            <p class="modal-field-label">Class Type</p>
+            <div class="plan-grid">
+              <label class="plan-card">
+                <input type="radio" name="bk-classType" value="bft">
+                <span class="plan-content">
+                  <strong class="plan-abbr">BFT</strong>
+                  <span class="plan-name">Bodyweight Functional</span>
+                </span>
+              </label>
+              <label class="plan-card">
+                <input type="radio" name="bk-classType" value="cst">
+                <span class="plan-content">
+                  <strong class="plan-abbr">CST</strong>
+                  <span class="plan-name">Calisthenics Skill</span>
+                </span>
+              </label>
+            </div>
+            <span class="field-err" id="bk-typeErr" role="alert"></span>
+          </div>
+
+          <!-- Date -->
+          <div class="elev8-field">
+            <input type="date" id="bk-date" name="date" placeholder=" " autocomplete="off">
+            <label for="bk-date">Class Date</label>
+            <span class="field-err" id="bk-dateErr" role="alert"></span>
+          </div>
+
+          <!-- Time Slots -->
+          <div class="mb-4">
+            <p class="modal-field-label">
+              Time Slot
+              <span class="slot-hint" id="slotHint"></span>
+            </p>
+            <div class="slot-grid" id="slotGrid" role="group" aria-label="Choose a time slot">
+              <button type="button" class="slot-btn" data-slot="05:30" aria-label="5:30 AM">5:30 AM</button>
+              <button type="button" class="slot-btn" data-slot="06:30" aria-label="6:30 AM">6:30 AM</button>
+              <button type="button" class="slot-btn" data-slot="07:30" aria-label="7:30 AM">7:30 AM</button>
+              <button type="button" class="slot-btn" data-slot="17:00" aria-label="5:00 PM">5:00 PM</button>
+              <button type="button" class="slot-btn" data-slot="18:00" aria-label="6:00 PM">6:00 PM</button>
+              <button type="button" class="slot-btn" data-slot="19:00" aria-label="7:00 PM">7:00 PM</button>
+            </div>
+            <input type="hidden" id="bk-timeSlot" name="time_slot">
+            <span class="field-err" id="bk-slotErr" role="alert"></span>
+          </div>
+
+          <button type="submit" class="btn btn-success w-100" id="bookBtn">
+            Confirm Booking
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════════╗ -->
+<!-- ║              PAYMENT MODAL                      ║ -->
+<!-- ╚══════════════════════════════════════════════════╝ -->
+<div class="modal fade" id="payModal" tabindex="-1" aria-labelledby="payModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="payModalLabel">Choose Subscription</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Program -->
+        <div class="mb-4">
+          <p class="modal-field-label">Program</p>
+          <div class="plan-grid">
+            <label class="plan-card">
+              <input type="radio" name="pay-plan" value="bft" id="pay-bft">
+              <span class="plan-content">
+                <strong class="plan-abbr">BFT</strong>
+                <span class="plan-name">Bodyweight Functional</span>
+              </span>
+            </label>
+            <label class="plan-card">
+              <input type="radio" name="pay-plan" value="cst" id="pay-cst">
+              <span class="plan-content">
+                <strong class="plan-abbr">CST</strong>
+                <span class="plan-name">Calisthenics Skill</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Duration -->
+        <div class="mb-4">
+          <p class="modal-field-label">Duration</p>
+          <div class="duration-grid" id="durationGrid">
+            <button type="button" class="duration-btn" data-months="1">
+              <span class="dur-label">1 Month</span>
+            </button>
+            <button type="button" class="duration-btn" data-months="3">
+              <span class="dur-label">3 Months</span>
+            </button>
+            <button type="button" class="duration-btn popular" data-months="6">
+              <span class="dur-label">6 Months</span>
+              <span class="dur-badge">Popular</span>
+            </button>
+            <button type="button" class="duration-btn" data-months="12">
+              <span class="dur-label">12 Months</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Price Display -->
+        <div class="pay-price-box" id="payPriceBox" style="display:none;">
+          <div class="pay-price-row">
+            <span class="pay-price-amount" id="payPriceAmount">—</span>
+            <span class="pay-price-save" id="payPriceSave"></span>
+          </div>
+        </div>
+
+        <button class="btn btn-success w-100" id="payNowBtn" disabled>
+          Pay with Razorpay
+        </button>
+        <p class="pay-secure-note">
+          Secured by Razorpay &middot; UPI, Cards &amp; Net Banking accepted
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<footer>
+  <p>© 2026 ELEV8 Calisthenics &amp; Fitness Studio · Goa, India</p>
+  <div class="social-links">
+    <a href="https://www.instagram.com/elev8.goa/" target="_blank" rel="noopener noreferrer">Instagram</a>
+    <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+  </div>
+</footer>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

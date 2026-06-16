@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog Admin — ELEV8</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#03141A">
+<link rel="icon" href="../assets/images/common/elev8-icon-symbol.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<video class="background-video" autoplay muted loop playsinline aria-hidden="true">
+  <source src="../assets/videos/hero-background-loop.mp4" type="video/mp4">
+</video>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" aria-label="Main navigation">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <img src="../assets/images/common/elev8-brand-logo.png" class="logo" alt="ELEV8">
+    </a>
+    <div class="ms-auto d-flex align-items-center gap-3">
+      <a href="blog.html" class="btn btn-ghost btn-sm">← Blog</a>
+      <button class="btn btn-outline-success btn-sm" id="adminLogoutBtn">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<main id="main" class="dash-main">
+
+  <!-- Auth guard -->
+  <div id="adminAuthWrap" class="admin-auth-wrap">
+    <div class="glass-card" style="max-width:420px; margin:0 auto;">
+      <h2 class="auth-title" style="font-size:2rem;">Blog Admin</h2>
+      <p style="color:var(--steel); font-size:0.9rem; margin-bottom:1.5rem;">Enter the admin key to continue.</p>
+      <form id="adminLoginForm" novalidate>
+        <div class="elev8-field">
+          <input type="password" id="adminKey" placeholder=" " autocomplete="current-password">
+          <label for="adminKey">Admin Key</label>
+        </div>
+        <p class="field-err" id="adminKeyErr" role="alert" style="text-align:center;"></p>
+        <button type="submit" class="btn btn-success w-100" id="adminLoginBtn">Unlock</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin content (shown after auth) -->
+  <div id="adminContent" class="dash-container" style="display:none;">
+
+    <div class="dash-hero">
+      <div class="dash-hero-left">
+        <div class="dash-avatar" style="font-size:1.5rem;">&#9998;</div>
+        <div>
+          <p class="dash-greeting">ELEV8</p>
+          <h1 class="dash-name">Blog Admin</h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- New post form -->
+    <div class="admin-section">
+      <h2 class="dash-panel-title" style="margin-bottom:1.2rem;">New Post</h2>
+      <form id="newPostForm" novalidate class="admin-post-form">
+        <div class="row g-3">
+          <div class="col-md-8">
+            <div class="elev8-field">
+              <input type="text" id="np-title" placeholder=" " maxlength="255" required>
+              <label for="np-title">Title</label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="elev8-field">
+              <select id="np-category" style="background:transparent; color:var(--chalk); border:none; width:100%; padding:1.05rem 1rem 0.5rem; outline:none;">
+                <option value="">Select category</option>
+                <option value="Training Tips">Training Tips</option>
+                <option value="Nutrition">Nutrition</option>
+                <option value="Lifestyle">Lifestyle</option>
+                <option value="Studio News">Studio News</option>
+                <option value="Skills">Skills</option>
+              </select>
+              <label for="np-category" style="top:0.38rem; font-size:0.70rem; color:var(--orange);">Category</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="elev8-field">
+              <input type="text" id="np-author" placeholder=" " maxlength="120" value="ELEV8 Team">
+              <label for="np-author">Author</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="elev8-field">
+              <select id="np-status" style="background:transparent; color:var(--chalk); border:none; width:100%; padding:1.05rem 1rem 0.5rem; outline:none;">
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+              </select>
+              <label for="np-status" style="top:0.38rem; font-size:0.70rem; color:var(--orange);">Status</label>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="elev8-field">
+              <textarea id="np-excerpt" rows="2" placeholder=" " maxlength="500"></textarea>
+              <label for="np-excerpt">Excerpt (shown in listing)</label>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="elev8-field">
+              <textarea id="np-content" rows="14" placeholder=" "></textarea>
+              <label for="np-content">Content (HTML supported)</label>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success mt-2" id="newPostBtn">Publish Post</button>
+      </form>
+    </div>
+
+    <!-- Post list -->
+    <div class="admin-section" style="margin-top:3rem;">
+      <div class="dash-panel-header">
+        <h2 class="dash-panel-title">All Posts</h2>
+        <button class="btn btn-ghost btn-sm" id="refreshPostsBtn">Refresh</button>
+      </div>
+      <div id="adminPostsList" class="bookings-list" aria-live="polite">
+        <div class="dash-empty">Loading…</div>
+      </div>
+    </div>
+
+  </div><!-- /adminContent -->
+
+</main>
+
+<footer>
+  <p>© 2026 ELEV8 Calisthenics &amp; Fitness Studio</p>
+</footer>
+
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
