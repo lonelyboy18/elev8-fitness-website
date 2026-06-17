@@ -2706,3 +2706,77 @@ footer p { margin-bottom: 10px; color: var(--steel); font-size: 0.92rem; }
 .admin-post-actions { display: flex; gap: 0.4rem; }
 
 @media (max-width: 576px) { .admin-post-form .form-row { grid-template-columns: 1fr; } }
+
+
+/* ============================================================
+   Task 5 — UI/UX Animation Enhancements
+   All additions below. No existing styles modified.
+   ============================================================ */
+
+/* ── Auto-Reveal (JS auto-applies to cards/sections) ──────── */
+.auto-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.55s cubic-bezier(.22,1,.36,1),
+              transform 0.55s cubic-bezier(.22,1,.36,1);
+  will-change: opacity, transform;
+}
+.auto-reveal.in { opacity: 1; transform: none; }
+.auto-reveal[data-delay="1"] { transition-delay: 0.10s; }
+.auto-reveal[data-delay="2"] { transition-delay: 0.20s; }
+.auto-reveal[data-delay="3"] { transition-delay: 0.30s; }
+.auto-reveal[data-delay="4"] { transition-delay: 0.40s; }
+.auto-reveal[data-delay="5"] { transition-delay: 0.50s; }
+.auto-reveal[data-delay="6"] { transition-delay: 0.60s; }
+
+/* Extended stagger for existing .reveal markup */
+.reveal[data-delay="5"] { transition-delay: 0.40s; }
+.reveal[data-delay="6"] { transition-delay: 0.48s; }
+.reveal[data-delay="7"] { transition-delay: 0.56s; }
+.reveal[data-delay="8"] { transition-delay: 0.64s; }
+
+/* ── Button active-press scale ─────────────────────────────── */
+.btn:not(:disabled):active {
+  transform: scale(0.97) translateY(0) !important;
+  transition-duration: 0.08s !important;
+}
+
+/* ── Blog grid fade transition ─────────────────────────────── */
+#blogGrid {
+  transition: opacity 0.22s ease;
+}
+#blogGrid.fading {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+/* ── Field-error fade-in ───────────────────────────────────── */
+.field-err:not(:empty) {
+  animation: t5ErrIn 0.25s ease both;
+}
+@keyframes t5ErrIn {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── Dashboard stat value transition ──────────────────────── */
+.dash-stat-val {
+  transition: opacity 0.25s ease;
+  display: block;
+}
+
+/* ── Reduced-motion overrides for Task 5 additions ────────── */
+@media (prefers-reduced-motion: reduce) {
+  .auto-reveal,
+  .auto-reveal.in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  #blogGrid,
+  #blogGrid.fading {
+    opacity: 1 !important;
+    transition: none;
+  }
+  .field-err:not(:empty) { animation: none; }
+}

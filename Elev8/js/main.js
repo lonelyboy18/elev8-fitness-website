@@ -1737,3 +1737,290 @@ function initNewPostForm() {
   var refreshBtn = document.getElementById('refreshPostsBtn');
   if (refreshBtn) refreshBtn.addEventListener('click', loadAdminPosts);
 }
+
+
+// ============================================================
+// Task 5 — Auto-Reveal on Scroll
+// Applies .auto-reveal to key selectors without touching HTML.
+// Elements already in the viewport on load are marked .in
+// immediately so they never flash as hidden.
+// ============================================================
+
+function initAutoReveal() {
+  if (reduceMotion || !('IntersectionObserver' in window)) return;
+
+  var SELECTORS = [
+    '.program-card',
+    '.trainer-card',
+    '.mem-card',
+    '.contact-channel',
+    '.dash-stat',
+    '.booking-item',
+    '.payment-item',
+    '.admin-post-item',
+  ];
+
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.10, rootMargin: '0px 0px -6% 0px' });
+
+  SELECTORS.forEach(function (sel) {
+    // Group by immediate parent so stagger resets per section
+    var groups = new Map();
+    document.querySelectorAll(sel).forEach(function (el) {
+      if (el.classList.contains('reveal') || el.classList.contains('auto-reveal')) return;
+      var parent = el.parentElement || document.body;
+      if (!groups.has(parent)) groups.set(parent, []);
+      groups.get(parent).push(el);
+    });
+
+    groups.forEach(function (els) {
+      els.forEach(function (el, i) {
+        var rect   = el.getBoundingClientRect();
+        var inView = rect.top < window.innerHeight && rect.bottom > 0;
+        el.classList.add('auto-reveal');
+        if (inView) {
+          // Already visible — skip hidden state, mark in immediately
+          el.classList.add('in');
+          return;
+        }
+        if (i > 0 && i <= 6) el.setAttribute('data-delay', String(i));
+        obs.observe(el);
+      });
+    });
+  });
+}
+
+
+// ============================================================
+// Task 5 — FAQ Accordion
+// Wires up .faq-btn clicks to toggle .faq-body/.faq-item.
+// Relies on CSS max-height transition already in place.
+// ============================================================
+
+function initFAQ() {
+  var items = document.querySelectorAll('.faq-item');
+  if (!items.length) return;
+
+  items.forEach(function (item) {
+    var btn  = item.querySelector('.faq-btn');
+    var body = item.querySelector('.faq-body');
+    if (!btn || !body) return;
+
+    btn.setAttribute('aria-expanded', 'false');
+
+    btn.addEventListener('click', function () {
+      var isOpen = item.classList.contains('open');
+
+      // Collapse every item
+      items.forEach(function (other) {
+        if (other.classList.contains('open')) {
+          other.classList.remove('open');
+          var ob = other.querySelector('.faq-body');
+          var ob_btn = other.querySelector('.faq-btn');
+          if (ob)     ob.classList.remove('open');
+          if (ob_btn) ob_btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // Open clicked item if it was closed
+      if (!isOpen) {
+        item.classList.add('open');
+        body.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+}
+
+
+// ============================================================
+// Task 5 — Dashboard Stat Counter
+// Animates a plain numeric string from 0 to its final value.
+// Non-numeric values (e.g. "Active", "—") are set directly.
+// ============================================================
+
+function animateDashStatValue(el, finalText) {
+  if (!el) return;
+  if (reduceMotion) { el.textContent = finalText; return; }
+
+  var num = parseFloat(finalText);
+  if (isNaN(num) || num === 0) {
+    el.textContent = finalText;
+    return;
+  }
+
+  var suffix = finalText.replace(/[\d.,]+/, '');
+  var start  = null;
+  var dur    = 900;
+
+  function step(ts) {
+    if (!start) start = ts;
+    var p     = Math.min((ts - start) / dur, 1);
+    var eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(num * eased) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+
+// ============================================================
+// Task 5 — Patch renderStats to animate bookings count
+// Redefines the function declared earlier. The last declaration
+// wins at parse time so all call-sites use this version.
+// ============================================================
+
+function renderStats(user, bookings) {
+  var now       = new Date();
+  var thisMonth = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+
+  var bkMonth = bookings.filter(function (b) {
+    return b.status === 'confirmed' && b.class_date.startsWith(thisMonth);
+  }).length;
+
+  var subEl   = document.getElementById('statSubStatus');
+  var expEl   = document.getElementById('statExpiry');
+  var sinceEl = document.getElementById('statMemberSince');
+  var bkMonEl = document.getElementById('statBkMonth');
+
+  // Animate the numeric booking count
+  animateDashStatValue(bkMonEl, String(bkMonth));
+
+  if (sinceEl) sinceEl.textContent = user.member_since || '—';
+
+  if (subEl) {
+    var st = user.subscription_status;
+    subEl.textContent = st === 'active' ? 'Active' : st === 'expired' ? 'Expired' : 'Inactive';
+    subEl.style.color = st === 'active' ? '#86efac' : '#fca5a5';
+  }
+
+  if (expEl) {
+    if (user.subscription_expires) {
+      expEl.textContent = new Date(user.subscription_expires)
+        .toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: '2-digit' });
+    } else {
+      expEl.textContent = 'N/A';
+    }
+  }
+}
+
+
+// ============================================================
+// Task 5 — Blog Grid Fade (redefines loadBlogPosts)
+// Fetches posts and 220ms fade-out run in parallel so there is
+// no added latency when the network is fast. The last function
+// declaration at parse time shadows the earlier one.
+// ============================================================
+
+async function loadBlogPosts() {
+  var grid = document.getElementById('blogGrid');
+  var pag  = document.getElementById('blogPagination');
+  if (!grid) return;
+
+  // Start fade-out and network fetch simultaneously
+  grid.classList.add('fading');
+
+  var url = '../php/get_blog_posts.php?page=' + _blogPage;
+  if (_blogSearch)   url += '&search='   + encodeURIComponent(_blogSearch);
+  if (_blogCategory) url += '&category=' + encodeURIComponent(_blogCategory);
+
+  var results = await Promise.all([
+    getJSON(url),
+    new Promise(function (resolve) { setTimeout(resolve, 220); }),
+  ]);
+  var data = results[0];
+
+  if (pag) pag.innerHTML = '';
+
+  if (!data.success) {
+    grid.innerHTML = '<div class="blog-state-msg"><strong>Could not load posts.</strong> Check your connection or XAMPP.</div>';
+    grid.classList.remove('fading');
+    return;
+  }
+
+  // Build category pills on first successful load
+  var catsEl = document.getElementById('blogCats');
+  if (catsEl && catsEl.children.length === 0 && data.categories && data.categories.length) {
+    var allPill = document.createElement('span');
+    allPill.className = 'cat-pill active';
+    allPill.textContent = 'All';
+    allPill.dataset.cat = '';
+    catsEl.appendChild(allPill);
+    data.categories.forEach(function (cat) {
+      var pill = document.createElement('span');
+      pill.className = 'cat-pill';
+      pill.textContent = cat;
+      pill.dataset.cat = cat;
+      catsEl.appendChild(pill);
+    });
+    catsEl.addEventListener('click', function (e) {
+      var pill = e.target.closest('.cat-pill');
+      if (!pill) return;
+      catsEl.querySelectorAll('.cat-pill').forEach(function (p) { p.classList.remove('active'); });
+      pill.classList.add('active');
+      _blogCategory = pill.dataset.cat;
+      _blogPage = 1;
+      loadBlogPosts();
+    });
+  }
+
+  if (!data.posts || data.posts.length === 0) {
+    grid.innerHTML = '<div class="blog-state-msg"><strong>No posts found.</strong> Try a different search or category.</div>';
+    grid.classList.remove('fading');
+    return;
+  }
+
+  grid.innerHTML = data.posts.map(function (p) {
+    var dateStr = p.created_at
+      ? new Date(p.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+      : '';
+    return '<a class="blog-card" href="blog-post.html?slug=' + encodeURIComponent(p.slug) + '">' +
+      '<div class="blog-card-img-placeholder">📝</div>' +
+      '<div class="blog-card-body">' +
+        '<div class="blog-card-cat">' + (p.category || 'Fitness') + '</div>' +
+        '<h2 class="blog-card-title">' + escHtml(p.title) + '</h2>' +
+        '<p class="blog-card-excerpt">' + escHtml(p.excerpt || '') + '</p>' +
+        '<div class="blog-card-meta">' +
+          '<span>' + escHtml(p.author || 'ELEV8 Team') + '</span>' +
+          '<span>' + dateStr + '</span>' +
+        '</div>' +
+      '</div>' +
+    '</a>';
+  }).join('');
+
+  // Fade grid back in
+  grid.classList.remove('fading');
+
+  // Pagination
+  if (pag && data.pages > 1) {
+    for (var i = 1; i <= data.pages; i++) {
+      (function (pageNum) {
+        var btn = document.createElement('button');
+        btn.className = 'page-btn' + (pageNum === _blogPage ? ' active' : '');
+        btn.textContent = pageNum;
+        btn.addEventListener('click', function () {
+          _blogPage = pageNum;
+          loadBlogPosts();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        pag.appendChild(btn);
+      }(i));
+    }
+  }
+}
+
+
+// ============================================================
+// Task 5 — Init on load
+// ============================================================
+
+window.addEventListener('load', function () {
+  initAutoReveal();
+  initFAQ();
+});
