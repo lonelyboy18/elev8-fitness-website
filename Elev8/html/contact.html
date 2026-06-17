@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — ELEV8 Calisthenics & Fitness Studio</title>
-<meta name="description" content="Get in touch with ELEV8 — Goa's premium calisthenics studio. WhatsApp, Instagram or the contact form. We reply within 24 hours.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact Us — ELEV8 Calisthenics & Fitness Studio Goa</title>
+<meta name="description" content="Get in touch with ELEV8 Fitness — call, WhatsApp, email, or visit us in Goa. Read member reviews and leave your own feedback.">
 <meta name="theme-color" content="#03141A">
 <link rel="icon" href="../assets/images/common/elev8-icon-symbol.png" type="image/png">
 <meta property="og:type" content="website">
+<meta property="og:title" content="Contact ELEV8 Fitness — Goa's Calisthenics Studio">
+<meta property="og:description" content="Reach us by phone, WhatsApp, email or visit. Rated 5.0★ by our community.">
 <meta property="og:image" content="../assets/images/common/elev8-brand-logo.png">
 <meta property="og:locale" content="en_IN">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,9 +39,7 @@
         <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
         <li class="nav-item"><a class="nav-link" href="programs.html">Programs</a></li>
         <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
-        <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
-        <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        <li class="nav-item"><a class="nav-link active" href="contact.html">Contact</a></li>
         <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
           <a class="btn btn-success" href="sign_up.html">Join Now</a>
         </li>
@@ -50,111 +50,253 @@
 
 <main id="main">
 
-<!-- ── Hero ─────────────────────────────────── -->
-<section class="section" style="padding-top:160px; padding-bottom:64px;">
+<!-- ── Hero ─────────────────────────────────────────────── -->
+<section class="contact-hero section">
   <div class="container">
     <div class="row">
-      <div class="col-lg-7">
-        <span class="eyebrow reveal">Reach Out</span>
-        <h1 class="section-title reveal" data-delay="1">Contact Us</h1>
+      <div class="col-lg-8">
+        <span class="eyebrow reveal">We're Here for You</span>
+        <h1 class="section-title reveal" data-delay="1" style="font-size:clamp(2.8rem,8vw,5rem);">
+          Contact<br><span class="accent">ELEV8 Fitness</span>
+        </h1>
         <p class="section-lead reveal" data-delay="2">
-          Questions, trial bookings, or just want to say hello — we're here.
-          We reply within 24 hours on all channels.
+          Questions about programs? Ready to book a trial? Want to visit us?
+          We're just a WhatsApp away — and we always reply.
         </p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── Contact Grid ──────────────────────────── -->
+<!-- ── Contact Info & Form ─────────────────────────────── -->
 <section class="section" style="padding-top:0;">
   <div class="container">
     <div class="contact-grid">
 
-      <!-- Left: Form -->
-      <div class="contact-form-col reveal">
-        <h2 class="contact-col-title">Send a Message</h2>
-        <form id="contactForm" novalidate class="contact-form">
+      <!-- Left: Contact Form -->
+      <div class="contact-form-wrap reveal glass-card">
+        <span class="eyebrow">Send a Message</span>
+        <h2 class="section-title" style="font-size:1.8rem; margin-bottom:1.5rem;">Get in touch</h2>
+
+        <form id="contactForm" novalidate autocomplete="on">
           <div class="elev8-field">
             <input type="text" id="ct-name" name="name" placeholder=" " maxlength="120" autocomplete="name">
-            <label for="ct-name">Full Name</label>
+            <label for="ct-name">Your Name</label>
             <span class="field-err" id="ct-nameErr" role="alert"></span>
           </div>
           <div class="elev8-field">
-            <input type="email" id="ct-email" name="email" placeholder=" " maxlength="255" autocomplete="email">
+            <input type="email" id="ct-email" name="email" placeholder=" " autocomplete="email">
             <label for="ct-email">Email Address</label>
             <span class="field-err" id="ct-emailErr" role="alert"></span>
           </div>
           <div class="elev8-field">
-            <input type="tel" id="ct-phone" name="phone" placeholder=" " maxlength="10" inputmode="numeric" autocomplete="tel">
-            <label for="ct-phone">Mobile Number (optional)</label>
-            <span class="field-err" id="ct-phoneErr" role="alert"></span>
+            <input type="tel" id="ct-phone" name="phone" placeholder=" " maxlength="15" inputmode="tel" autocomplete="tel">
+            <label for="ct-phone">Phone / WhatsApp (optional)</label>
           </div>
           <div class="elev8-field">
-            <textarea id="ct-message" name="message" rows="5" placeholder=" " maxlength="3000"></textarea>
+            <textarea id="ct-message" name="message" placeholder=" " rows="5" maxlength="500"></textarea>
             <label for="ct-message">Your Message</label>
             <span class="field-err" id="ct-messageErr" role="alert"></span>
+            <span class="char-counter" id="ct-messageCount" aria-live="polite">0/500</span>
           </div>
-          <button type="submit" class="btn btn-success w-100" id="contactBtn">Send Message</button>
+          <button type="submit" class="btn btn-success w-100" id="ctSubmitBtn">
+            Send Message
+          </button>
+          <p class="field-err" id="ct-formErr" role="alert" style="text-align:center; margin-top:0.8rem;"></p>
+          <p id="ct-successMsg" style="display:none; color:var(--green); text-align:center; margin-top:0.8rem; font-size:0.9rem;">
+            Message sent! We'll get back to you within 24 hours.
+          </p>
         </form>
       </div>
 
-      <!-- Right: Info + Map -->
+      <!-- Right: Contact Info -->
       <div class="contact-info-col reveal" data-delay="1">
-        <h2 class="contact-col-title">Find Us</h2>
+        <span class="eyebrow">Reach Us Directly</span>
+        <h2 class="section-title" style="font-size:1.8rem; margin-bottom:1.5rem;">Contact information</h2>
 
-        <!-- Quick contact channels -->
         <div class="contact-channels">
-          <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer" class="contact-channel">
-            <span class="channel-icon">&#128172;</span>
+          <div class="contact-channel reveal">
+            <div class="contact-ch-icon">📞</div>
             <div>
-              <strong>WhatsApp</strong>
-              <span>+91 70661 31474</span>
-            </div>
-          </a>
-          <a href="https://www.instagram.com/elev8.goa/" target="_blank" rel="noopener noreferrer" class="contact-channel">
-            <span class="channel-icon">&#128247;</span>
-            <div>
-              <strong>Instagram</strong>
-              <span>@elev8.goa</span>
-            </div>
-          </a>
-          <div class="contact-channel no-link">
-            <span class="channel-icon">&#128205;</span>
-            <div>
-              <strong>Location</strong>
-              <span>Goa, India</span>
+              <p class="contact-ch-label">Phone</p>
+              <a href="tel:+917066131474" class="contact-ch-value">+91 70661 31474</a>
             </div>
           </div>
-          <div class="contact-channel no-link">
-            <span class="channel-icon">&#128337;</span>
+          <div class="contact-channel reveal" data-delay="1">
+            <div class="contact-ch-icon">💬</div>
             <div>
-              <strong>Class Hours</strong>
-              <span>5:30–8:30 AM &amp; 5:00–8:00 PM · Daily</span>
+              <p class="contact-ch-label">WhatsApp</p>
+              <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer" class="contact-ch-value">Chat on WhatsApp</a>
+            </div>
+          </div>
+          <div class="contact-channel reveal" data-delay="2">
+            <div class="contact-ch-icon">📸</div>
+            <div>
+              <p class="contact-ch-label">Instagram</p>
+              <a href="https://www.instagram.com/elev8.goa/" target="_blank" rel="noopener noreferrer" class="contact-ch-value">@elev8.goa</a>
+            </div>
+          </div>
+          <div class="contact-channel reveal" data-delay="3">
+            <div class="contact-ch-icon">📍</div>
+            <div>
+              <p class="contact-ch-label">Location</p>
+              <span class="contact-ch-value">Goa, India</span>
+            </div>
+          </div>
+          <div class="contact-channel reveal" data-delay="4">
+            <div class="contact-ch-icon">🕐</div>
+            <div>
+              <p class="contact-ch-label">Class Hours</p>
+              <span class="contact-ch-value">5:30 AM · 6:30 AM · 7:30 AM</span>
+              <span class="contact-ch-value" style="margin-top:0.2rem; display:block;">5:00 PM · 6:00 PM · 7:00 PM</span>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Google Maps embed -->
-        <!-- Update the src URL with your exact Google Maps embed URL -->
-        <div class="map-wrapper">
-          <iframe
-            src="https://www.google.com/maps?q=Goa,India&output=embed"
-            width="100%" height="260" style="border:0; border-radius:12px;"
-            allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title="ELEV8 location on Google Maps"
-            aria-label="Map showing ELEV8 location in Goa, India">
-          </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ── Google Map ────────────────────────────────────────── -->
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div class="section-head-center reveal">
+      <span class="eyebrow">Find Us</span>
+      <h2 class="section-title">We're in Goa</h2>
+    </div>
+    <div class="map-wrapper reveal mt-4">
+      <iframe
+        title="ELEV8 Fitness Studio location in Goa"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d243648.84529199487!2d73.67963365!3d15.29940235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbfba106336b741%3A0xeaf43b6712820d5!2sGoa%2C%20India!5e0!3m2!1sen!2sin!4v1700000000000"
+        width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ── Member Reviews ────────────────────────────────────── -->
+<section class="section" style="padding-top:0;" id="reviews">
+  <div class="container">
+    <div class="section-head-center reveal">
+      <span class="eyebrow">Community Voice</span>
+      <h2 class="section-title">What members say</h2>
+    </div>
+
+    <!-- Live rating bar -->
+    <div class="rating-stats-bar reveal mt-4" id="ratingStatBar" style="justify-content:center; margin-bottom:2.5rem;">
+      <span class="rating-avg" id="liveAvg">5.0</span>
+      <span class="rating-stars-display">★★★★★</span>
+      <span class="rating-count" id="liveCount">25 Google Reviews</span>
+    </div>
+
+    <!-- Testimonials paginated (3 per page) -->
+    <div id="reviewsGrid" class="row g-4">
+
+      <!-- PAGE 1 -->
+      <div class="col-md-6 col-lg-4 review-card" data-page="1">
+        <div class="testimonial-card">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"One of the best places in Goa to start and improve calisthenics. The trainers are very supportive, knowledgeable, and focus properly on form, strength, mobility, and overall fitness. The environment is super motivating and beginner-friendly while still challenging for advanced athletes."</p>
+          <div class="t-author">
+            <div class="t-avatar">W</div>
+            <div>
+              <p class="t-name">Wilbur Fernandes</p>
+              <p class="t-tag">Google Review</p>
+            </div>
+          </div>
         </div>
+      </div>
+      <div class="col-md-6 col-lg-4 review-card" data-page="1">
+        <div class="testimonial-card">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"If you're looking for a place that truly changes you — physically and mentally — Elev8 is honestly one of the best decisions I've made for myself. Coach Raj and Coach Nimay genuinely care about every individual. Since joining, I've not only lost weight and gained strength, but feel more energetic and confident."</p>
+          <div class="t-author">
+            <div class="t-avatar">T</div>
+            <div>
+              <p class="t-name">Tanisi Kakodkar</p>
+              <p class="t-tag">Local Guide · Google Review</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 review-card" data-page="1">
+        <div class="testimonial-card">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"We have the best coaches at Elev8. Always encouraging and supporting us to do our best. We leave the park feeling energized."</p>
+          <div class="t-author">
+            <div class="t-avatar">N</div>
+            <div>
+              <p class="t-name">Nicole Fernandes</p>
+              <p class="t-tag">Google Review</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <!-- WhatsApp CTA -->
-        <a href="https://wa.me/917066131474?text=Hi%20ELEV8%21%20I%27d%20like%20to%20book%20a%20free%20trial."
-           target="_blank" rel="noopener noreferrer"
-           class="btn btn-success w-100 whatsapp-cta-btn">
-          Book Free Trial on WhatsApp
-        </a>
+      <!-- PAGE 2 -->
+      <div class="col-md-6 col-lg-4 review-card" data-page="2">
+        <div class="testimonial-card">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"The most dedicated trainers I've come across in Goa. Even though we workout in a group the trainers take keen interest in each person's individual growth. Progress matters but not at the cost of right form and technique. Working out is now more than just a routine for us. It's a way of life."</p>
+          <div class="t-author">
+            <div class="t-avatar">S</div>
+            <div>
+              <p class="t-name">Sajeel Parakh</p>
+              <p class="t-tag">Local Guide · Google Review</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 review-card" data-page="2">
+        <div class="testimonial-card">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"It's been my second month and I couldn't be happier with the results. I was struggling with pull-ups and other bodyweight exercises I couldn't even dream of doing. With proper coach advice and consistency, I finally managed to achieve them. Highly recommend Nimay and Raj at Elev8!"</p>
+          <div class="t-author">
+            <div class="t-avatar">R</div>
+            <div>
+              <p class="t-name">Reshma Porob</p>
+              <p class="t-tag">Google Review</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 review-card" data-page="2">
+        <div class="testimonial-card">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"It has been a really fulfilling experience training at Elev8! The workouts are exciting, challenging and super fun. What works for me most is the mobility, fluidity, flexibility and strength that the overall workout provides. Leaves me feeling super charged for the day!"</p>
+          <div class="t-author">
+            <div class="t-avatar">S</div>
+            <div>
+              <p class="t-name">Shruti Deva</p>
+              <p class="t-tag">Local Guide · Google Review</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
+    </div>
+
+    <!-- Pagination controls -->
+    <div class="reviews-pagination reveal">
+      <button class="reviews-pg-btn active" data-page="1" aria-label="Page 1">1</button>
+      <button class="reviews-pg-btn" data-page="2" aria-label="Page 2">2</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Community CTA ─────────────────────────────────────── -->
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div class="cta-band reveal">
+      <span class="eyebrow" style="justify-content:center;">Begin Your Journey</span>
+      <h2>Ready to start your calisthenics journey?</h2>
+      <p>Join Goa's most dedicated fitness community. Book a free trial and see what ELEV8 can do for you.</p>
+      <div class="cta-actions">
+        <a href="sign_up.html" class="btn btn-success btn-lg">Join Now</a>
+        <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success btn-lg">WhatsApp Us</a>
       </div>
     </div>
   </div>
@@ -162,11 +304,72 @@
 
 </main>
 
-<footer>
-  <p>© 2026 ELEV8 Calisthenics &amp; Fitness Studio · Goa, India</p>
-  <div class="social-links">
-    <a href="https://www.instagram.com/elev8.goa/" target="_blank" rel="noopener noreferrer">Instagram</a>
-    <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+<footer class="site-footer">
+  <div class="container">
+    <div class="sf-grid">
+
+      <!-- Col 1: Brand -->
+      <div class="sf-col sf-col-brand">
+        <a href="index.html">
+          <img src="../assets/images/common/elev8-brand-logo.png" alt="ELEV8 Fitness" class="sf-logo" loading="lazy">
+        </a>
+        <p class="sf-tagline">Goa's calisthenics &amp; functional fitness studio. Built on strength, discipline, and community.</p>
+        <div class="sf-social-icons">
+          <a href="https://www.instagram.com/elev8.goa/" target="_blank" rel="noopener noreferrer" class="sf-social-icon" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/></svg>
+          </a>
+          <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer" class="sf-social-icon" aria-label="WhatsApp">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Col 2: Community -->
+      <div class="sf-col sf-col-community">
+        <p class="sf-col-heading">Community</p>
+        <p class="sf-community-text">Join athletes, beginners, and fitness enthusiasts transforming the way they train in Goa.</p>
+        <a href="sign_up.html" class="sf-cta-btn">Join The Community</a>
+      </div>
+
+      <!-- Col 3: Contact -->
+      <div class="sf-col sf-col-contact">
+        <p class="sf-col-heading">Get In Touch</p>
+        <ul class="sf-contact-list">
+          <li>
+            <a href="tel:+917066131474" class="sf-contact-item">
+              <svg class="sf-ci" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 6.29 6.29l1.68-1.68a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              +91 70661 31474
+            </a>
+          </li>
+          <li>
+            <span class="sf-contact-item">
+              <svg class="sf-ci" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              elev8.goa@gmail.com
+            </span>
+          </li>
+          <li>
+            <a href="https://www.instagram.com/elev8.goa/" target="_blank" rel="noopener noreferrer" class="sf-contact-item">
+              <svg class="sf-ci" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+              @elev8.goa
+            </a>
+          </li>
+          <li>
+            <span class="sf-contact-item">
+              <svg class="sf-ci" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              Mugal, Goa 403709
+            </span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sf-bottom">
+    <div class="container sf-bottom-inner">
+      <span class="sf-copy">&copy; 2026 Elev8 Fitness. All rights reserved.</span>
+      <span class="sf-credit">Built with passion for movement.</span>
+    </div>
   </div>
 </footer>
 

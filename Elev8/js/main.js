@@ -2024,3 +2024,109 @@ window.addEventListener('load', function () {
   initAutoReveal();
   initFAQ();
 });
+
+/* ===========================================================
+   Gallery category filter
+   =========================================================== */
+function initGalleryFilter() {
+  var bar = document.getElementById('galleryFilterBar');
+  if (!bar) return;
+  bar.addEventListener('click', function(e) {
+    var btn = e.target.closest('.gallery-filter-btn');
+    if (!btn) return;
+    var cat = btn.dataset.cat;
+    bar.querySelectorAll('.gallery-filter-btn').forEach(function(b) {
+      b.classList.toggle('active', b === btn);
+    });
+    document.querySelectorAll('.gallery-item').forEach(function(item) {
+      if (cat === 'all' || item.dataset.category === cat) {
+        item.style.opacity = '1';
+        item.style.display = '';
+      } else {
+        item.style.opacity = '0';
+        setTimeout(function() {
+          if (item.style.opacity === '0') item.style.display = 'none';
+        }, 320);
+      }
+    });
+  });
+}
+
+/* ===========================================================
+   Newsletter form — client-side feedback only
+   =========================================================== */
+function initNewsletter() {
+  var form = document.getElementById('newsletterForm');
+  if (!form) return;
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var emailEl = form.querySelector('#nl-email');
+    var msgEl = document.getElementById('nlMsg');
+    var email = emailEl ? emailEl.value.trim() : '';
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      if (msgEl) { msgEl.textContent = 'Please enter a valid email address.'; msgEl.style.color = '#ef4444'; }
+      return;
+    }
+    if (msgEl) { msgEl.textContent = 'You’re subscribed! Welcome to the ELEV8 community.'; msgEl.style.color = 'var(--green)'; }
+    if (emailEl) emailEl.value = '';
+    var btn = form.querySelector('button[type="submit"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Subscribed!'; }
+  });
+}
+
+window.addEventListener('load', function() {
+  initGalleryFilter();
+  initNewsletter();
+});
+
+// Character counter for contact form message field
+(function () {
+  var ta = document.getElementById('ct-message');
+  var counter = document.getElementById('ct-messageCount');
+  if (!ta || !counter) return;
+  var max = parseInt(ta.getAttribute('maxlength'), 10) || 500;
+  ta.addEventListener('input', function () {
+    var len = ta.value.length;
+    counter.textContent = len + '/' + max;
+    counter.classList.toggle('near-limit', len >= max * 0.8 && len < max);
+    counter.classList.toggle('at-limit', len >= max);
+  });
+}());
+
+// Reviews pagination — 3 cards per page
+(function () {
+  var grid = document.getElementById('reviewsGrid');
+  if (!grid) return;
+
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.review-card'));
+  var btns  = Array.prototype.slice.call(document.querySelectorAll('.reviews-pg-btn'));
+  var current = 1;
+
+  function showPage(page) {
+    cards.forEach(function (card) {
+      if (parseInt(card.dataset.page, 10) === page) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+    btns.forEach(function (btn) {
+      btn.classList.toggle('active', parseInt(btn.dataset.page, 10) === page);
+    });
+    current = page;
+  }
+
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var page = parseInt(btn.dataset.page, 10);
+      if (page === current) return;
+      showPage(page);
+      // Smooth scroll to section heading
+      var section = document.getElementById('reviews');
+      if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Init — show page 1, hide page 2
+  showPage(1);
+}());
