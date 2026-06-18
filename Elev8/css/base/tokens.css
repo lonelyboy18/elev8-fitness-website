@@ -1,0 +1,71 @@
+/* ==========================================================================
+   ELEV8 CALISTHENICS & FITNESS STUDIO — MAIN STYLESHEET
+   Primary: #0F5368 (Teal) | Navy: #03141A | Accent: #FF4B1F (Orange)
+   ========================================================================== */
+
+/* ============================================================
+   Global Styles
+   ============================================================ */
+
+/* Design Tokens */
+:root {
+  /* Brand colours */
+  --teal:         #0F5368;
+  --teal-deep:    #0a3d4e;
+  --teal-mid:     #134f63;
+  --teal-soft:    rgba(15, 83, 104, 0.18);
+  --teal-line:    rgba(15, 83, 104, 0.55);
+
+  --navy:         #03141A;
+  --navy-2:       #061e28;
+  --navy-3:       #0a2c3a;
+
+  --orange:       #FF4B1F;
+  --orange-deep:  #e03a10;
+  --orange-soft:  rgba(255, 75, 31, 0.14);
+  --orange-line:  rgba(255, 75, 31, 0.38);
+
+  --neutral:      #D9D9D9;
+  --white:        #FFFFFF;
+  --chalk:        #FFFFFF;
+  --silver:       #c8d8e0;
+  --steel:        #7fa4b4;
+
+  /* Surfaces */
+  --surface:      rgba(15, 83, 104, 0.14);
+  --surface-2:    rgba(15, 83, 104, 0.26);
+  --border:       rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(15, 83, 104, 0.65);
+
+  /* Legacy aliases */
+  --ember:        #FF4B1F;
+  --ember-deep:   #e03a10;
+  --ember-soft:   rgba(255, 75, 31, 0.14);
+  --ember-line:   rgba(255, 75, 31, 0.38);
+  --ink:          #03141A;
+  --graphite:     #061e28;
+  --graphite-2:   #0a2c3a;
+  --graphite-3:   #0f3547;
+
+  /* Gradients */
+  --grad-teal:    linear-gradient(135deg, #1a7a96 0%, #0F5368 55%, #0a3d4e 100%);
+  --grad-orange:  linear-gradient(135deg, #ff6b3d 0%, #FF4B1F 50%, #e03a10 100%);
+  --grad-dark:    linear-gradient(180deg, #061e28 0%, #03141A 100%);
+
+  /* Typography */
+  --font-display: 'Bebas Neue', 'Sora', 'Segoe UI', sans-serif;
+  --font-heading: 'Sora', 'Segoe UI', sans-serif;
+  --font-body:    'Inter', 'Segoe UI', Arial, sans-serif;
+
+  /* Shape & motion */
+  --radius:    16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
+  --shadow-1:  0 6px 24px rgba(0, 0, 0, 0.45);
+  --shadow-2:  0 20px 60px rgba(0, 0, 0, 0.60);
+  --shadow-teal: 0 16px 40px rgba(15, 83, 104, 0.40);
+  --shadow-ember: 0 16px 40px rgba(255, 75, 31, 0.35);
+  --ease:      cubic-bezier(0.22, 1, 0.36, 1);
+  --container: 1200px;
+}
+

@@ -680,15 +680,16 @@ if (document.readyState === 'loading') {
   initEnhancements();
 }
 
-// Forms and nav highlighting fire after all resources are loaded
+// All page inits fire after all resources are loaded
 window.addEventListener('load', function () {
   highlightActiveNav();
   initForms();
   initDashboard();
-  initBlogPage();
-  initBlogPostPage();
   initContactPage();
-  initBlogAdmin();
+  initAutoReveal();
+  initFAQ();
+  initGalleryFilter();
+  initNewsletter();
 });
 
 
@@ -817,44 +818,6 @@ function renderDashHeader(user) {
   if (profNameEl)   profNameEl.value  = user.name   || '';
   if (profEmail)    profEmail.value   = user.email  || '';
   if (profMobile)   profMobile.value  = user.mobile || '';
-}
-
-
-// ============================================================
-// Dashboard — Render Stats Strip
-// ============================================================
-
-function renderStats(user, bookings) {
-  var now      = new Date();
-  var thisMonth = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
-
-  var bkMonth = bookings.filter(function (b) {
-    return b.status === 'confirmed' && b.class_date.startsWith(thisMonth);
-  }).length;
-
-  var subEl    = document.getElementById('statSubStatus');
-  var expEl    = document.getElementById('statExpiry');
-  var sinceEl  = document.getElementById('statMemberSince');
-  var bkMonEl  = document.getElementById('statBkMonth');
-
-  if (bkMonEl)  bkMonEl.textContent  = bkMonth;
-  if (sinceEl)  sinceEl.textContent  = user.member_since || '—';
-
-  if (subEl) {
-    var st = user.subscription_status;
-    subEl.textContent = st === 'active' ? 'Active' : st === 'expired' ? 'Expired' : 'Inactive';
-    subEl.style.color = st === 'active' ? '#86efac' : '#fca5a5';
-  }
-
-  if (expEl) {
-    if (user.subscription_expires) {
-      var d   = new Date(user.subscription_expires);
-      var opts = { day: 'numeric', month: 'short', year: '2-digit' };
-      expEl.textContent = d.toLocaleDateString('en-IN', opts);
-    } else {
-      expEl.textContent = 'N/A';
-    }
-  }
 }
 
 
@@ -1272,260 +1235,6 @@ function initDashLogout() {
 }
 
 
-// ============================================================
-// Blog Listing Page
-// ============================================================
-
-var _blogPage     = 1;
-var _blogCategory = '';
-var _blogSearch   = '';
-var _blogDebounce = null;
-
-function initBlogPage() {
-  if (!document.getElementById('blogGrid')) return;
-
-  loadBlogPosts();
-
-  var searchEl = document.getElementById('blogSearch');
-  if (searchEl) {
-    searchEl.addEventListener('input', function () {
-      clearTimeout(_blogDebounce);
-      _blogDebounce = setTimeout(function () {
-        _blogSearch = searchEl.value.trim();
-        _blogPage   = 1;
-        loadBlogPosts();
-      }, 380);
-    });
-  }
-}
-
-async function loadBlogPosts() {
-  var grid = document.getElementById('blogGrid');
-  var pag  = document.getElementById('blogPagination');
-  if (!grid) return;
-
-  grid.innerHTML = '<div class="blog-state-msg"><strong>Loading…</strong></div>';
-  if (pag) pag.innerHTML = '';
-
-  var url = '../php/get_blog_posts.php?page=' + _blogPage;
-  if (_blogSearch)   url += '&search='   + encodeURIComponent(_blogSearch);
-  if (_blogCategory) url += '&category=' + encodeURIComponent(_blogCategory);
-
-  var data = await getJSON(url);
-
-  if (!data.success) {
-    grid.innerHTML = '<div class="blog-state-msg"><strong>Could not load posts.</strong>Check your connection or XAMPP.</div>';
-    return;
-  }
-
-  // Build category pills (first load only)
-  var catsEl = document.getElementById('blogCats');
-  if (catsEl && catsEl.children.length === 0 && data.categories && data.categories.length) {
-    var allPill = document.createElement('span');
-    allPill.className = 'cat-pill active';
-    allPill.textContent = 'All';
-    allPill.dataset.cat = '';
-    catsEl.appendChild(allPill);
-    data.categories.forEach(function (cat) {
-      var pill = document.createElement('span');
-      pill.className = 'cat-pill';
-      pill.textContent = cat;
-      pill.dataset.cat = cat;
-      catsEl.appendChild(pill);
-    });
-    catsEl.addEventListener('click', function (e) {
-      var pill = e.target.closest('.cat-pill');
-      if (!pill) return;
-      catsEl.querySelectorAll('.cat-pill').forEach(function (p) { p.classList.remove('active'); });
-      pill.classList.add('active');
-      _blogCategory = pill.dataset.cat;
-      _blogPage = 1;
-      loadBlogPosts();
-    });
-  }
-
-  if (!data.posts || data.posts.length === 0) {
-    grid.innerHTML = '<div class="blog-state-msg"><strong>No posts found.</strong>Try a different search or category.</div>';
-    return;
-  }
-
-  grid.innerHTML = data.posts.map(function (p) {
-    var dateStr = p.created_at ? new Date(p.created_at).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '';
-    return '<a class="blog-card" href="blog-post.html?slug=' + encodeURIComponent(p.slug) + '">' +
-      '<div class="blog-card-img-placeholder">📝</div>' +
-      '<div class="blog-card-body">' +
-        '<div class="blog-card-cat">' + (p.category || 'Fitness') + '</div>' +
-        '<h2 class="blog-card-title">' + escHtml(p.title) + '</h2>' +
-        '<p class="blog-card-excerpt">' + escHtml(p.excerpt || '') + '</p>' +
-        '<div class="blog-card-meta">' +
-          '<span>' + escHtml(p.author || 'ELEV8 Team') + '</span>' +
-          '<span>' + dateStr + '</span>' +
-        '</div>' +
-      '</div>' +
-    '</a>';
-  }).join('');
-
-  // Pagination
-  if (pag && data.pages > 1) {
-    for (var i = 1; i <= data.pages; i++) {
-      var btn = document.createElement('button');
-      btn.className = 'page-btn' + (i === _blogPage ? ' active' : '');
-      btn.textContent = i;
-      btn.dataset.page = i;
-      btn.addEventListener('click', function () {
-        _blogPage = parseInt(this.dataset.page, 10);
-        loadBlogPosts();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-      pag.appendChild(btn);
-    }
-  }
-}
-
-function escHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-
-// ============================================================
-// Blog Post Page
-// ============================================================
-
-function initBlogPostPage() {
-  var loadingEl = document.getElementById('postLoading');
-  if (!loadingEl) return;
-
-  var params = new URLSearchParams(window.location.search);
-  var slug   = params.get('slug');
-
-  if (!slug) {
-    showPostNotFound();
-    return;
-  }
-
-  loadPost(slug);
-}
-
-async function loadPost(slug) {
-  var data = await getJSON('../php/get_blog_posts.php?slug=' + encodeURIComponent(slug));
-
-  var loadingEl  = document.getElementById('postLoading');
-  var articleEl  = document.getElementById('postArticle');
-  var notFoundEl = document.getElementById('postNotFound');
-
-  if (loadingEl) loadingEl.style.display = 'none';
-
-  if (!data.success || !data.post) {
-    showPostNotFound();
-    return;
-  }
-
-  var post = data.post;
-
-  // Update page title
-  document.title = escHtml(post.title) + ' — ELEV8 Journal';
-
-  // Populate hero
-  var catPill = document.getElementById('postCatPill');
-  var titleEl = document.getElementById('postTitle');
-  var authorEl= document.getElementById('postAuthor');
-  var dateEl  = document.getElementById('postDate');
-  if (catPill)  catPill.textContent  = post.category || 'Fitness';
-  if (titleEl)  titleEl.textContent  = post.title;
-  if (authorEl) authorEl.textContent = 'By ' + (post.author || 'ELEV8 Team');
-  if (dateEl)   dateEl.textContent   = post.created_at
-    ? new Date(post.created_at).toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' })
-    : '';
-
-  // Post body (server-generated HTML content)
-  var bodyEl = document.getElementById('postBody');
-  if (bodyEl) bodyEl.innerHTML = post.content || '';
-
-  // Hidden post ID for comment form
-  var pidEl = document.getElementById('commentPostId');
-  if (pidEl) pidEl.value = post.id;
-
-  // Comments
-  renderComments(data.comments || []);
-
-  if (articleEl) articleEl.style.display = '';
-
-  // Wire comment form
-  initCommentForm(post.id);
-}
-
-function renderComments(comments) {
-  var countEl = document.getElementById('commentCount');
-  var listEl  = document.getElementById('commentsList');
-  if (countEl) countEl.textContent = '(' + comments.length + ')';
-  if (!listEl) return;
-
-  if (comments.length === 0) {
-    listEl.innerHTML = '<p style="color:var(--steel);font-size:0.88rem;">No comments yet. Be the first!</p>';
-    return;
-  }
-
-  listEl.innerHTML = comments.map(function (c) {
-    var dateStr = c.created_at ? new Date(c.created_at).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '';
-    return '<div class="comment-card">' +
-      '<span class="comment-author">' + escHtml(c.name) + '</span>' +
-      '<span class="comment-date">' + dateStr + '</span>' +
-      '<p class="comment-text">' + escHtml(c.comment) + '</p>' +
-    '</div>';
-  }).join('');
-}
-
-function initCommentForm(postId) {
-  var form = document.getElementById('commentForm');
-  if (!form) return;
-
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    clearFormErrors(form);
-
-    var nameEl    = document.getElementById('bc-name');
-    var emailEl   = document.getElementById('bc-email');
-    var commentEl = document.getElementById('bc-comment');
-    var btn       = form.querySelector('[type="submit"]');
-
-    var name    = nameEl    ? nameEl.value.trim()    : '';
-    var email   = emailEl   ? emailEl.value.trim()   : '';
-    var comment = commentEl ? commentEl.value.trim() : '';
-
-    var ok = true;
-    if (!name)    { showFieldError('bc-nameErr',    'Name is required.');    ok = false; }
-    if (!email)   { showFieldError('bc-emailErr',   'Email is required.');   ok = false; }
-    if (!comment) { showFieldError('bc-commentErr', 'Comment is required.'); ok = false; }
-    if (!ok) return;
-
-    setButtonLoading(btn, true);
-    var data = await postJSON('../php/submit_blog_comment.php', { post_id: postId, name: name, email: email, comment: comment });
-    setButtonLoading(btn, false);
-
-    if (data.success) {
-      showToast('Comment submitted! Thank you.', 'success', 3500);
-      form.reset();
-      // Reload comments
-      var refreshed = await getJSON('../php/get_blog_posts.php?slug=' + encodeURIComponent(new URLSearchParams(window.location.search).get('slug')));
-      if (refreshed.success) renderComments(refreshed.comments || []);
-    } else if (data.errors) {
-      applyServerErrors(data.errors);
-    } else {
-      showToast(data.message || 'Could not submit comment.', 'error');
-    }
-  });
-}
-
-function showPostNotFound() {
-  var loadingEl  = document.getElementById('postLoading');
-  var notFoundEl = document.getElementById('postNotFound');
-  if (loadingEl)  loadingEl.style.display  = 'none';
-  if (notFoundEl) notFoundEl.style.display = '';
-}
 
 
 // ============================================================
@@ -1574,172 +1283,6 @@ function initContactPage() {
 
 
 // ============================================================
-// Blog Admin Page
-// ============================================================
-
-var _adminKey = '';
-
-function initBlogAdmin() {
-  var loginForm   = document.getElementById('adminLoginForm');
-  var adminContent= document.getElementById('adminContent');
-  if (!loginForm) return;
-
-  // Restore key from sessionStorage
-  var saved = sessionStorage.getItem('elev8AdminKey');
-  if (saved) {
-    _adminKey = saved;
-    showAdminContent();
-  }
-
-  loginForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var keyEl = document.getElementById('adminKey');
-    if (!keyEl || !keyEl.value.trim()) return;
-    _adminKey = keyEl.value.trim();
-    sessionStorage.setItem('elev8AdminKey', _adminKey);
-    showAdminContent();
-  });
-}
-
-function showAdminContent() {
-  var authWrap    = document.getElementById('adminAuthWrap');
-  var adminContent= document.getElementById('adminContent');
-  if (authWrap)     authWrap.style.display    = 'none';
-  if (adminContent) adminContent.style.display = 'block';
-  loadAdminPosts();
-  initNewPostForm();
-}
-
-async function adminFetch(body) {
-  try {
-    var token = await getCsrfToken();
-    var res = await fetch('../php/blog_admin.php', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': token,
-        'X-Admin-Key':  _adminKey,
-      },
-      body: JSON.stringify(body),
-    });
-    return res.json();
-  } catch (e) {
-    return { success: false, message: 'Network error' };
-  }
-}
-
-async function getCsrfToken() {
-  if (window._csrfToken) return window._csrfToken;
-  try {
-    var res  = await fetch('../php/session_status.php', { credentials: 'include' });
-    var data = await res.json();
-    window._csrfToken = data.csrf_token || '';
-    return window._csrfToken;
-  } catch (e) { return ''; }
-}
-
-async function loadAdminPosts() {
-  var listEl = document.getElementById('adminPostsList');
-  if (!listEl) return;
-
-  listEl.innerHTML = '<p style="color:var(--steel);font-size:0.88rem;">Loading…</p>';
-
-  try {
-    var token = await getCsrfToken();
-    var res = await fetch('../php/blog_admin.php', {
-      credentials: 'include',
-      headers: { 'X-Admin-Key': _adminKey, 'X-CSRF-Token': token },
-    });
-    var data = await res.json();
-
-    if (!data.success) {
-      if (data.code === 401) {
-        sessionStorage.removeItem('elev8AdminKey');
-        showToast('Invalid admin key. Please log in again.', 'error');
-        location.reload();
-        return;
-      }
-      listEl.innerHTML = '<p style="color:#fca5a5;">' + (data.message || 'Error loading posts.') + '</p>';
-      return;
-    }
-
-    if (!data.posts || data.posts.length === 0) {
-      listEl.innerHTML = '<p style="color:var(--steel);font-size:0.88rem;">No posts yet.</p>';
-      return;
-    }
-
-    listEl.innerHTML = data.posts.map(function (p) {
-      var dateStr = p.created_at ? new Date(p.created_at).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '';
-      return '<div class="admin-post-item" data-id="' + p.id + '">' +
-        '<span class="admin-post-title">' + escHtml(p.title) + '</span>' +
-        '<span class="admin-post-meta">' + escHtml(p.category || '') + ' · ' + dateStr + '</span>' +
-        '<span class="admin-post-status ' + (p.status === 'published' ? 'published' : 'draft') + '">' + escHtml(p.status) + '</span>' +
-        '<div class="admin-post-actions">' +
-          '<button class="btn btn-sm btn-outline-warning" onclick="toggleAdminPostStatus(' + p.id + ')">Toggle</button>' +
-          '<button class="btn btn-sm btn-outline-danger"  onclick="deleteAdminPost(' + p.id + ')">Delete</button>' +
-        '</div>' +
-      '</div>';
-    }).join('');
-  } catch (e) {
-    listEl.innerHTML = '<p style="color:#fca5a5;">Network error.</p>';
-  }
-}
-
-async function toggleAdminPostStatus(id) {
-  var data = await adminFetch({ action: 'toggle_status', id: id });
-  if (data.success) { showToast('Status updated.', 'success', 2000); loadAdminPosts(); }
-  else showToast(data.message || 'Failed.', 'error');
-}
-
-async function deleteAdminPost(id) {
-  if (!confirm('Delete this post permanently?')) return;
-  var data = await adminFetch({ action: 'delete', id: id });
-  if (data.success) { showToast('Post deleted.', 'success', 2000); loadAdminPosts(); }
-  else showToast(data.message || 'Failed.', 'error');
-}
-
-function initNewPostForm() {
-  var form = document.getElementById('newPostForm');
-  if (!form) return;
-
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    clearFormErrors(form);
-
-    var btn = form.querySelector('[type="submit"]');
-    setButtonLoading(btn, true);
-
-    var body = {
-      action:   'create',
-      title:    (document.getElementById('np-title')    || {}).value || '',
-      category: (document.getElementById('np-category') || {}).value || '',
-      author:   (document.getElementById('np-author')   || {}).value || '',
-      status:   (document.getElementById('np-status')   || {}).value || 'draft',
-      excerpt:  (document.getElementById('np-excerpt')  || {}).value || '',
-      content:  (document.getElementById('np-content')  || {}).value || '',
-    };
-
-    var data = await adminFetch(body);
-    setButtonLoading(btn, false);
-
-    if (data.success) {
-      showToast('Post created! Slug: ' + (data.slug || ''), 'success', 4000);
-      form.reset();
-      loadAdminPosts();
-    } else if (data.errors) {
-      applyServerErrors(data.errors);
-    } else {
-      showToast(data.message || 'Could not create post.', 'error');
-    }
-  });
-
-  var refreshBtn = document.getElementById('refreshPostsBtn');
-  if (refreshBtn) refreshBtn.addEventListener('click', loadAdminPosts);
-}
-
-
-// ============================================================
 // Task 5 — Auto-Reveal on Scroll
 // Applies .auto-reveal to key selectors without touching HTML.
 // Elements already in the viewport on load are marked .in
@@ -1757,7 +1300,6 @@ function initAutoReveal() {
     '.dash-stat',
     '.booking-item',
     '.payment-item',
-    '.admin-post-item',
   ];
 
   var obs = new IntersectionObserver(function (entries) {
@@ -1871,9 +1413,7 @@ function animateDashStatValue(el, finalText) {
 
 
 // ============================================================
-// Task 5 — Patch renderStats to animate bookings count
-// Redefines the function declared earlier. The last declaration
-// wins at parse time so all call-sites use this version.
+// Dashboard — Render Stats Strip
 // ============================================================
 
 function renderStats(user, bookings) {
@@ -1911,119 +1451,6 @@ function renderStats(user, bookings) {
 }
 
 
-// ============================================================
-// Task 5 — Blog Grid Fade (redefines loadBlogPosts)
-// Fetches posts and 220ms fade-out run in parallel so there is
-// no added latency when the network is fast. The last function
-// declaration at parse time shadows the earlier one.
-// ============================================================
-
-async function loadBlogPosts() {
-  var grid = document.getElementById('blogGrid');
-  var pag  = document.getElementById('blogPagination');
-  if (!grid) return;
-
-  // Start fade-out and network fetch simultaneously
-  grid.classList.add('fading');
-
-  var url = '../php/get_blog_posts.php?page=' + _blogPage;
-  if (_blogSearch)   url += '&search='   + encodeURIComponent(_blogSearch);
-  if (_blogCategory) url += '&category=' + encodeURIComponent(_blogCategory);
-
-  var results = await Promise.all([
-    getJSON(url),
-    new Promise(function (resolve) { setTimeout(resolve, 220); }),
-  ]);
-  var data = results[0];
-
-  if (pag) pag.innerHTML = '';
-
-  if (!data.success) {
-    grid.innerHTML = '<div class="blog-state-msg"><strong>Could not load posts.</strong> Check your connection or XAMPP.</div>';
-    grid.classList.remove('fading');
-    return;
-  }
-
-  // Build category pills on first successful load
-  var catsEl = document.getElementById('blogCats');
-  if (catsEl && catsEl.children.length === 0 && data.categories && data.categories.length) {
-    var allPill = document.createElement('span');
-    allPill.className = 'cat-pill active';
-    allPill.textContent = 'All';
-    allPill.dataset.cat = '';
-    catsEl.appendChild(allPill);
-    data.categories.forEach(function (cat) {
-      var pill = document.createElement('span');
-      pill.className = 'cat-pill';
-      pill.textContent = cat;
-      pill.dataset.cat = cat;
-      catsEl.appendChild(pill);
-    });
-    catsEl.addEventListener('click', function (e) {
-      var pill = e.target.closest('.cat-pill');
-      if (!pill) return;
-      catsEl.querySelectorAll('.cat-pill').forEach(function (p) { p.classList.remove('active'); });
-      pill.classList.add('active');
-      _blogCategory = pill.dataset.cat;
-      _blogPage = 1;
-      loadBlogPosts();
-    });
-  }
-
-  if (!data.posts || data.posts.length === 0) {
-    grid.innerHTML = '<div class="blog-state-msg"><strong>No posts found.</strong> Try a different search or category.</div>';
-    grid.classList.remove('fading');
-    return;
-  }
-
-  grid.innerHTML = data.posts.map(function (p) {
-    var dateStr = p.created_at
-      ? new Date(p.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-      : '';
-    return '<a class="blog-card" href="blog-post.html?slug=' + encodeURIComponent(p.slug) + '">' +
-      '<div class="blog-card-img-placeholder">📝</div>' +
-      '<div class="blog-card-body">' +
-        '<div class="blog-card-cat">' + (p.category || 'Fitness') + '</div>' +
-        '<h2 class="blog-card-title">' + escHtml(p.title) + '</h2>' +
-        '<p class="blog-card-excerpt">' + escHtml(p.excerpt || '') + '</p>' +
-        '<div class="blog-card-meta">' +
-          '<span>' + escHtml(p.author || 'ELEV8 Team') + '</span>' +
-          '<span>' + dateStr + '</span>' +
-        '</div>' +
-      '</div>' +
-    '</a>';
-  }).join('');
-
-  // Fade grid back in
-  grid.classList.remove('fading');
-
-  // Pagination
-  if (pag && data.pages > 1) {
-    for (var i = 1; i <= data.pages; i++) {
-      (function (pageNum) {
-        var btn = document.createElement('button');
-        btn.className = 'page-btn' + (pageNum === _blogPage ? ' active' : '');
-        btn.textContent = pageNum;
-        btn.addEventListener('click', function () {
-          _blogPage = pageNum;
-          loadBlogPosts();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-        pag.appendChild(btn);
-      }(i));
-    }
-  }
-}
-
-
-// ============================================================
-// Task 5 — Init on load
-// ============================================================
-
-window.addEventListener('load', function () {
-  initAutoReveal();
-  initFAQ();
-});
 
 /* ===========================================================
    Gallery category filter
@@ -2067,17 +1494,13 @@ function initNewsletter() {
       if (msgEl) { msgEl.textContent = 'Please enter a valid email address.'; msgEl.style.color = '#ef4444'; }
       return;
     }
-    if (msgEl) { msgEl.textContent = 'You’re subscribed! Welcome to the ELEV8 community.'; msgEl.style.color = 'var(--green)'; }
+    if (msgEl) { msgEl.textContent = ‘You’re subscribed! Welcome to the ELEV8 community.’; msgEl.style.color = ‘#22c55e’; }
     if (emailEl) emailEl.value = '';
     var btn = form.querySelector('button[type="submit"]');
     if (btn) { btn.disabled = true; btn.textContent = 'Subscribed!'; }
   });
 }
 
-window.addEventListener('load', function() {
-  initGalleryFilter();
-  initNewsletter();
-});
 
 // Character counter for contact form message field
 (function () {

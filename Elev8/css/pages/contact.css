@@ -1,0 +1,167 @@
+/* ============================================================
+   Contact Page
+   ============================================================ */
+
+.contact-hero {
+  min-height: 46vh;
+  display: flex;
+  align-items: flex-end;
+  padding: 130px 0 52px;
+}
+.contact-section { padding: 64px 0 80px; }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Contact form wrapper */
+.contact-form-wrap {
+  background: rgba(6,30,40,0.78);
+  border: 1px solid rgba(15,83,104,0.38);
+  border-radius: var(--radius);
+  padding: clamp(1.5rem, 4vw, 2.2rem);
+}
+.contact-form-title {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  color: var(--chalk);
+  letter-spacing: 0.04em;
+  margin-bottom: 1.5rem;
+}
+
+/* Info column */
+.contact-info-col { display: flex; flex-direction: column; gap: 1.5rem; }
+.contact-info-title {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  color: var(--chalk);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+}
+.contact-info-sub { color: var(--steel); font-size: 0.9rem; margin-bottom: 0.5rem; }
+
+/* Channel cards */
+.contact-channels { display: flex; flex-direction: column; gap: 0.85rem; }
+.contact-channel {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(6,30,40,0.62);
+  border: 1px solid rgba(15,83,104,0.32);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1.1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.22s, transform 0.22s;
+}
+.contact-channel:hover {
+  border-color: rgba(15,83,104,0.65);
+  transform: translateX(4px);
+  color: inherit;
+  text-decoration: none;
+}
+.contact-ch-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  width: 42px;
+  text-align: center;
+}
+.contact-ch-label {
+  font-size: 0.70rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--steel);
+  display: block;
+  margin-bottom: 0.15rem;
+}
+.contact-ch-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--chalk);
+}
+.contact-channel.whatsapp:hover { border-color: rgba(37,211,102,0.50); }
+.contact-channel.whatsapp .contact-ch-label { color: #25D366; }
+
+/* Map */
+.map-wrapper {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid rgba(15,83,104,0.35);
+  height: 220px;
+}
+.map-wrapper iframe { width: 100%; height: 100%; display: block; border: 0; }
+
+@media (max-width: 768px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .map-wrapper { height: 200px; }
+}
+
+
+
+/* ============================================================
+   CONTACT PAGE — testimonial cards
+   ============================================================ */
+.testimonial-card {
+  background: rgba(6,30,40,0.78);
+  border: 1px solid rgba(15,83,104,0.30);
+  border-radius: var(--radius);
+  padding: 1.6rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.t-stars {
+  color: var(--orange);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.8rem;
+}
+
+.t-quote {
+  color: var(--silver);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  flex: 1;
+  margin-bottom: 1.2rem;
+  font-style: italic;
+}
+
+.t-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.t-avatar {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: rgba(15,83,104,0.42);
+  border: 1px solid rgba(15,83,104,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--chalk);
+  flex-shrink: 0;
+}
+
+.t-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--chalk);
+  margin: 0;
+}
+
+.t-tag {
+  font-size: 0.73rem;
+  color: var(--steel);
+  margin: 0;
+}
+

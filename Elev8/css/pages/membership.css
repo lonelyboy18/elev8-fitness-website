@@ -1,0 +1,219 @@
+/* ============================================================
+   Membership Page
+   ============================================================ */
+
+.mem-hero {
+  min-height: 50vh;
+  display: flex;
+  align-items: flex-end;
+  padding: 130px 0 56px;
+}
+.mem-hero-inner { max-width: 700px; }
+
+/* Membership cards */
+.mem-section { padding: 72px 0; }
+.mem-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+.mem-card {
+  background: rgba(6,30,40,0.78);
+  border: 1px solid rgba(15,83,104,0.38);
+  border-radius: var(--radius);
+  padding: 2rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.mem-card:hover {
+  border-color: rgba(15,83,104,0.70);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 56px rgba(0,0,0,0.35);
+}
+.mem-card--featured {
+  border-color: var(--orange);
+  background: rgba(10,38,52,0.88);
+  box-shadow: 0 20px 60px rgba(255,107,0,0.15);
+  transform: scale(1.025);
+}
+.mem-card--featured:hover { transform: scale(1.025) translateY(-4px); }
+.mem-popular-badge {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--orange);
+  color: #000;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.9rem;
+  border-radius: 50px;
+  white-space: nowrap;
+}
+.mem-plan-name {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  letter-spacing: 0.08em;
+  color: var(--chalk);
+  margin-bottom: 0.2rem;
+}
+.mem-plan-sub { font-size: 0.8rem; color: var(--steel); margin-bottom: 1.4rem; }
+.mem-price-row { margin-bottom: 1.5rem; }
+.mem-price {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  color: var(--chalk);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.mem-price-period {
+  font-size: 0.85rem;
+  color: var(--steel);
+  margin-left: 0.2rem;
+}
+.mem-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.mem-features li {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.87rem;
+  color: var(--silver);
+}
+.mem-features li::before {
+  content: '✓';
+  color: #86efac;
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.mem-features li.unavail { opacity: 0.38; }
+.mem-features li.unavail::before { content: '✕'; color: #fca5a5; }
+.mem-card-cta { margin-top: auto; }
+
+/* Compare table */
+.compare-section { padding: 0 0 72px; }
+.compare-section-title {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  color: var(--chalk);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.6rem;
+}
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+}
+.compare-table th, .compare-table td {
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid rgba(15,83,104,0.22);
+  text-align: center;
+  color: var(--silver);
+}
+.compare-table th {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  color: var(--chalk);
+  background: rgba(6,30,40,0.72);
+}
+.compare-table th:first-child, .compare-table td:first-child {
+  text-align: left;
+  color: var(--chalk);
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+.compare-table tbody tr:hover td { background: rgba(15,83,104,0.08); }
+.compare-table .check { color: #86efac; font-size: 1rem; font-weight: 700; }
+.compare-table .cross { color: #fca5a5; font-size: 0.85rem; }
+.compare-table .col-head-featured { color: var(--orange); }
+
+/* FAQ accordion */
+.faq-section { padding: 0 0 80px; }
+.faq-section-title {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  color: var(--chalk);
+  letter-spacing: 0.04em;
+  margin-bottom: 1.5rem;
+}
+.faq-accordion { display: flex; flex-direction: column; gap: 0.65rem; }
+.faq-item {
+  background: rgba(6,30,40,0.72);
+  border: 1px solid rgba(15,83,104,0.35);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: border-color 0.22s;
+}
+.faq-item.open { border-color: rgba(15,83,104,0.65); }
+.faq-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 1.1rem 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  text-align: left;
+  color: var(--chalk);
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  transition: color 0.2s;
+}
+.faq-btn:hover { color: var(--orange); }
+.faq-icon {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  color: var(--steel);
+  transition: transform 0.3s var(--ease), color 0.2s;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); color: var(--orange); }
+.faq-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s var(--ease), padding 0.3s var(--ease);
+  padding: 0 1.3rem;
+  color: var(--steel);
+  font-size: 0.9rem;
+  line-height: 1.72;
+}
+.faq-body.open { max-height: 500px; padding: 0 1.3rem 1.2rem; }
+
+/* CTA Band */
+.mem-cta-band {
+  background: rgba(6,30,40,0.82);
+  border-top: 1px solid rgba(15,83,104,0.35);
+  border-radius: var(--radius-lg);
+  padding: 56px 24px;
+  text-align: center;
+  margin: 0 20px 40px;
+}
+.mem-cta-band h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--chalk);
+  margin-bottom: 0.5rem;
+}
+.mem-cta-band p { color: var(--steel); margin-bottom: 1.6rem; max-width: 520px; margin-left: auto; margin-right: auto; }
+.mem-cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+@media (max-width: 991px) { .mem-cards-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; } .mem-card--featured { transform: none; } .mem-card--featured:hover { transform: translateY(-4px); } }
+@media (max-width: 576px) { .compare-table { font-size: 0.80rem; } .compare-table th, .compare-table td { padding: 0.65rem 0.7rem; } }
+
+

@@ -1,0 +1,517 @@
+/* ============================================================
+   Contact
+   (Feedback form — forms shared with auth pages below)
+   ============================================================ */
+
+/* Star Rating */
+.star-rating {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 42px;
+}
+.star {
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), filter 0.2s var(--ease);
+  filter: grayscale(100%) opacity(0.55);
+}
+.star:hover,
+.star.active { filter: grayscale(0%) opacity(1); transform: scale(1.18); }
+
+.rating-feedback { text-align: center; margin-bottom: 15px; font-size: 18px; min-height: 30px; }
+.rating-stats {
+  background: var(--navy-3);
+  border: 1px solid rgba(15,83,104,0.35);
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 20px;
+  text-align: center;
+}
+.rating-stats p { margin-bottom: 5px; font-weight: 500; color: var(--silver); }
+.avg-rating { font-size: 24px; color: var(--orange); font-weight: 700; }
+
+/* Form Cards (auth + feedback) */
+.card.shadow-lg,
+.auth-card .card {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2) !important;
+}
+.card.shadow-lg .card-body,
+.card.shadow-lg .card-body h5,
+.card.shadow-lg .card-body label,
+.card.shadow-lg .card-body p,
+.card.shadow-lg .card-body small,
+.card.shadow-lg .card-body .rating-feedback,
+.auth-card .card-body,
+.auth-card label,
+.auth-card .form-check-label {
+  color: #1d2127;
+}
+.card.shadow-lg .card-body .text-muted,
+.auth-card .text-muted { color: #6b7280 !important; }
+
+.card.shadow-lg .card-body .text-success,
+.auth-card .text-success { color: var(--teal-deep) !important; }
+
+.card .card-body h2.text-success,
+.auth-card h2.text-success { color: var(--teal-deep) !important; }
+
+.card.shadow-lg .card-body .rating-stats,
+.auth-card .rating-stats {
+  background: #f0f4f6;
+  border-color: rgba(15,83,104,0.25);
+}
+.card.shadow-lg .card-body .avg-rating { color: var(--orange); }
+
+.auth-card .form-control,
+.auth-card .form-select,
+.card.shadow-lg .form-control,
+.card.shadow-lg .form-select {
+  border-radius: 10px;
+  border: 1px solid #d7dbe0;
+  padding: 0.7rem 0.9rem;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(15, 83, 104, 0.18);
+}
+.form-check-input:checked { background-color: var(--teal); border-color: var(--teal); }
+
+/* Form Validation */
+.error-text {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: none;
+}
+.error-text.show { display: block; }
+input.is-invalid, select.is-invalid, textarea.is-invalid { border-color: #dc3545 !important; }
+
+.delete-account .auth-container { background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); }
+.delete-account input:focus,
+.delete-account textarea:focus,
+.delete-account select:focus { border-color: #dc3545; box-shadow: 0 0 0 3px rgba(220,53,69,0.15); }
+
+/* Modals */
+.modal-content { background: var(--navy-2); color: var(--silver); border: 1px solid rgba(15,83,104,0.40); border-radius: var(--radius); }
+.modal-header.bg-success { background: var(--teal) !important; color: var(--white) !important; }
+.modal-body { color: var(--silver); }
+.modal-body .text-muted { color: var(--steel) !important; }
+
+/* Auth Pages */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 16px 48px;
+}
+.auth-card { width: 100%; max-width: 460px; }
+
+
+
+/* ============================================================
+   Glass Card (redesigned auth / form pages)
+   ============================================================ */
+
+.glass-card {
+  background: rgba(6, 30, 40, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(15, 83, 104, 0.50);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(15, 83, 104, 0.18);
+  padding: clamp(1.8rem, 5vw, 2.6rem);
+}
+
+.glass-card--danger {
+  border-color: rgba(239, 68, 68, 0.40);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(239, 68, 68, 0.14);
+}
+
+/* Auth page header text */
+.auth-header { text-align: center; margin-bottom: 1.8rem; }
+.auth-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 400;
+  color: var(--chalk);
+  letter-spacing: 0.02em;
+  margin: 0.4rem 0 0.35rem;
+  line-height: 1;
+}
+.auth-sub { color: var(--steel); font-size: 0.97rem; margin: 0; }
+
+.auth-switch {
+  text-align: center;
+  color: var(--steel);
+  font-size: 0.9rem;
+  margin-top: 1.2rem;
+  margin-bottom: 0;
+}
+.auth-switch a { color: var(--orange); font-weight: 600; }
+.auth-switch a:hover { color: #ff7a52; }
+
+.auth-meta {
+  display: flex;
+  justify-content: flex-end;
+  margin: -0.4rem 0 0.9rem;
+}
+.forgot-link {
+  color: var(--steel);
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+.forgot-link:hover { color: var(--orange); }
+
+.danger-icon { font-size: 2.4rem; margin-bottom: 0.4rem; }
+
+/* Danger notice box */
+.danger-notice {
+  background: rgba(239, 68, 68, 0.10);
+  border: 1px solid rgba(239, 68, 68, 0.28);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.6rem;
+  font-size: 0.88rem;
+  color: var(--silver);
+}
+.danger-notice strong { color: #f87171; display: block; margin-bottom: 0.5rem; }
+.danger-notice ul { margin: 0; padding-left: 1.2rem; }
+.danger-notice li { margin-bottom: 0.25rem; }
+
+
+/* ============================================================
+   Floating Label Fields
+   ============================================================ */
+
+.elev8-field {
+  position: relative;
+  margin-bottom: 1.4rem;
+  background: rgba(15, 83, 104, 0.10);
+  border: 1px solid rgba(15, 83, 104, 0.38);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.28s var(--ease), box-shadow 0.28s var(--ease),
+              background 0.28s var(--ease);
+}
+
+.elev8-field:focus-within {
+  border-color: var(--teal);
+  background: rgba(15, 83, 104, 0.16);
+  box-shadow: 0 0 0 3px rgba(15, 83, 104, 0.22);
+}
+
+/* The label floats above when input is focused or has a value */
+.elev8-field label {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  color: var(--steel);
+  font-size: 0.95rem;
+  pointer-events: none;
+  transition: top 0.22s var(--ease), font-size 0.22s var(--ease),
+              color 0.22s var(--ease), letter-spacing 0.22s var(--ease);
+  line-height: 1.2;
+}
+
+.elev8-field input:focus   ~ label,
+.elev8-field textarea:focus ~ label,
+.elev8-field input:not(:placeholder-shown) ~ label,
+.elev8-field textarea:not(:placeholder-shown) ~ label {
+  top: 0.38rem;
+  font-size: 0.70rem;
+  color: var(--orange);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.elev8-field input,
+.elev8-field textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--chalk);
+  font-family: var(--font-body);
+  font-size: 0.97rem;
+  padding: 1.45rem 1rem 0.5rem;
+  border-radius: var(--radius-sm);
+  resize: none;
+}
+
+.elev8-field input::placeholder,
+.elev8-field textarea::placeholder { color: transparent; }
+
+/* Invalid state — red border */
+.elev8-field.has-error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+}
+.elev8-field.has-error label { color: #ef4444; }
+
+/* Error text below the field */
+.field-err {
+  display: block;
+  color: #f87171;
+  font-size: 0.80rem;
+  padding: 0.3rem 1rem 0.45rem;
+  min-height: 0;
+  line-height: 1.4;
+}
+.field-err:empty { display: none; }
+
+/* Textarea inside elev8-field */
+.elev8-field textarea {
+  min-height: 110px;
+  padding-top: 1.6rem;
+}
+
+/* Plan selection */
+.plan-field {
+  border: none;
+  background: none;
+  padding: 0;
+}
+.plan-field:focus-within { border: none; box-shadow: none; background: none; }
+
+.plan-field-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--steel);
+  margin-bottom: 0.7rem;
+}
+
+.plan-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.plan-card {
+  cursor: pointer;
+  display: block;
+}
+.plan-card input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+
+.plan-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  padding: 1rem;
+  border: 1px solid rgba(15, 83, 104, 0.38);
+  border-radius: var(--radius-sm);
+  background: rgba(15, 83, 104, 0.10);
+  transition: border-color 0.25s var(--ease), background 0.25s var(--ease),
+              box-shadow 0.25s var(--ease);
+}
+
+.plan-card:hover .plan-content {
+  border-color: var(--teal);
+  background: rgba(15, 83, 104, 0.18);
+}
+
+.plan-card input[type="radio"]:checked ~ .plan-content {
+  border-color: var(--orange);
+  background: rgba(255, 75, 31, 0.10);
+  box-shadow: 0 0 0 3px rgba(255, 75, 31, 0.18);
+}
+
+.plan-abbr {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--chalk);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.plan-name { font-size: 0.78rem; color: var(--silver); line-height: 1.3; }
+.plan-price { font-size: 0.82rem; color: var(--orange); font-weight: 600; margin-top: 0.2rem; }
+
+/* Custom checkbox */
+.elev8-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-bottom: 0.6rem;
+}
+.elev8-check input[type="checkbox"] {
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  accent-color: var(--teal);
+  cursor: pointer;
+}
+.elev8-check label {
+  font-size: 0.88rem;
+  color: var(--silver);
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+
+/* ============================================================
+   Password Strength Meter
+   ============================================================ */
+
+.strength-track {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: 3px;
+  margin: 0 1rem 0;
+  overflow: hidden;
+}
+
+.strength-bar {
+  height: 100%;
+  width: 0;
+  border-radius: 3px;
+  transition: width 0.4s var(--ease), background 0.4s var(--ease);
+}
+.strength-bar.very-weak  { width: 20%; background: #ef4444; }
+.strength-bar.weak       { width: 40%; background: #f97316; }
+.strength-bar.fair       { width: 60%; background: #eab308; }
+.strength-bar.strong     { width: 80%; background: #22c55e; }
+.strength-bar.very-strong { width: 100%; background: #16a34a; }
+
+.strength-label {
+  display: block;
+  font-size: 0.72rem;
+  padding: 0.2rem 1rem 0.35rem;
+  color: var(--steel);
+  min-height: 1.2rem;
+  letter-spacing: 0.04em;
+}
+
+
+/* ============================================================
+   Live Rating Stats Bar (feedback page)
+   ============================================================ */
+
+.rating-stats-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.65rem 1rem;
+  background: rgba(15, 83, 104, 0.18);
+  border: 1px solid rgba(15, 83, 104, 0.35);
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.6rem;
+  font-size: 0.88rem;
+  color: var(--silver);
+}
+.rating-avg {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--chalk);
+  line-height: 1;
+}
+.rating-stars-display { color: var(--orange); font-size: 0.85rem; letter-spacing: 2px; }
+.rating-count { color: var(--steel); font-size: 0.80rem; }
+
+
+/* ============================================================
+   Toast Notifications
+   ============================================================ */
+
+#toast-rack {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  pointer-events: none;
+}
+
+.elev8-toast {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: 14px;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 500;
+  max-width: 340px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  pointer-events: auto;
+
+  opacity: 0;
+  transform: translateX(56px) scale(0.95);
+  transition: opacity 0.32s var(--ease), transform 0.32s var(--ease);
+}
+.elev8-toast.visible {
+  opacity: 1;
+  transform: none;
+}
+.elev8-toast.hiding {
+  opacity: 0;
+  transform: translateX(56px) scale(0.95);
+}
+
+.elev8-toast--success {
+  background: rgba(6, 61, 53, 0.92);
+  border: 1px solid rgba(34, 197, 94, 0.45);
+  color: #d1fae5;
+}
+.elev8-toast--error {
+  background: rgba(69, 10, 10, 0.92);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  color: #fecaca;
+}
+.elev8-toast--info {
+  background: rgba(6, 30, 40, 0.92);
+  border: 1px solid rgba(15, 83, 104, 0.55);
+  color: var(--silver);
+}
+
+.toast-icon { font-size: 1.1rem; flex-shrink: 0; }
+.toast-msg  { flex: 1; line-height: 1.4; }
+
+
+/* ============================================================
+   Button Loading Spinner
+   ============================================================ */
+
+.btn-spinner {
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.30);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Keep buttons same size when showing spinner */
+.btn[disabled] { opacity: 0.72; cursor: not-allowed; }
+
+
+/* ============================================================
+   Responsive — small screens for auth pages
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .plan-grid { grid-template-columns: 1fr; }
+  .glass-card { padding: 1.4rem; }
+  .auth-title { font-size: 2.2rem; }
+}
+
+

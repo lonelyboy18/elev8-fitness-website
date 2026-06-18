@@ -1,0 +1,103 @@
+/* ============================================================
+   Programs
+   ============================================================ */
+
+.program-card {
+  background: var(--surface);
+  border: 1px solid rgba(15,83,104,0.30);
+  border-radius: var(--radius-lg);
+  padding: 2.2rem;
+  margin-bottom: 30px;
+  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+.program-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--teal);
+  box-shadow: var(--shadow-teal);
+}
+.program-title {
+  color: var(--chalk);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.8rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin-bottom: 0.8rem;
+}
+.program-desc { color: var(--silver); font-size: 1.05rem; }
+
+.program-features { list-style: none; padding: 0; margin: 20px 0; }
+.program-features li {
+  padding: 10px 0;
+  color: var(--silver);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.program-features li:before {
+  content: "";
+  width: 18px; height: 18px;
+  flex: 0 0 18px;
+  border-radius: 50%;
+  background: var(--teal-soft);
+  border: 1px solid rgba(15,83,104,0.65);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 8.5l3 3 6-7' stroke='%230F5368' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Schedule Cards */
+.schedule-card {
+  background: var(--surface);
+  border: 1px solid rgba(15,83,104,0.30);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+.schedule-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--teal);
+  box-shadow: var(--shadow-teal);
+}
+.schedule-list .list-group-item {
+  background: transparent;
+  color: var(--silver);
+  border-color: var(--border);
+  font-weight: 500;
+  padding: 0.95rem 1.2rem;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+.schedule-list .list-group-item:hover {
+  background: var(--teal-soft);
+  color: var(--chalk);
+}
+
+/* Pricing Table */
+.pricing-table { width: 100%; margin-top: 20px; border-radius: var(--radius-sm); overflow: hidden; }
+.pricing-table.table { color: var(--silver); border-color: var(--border); }
+.pricing-table thead,
+.pricing-table .table-success,
+.table-success {
+  background: var(--teal) !important;
+  color: var(--white) !important;
+}
+.pricing-table thead th { font-family: var(--font-heading); border: none; color: var(--white) !important; }
+.pricing-table.table-dark { --bs-table-bg: transparent; background: transparent; }
+.pricing-table tbody td { background: transparent !important; color: var(--silver); border-color: var(--border); vertical-align: middle; }
+.pricing-table tbody tr { transition: background 0.25s var(--ease); }
+.pricing-table tbody tr:hover td { background: var(--teal-soft) !important; }
+.pricing-table strong { color: var(--chalk); }
+.pricing-table s { color: var(--steel); }
+
+.price-input {
+  background: var(--surface-2);
+  border: 1px solid var(--teal-line);
+  color: var(--chalk);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+}
+.price-input::placeholder { color: var(--steel); }
+
+

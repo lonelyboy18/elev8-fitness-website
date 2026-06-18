@@ -1,0 +1,107 @@
+/* ============================================================
+   About Section
+   ============================================================ */
+
+.about-video-small { width: 100%; max-width: 560px; height: auto; border-radius: var(--radius-sm); margin: 20px auto; display: block; }
+.videos-container { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin: 30px 0; }
+.video-box { display: flex; justify-content: center; }
+.video-box .video-wrapper { width: 100%; }
+.video-box video { width: 100%; height: auto; border-radius: var(--radius-sm); }
+
+
+
+/* ============================================================
+   OUR STORY PAGE — mission cards, timeline, stat grid
+   ============================================================ */
+.story-mission-card {
+  background: rgba(6,30,40,0.72);
+  border: 1px solid rgba(15,83,104,0.35);
+  border-radius: var(--radius);
+  padding: 2rem;
+  height: 100%;
+}
+
+.story-card-icon {
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+.story-card-label {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--chalk);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.story-card-text {
+  color: var(--silver);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.story-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  padding-left: 2rem;
+}
+
+.story-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.55rem;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--orange), rgba(15,83,104,0.4));
+}
+
+.timeline-item {
+  position: relative;
+  padding: 0 0 2.5rem 2rem;
+}
+
+.timeline-item:last-child { padding-bottom: 0; }
+
+.timeline-dot {
+  position: absolute;
+  left: -2rem;
+  top: 0.35rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: var(--orange);
+  border: 3px solid var(--deep);
+  box-shadow: 0 0 0 2px var(--orange);
+}
+
+.timeline-year {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.timeline-event {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  color: var(--chalk);
+  margin: 0 0 0.4rem;
+  letter-spacing: 0.03em;
+}
+
+.timeline-desc {
+  color: var(--steel);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+

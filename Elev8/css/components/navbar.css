@@ -1,0 +1,75 @@
+/* ============================================================
+   Navbar
+   ============================================================ */
+
+.navbar {
+  background: rgba(3, 20, 26, 0.60) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+  transition: background 0.35s var(--ease), padding 0.35s var(--ease),
+    border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+.navbar.scrolled {
+  background: rgba(3, 20, 26, 0.95) !important;
+  border-bottom-color: rgba(15, 83, 104, 0.45);
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.50);
+  padding-top: 0.55rem;
+  padding-bottom: 0.55rem;
+}
+
+.navbar-brand { display: flex; align-items: center; }
+
+.logo {
+  height: 100%;
+  max-height: 46px;
+  width: auto;
+  transition: transform 0.35s var(--ease);
+}
+.navbar-brand:hover .logo { transform: scale(1.04); }
+
+.navbar .nav-link {
+  color: var(--silver) !important;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  padding: 0.4rem 0.1rem !important;
+  margin: 0 0.85rem;
+  position: relative;
+  display: inline-block;
+  transition: color 0.25s var(--ease);
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: var(--chalk) !important;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 2px;
+  border-radius: 2px;
+  background: var(--orange);
+  transition: width 0.4s var(--ease);
+}
+.nav-link:hover::after,
+.nav-link.active::after { width: 100%; }
+
+.navbar-toggler {
+  border: 1px solid rgba(15, 83, 104, 0.55);
+  padding: 0.4rem 0.6rem;
+  border-radius: 10px;
+}
+.navbar-toggler:focus { box-shadow: 0 0 0 3px var(--teal-soft); }
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%230F5368' stroke-width='2.4' stroke-linecap='round' d='M4 8h22M4 15h22M4 22h22'/%3E%3C/svg%3E");
+}
+
+
