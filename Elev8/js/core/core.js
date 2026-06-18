@@ -484,7 +484,7 @@ function initNewsletter() {
       if (msgEl) { msgEl.textContent = 'Please enter a valid email address.'; msgEl.style.color = '#ef4444'; }
       return;
     }
-    if (msgEl) { msgEl.textContent = ‘You’re subscribed! Welcome to the ELEV8 community.’; msgEl.style.color = ‘#22c55e’; }
+    if (msgEl) { msgEl.textContent = "You're subscribed! Welcome to the ELEV8 community."; msgEl.style.color = '#22c55e'; }
     if (emailEl) emailEl.value = '';
     var btn = form.querySelector('button[type="submit"]');
     if (btn) { btn.disabled = true; btn.textContent = 'Subscribed!'; }
