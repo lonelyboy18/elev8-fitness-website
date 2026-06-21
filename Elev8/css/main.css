@@ -475,8 +475,7 @@ a.text-success:hover { color: #ff7a52 !important; }
 @media (max-width: 576px) {
   .star-rating { gap: 10px; font-size: 32px; }
   .auth-card { max-width: 100%; }
-  .logo-crop { width: 105px; height: 42px; }
-  .logo { width: 156px; top: -17px; left: -13px; }
+  .logo { width: 122px; height: 38px; }
   .program-card { padding: 1.2rem; }
   .hero h1 { font-size: clamp(2.8rem, 14vw, 4.5rem); }
   .btn-lg { padding: 0.8rem 1.5rem; }
@@ -594,23 +593,22 @@ a.text-success:hover { color: #ff7a52 !important; }
 }
 
 .logo-crop {
-  display: inline-block;
-  width: 130px;
-  height: 52px;
-  overflow: hidden;
-  position: relative;
+  display: inline-flex;
+  align-items: center;
   flex-shrink: 0;
 }
 
+/* Square logo image — object-fit crops to center content, hiding excess padding */
 .logo {
-  position: absolute;
-  width: 192px;
-  height: auto;
-  left: -16px;
-  top: -21px;
-  transition: transform 0.35s var(--ease);
+  width: 152px;
+  height: 47px;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+  border-radius: 6px;
+  transition: opacity 0.3s var(--ease);
 }
-.navbar-brand:hover .logo { transform: scale(1.04); }
+.navbar-brand:hover .logo { opacity: 0.85; }
 
 .navbar .nav-link {
   color: var(--silver) !important;
@@ -2049,9 +2047,12 @@ input.is-invalid, select.is-invalid, textarea.is-invalid { border-color: #dc3545
 }
 
 .sf-logo {
-  height: 34px;
-  width: auto;
+  width: 138px;
+  height: 43px;
+  object-fit: cover;
+  object-position: center center;
   display: block;
+  border-radius: 5px;
   margin-bottom: 1rem;
 }
 
