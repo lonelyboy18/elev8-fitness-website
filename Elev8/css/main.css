@@ -1952,17 +1952,19 @@ input.is-invalid, select.is-invalid, textarea.is-invalid { border-color: #dc3545
   transform: translateY(-4px);
 }
 .coach-mini-avatar {
-  width: 56px;
-  height: 56px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  background: #22c55e;
-  color: #fff;
-  font-family: var(--font-display);
-  font-size: 1.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
   margin: 0 auto 1rem;
+  border: 2px solid rgba(15,83,104,0.55);
+}
+.coach-mini-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
 }
 .coach-mini-name {
   font-family: var(--font-display);
@@ -3051,74 +3053,27 @@ a.sf-contact-item:hover .sf-ci { opacity: 1; }
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 }
 
-.coaches-flip-note {
-  text-align: center;
-  color: var(--steel);
-  font-size: 0.78rem;
-  margin-top: 1.5rem;
-  letter-spacing: 0.04em;
-}
-
-.coach-flip-wrap {
-  perspective: 1200px;
-  min-height: 440px;
-  cursor: pointer;
-}
-
-.coach-card-flip {
-  position: relative;
-  width: 100%;
-  height: 440px;
-  transform-style: preserve-3d;
-  transition: transform 0.65s cubic-bezier(.4,0,.2,1);
-}
-
-.coach-flip-wrap:hover .coach-card-flip,
-.coach-flip-wrap:focus-within .coach-card-flip {
-  transform: rotateY(180deg);
-}
-
-.coach-card-face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-.coach-card-front {
+.coach-card {
   background: rgba(6,30,40,0.82);
   border: 1px solid rgba(15,83,104,0.38);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.coach-card-back {
-  transform: rotateY(180deg);
-  background: rgba(6,30,40,0.97);
-  border: 1px solid rgba(15,83,104,0.65);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 2rem;
-  overflow-y: auto;
+.coach-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.45);
 }
 
-.coach-photo {
+.coach-card > img {
   width: 100%;
-  height: 300px;
-  object-fit: cover;
-  object-position: top;
+  height: auto;
   display: block;
 }
 
-.coach-photo-placeholder {
-  width: 100%;
-  height: 300px;
-  overflow: hidden;
-}
-
-.coach-card-info {
-  padding: 1.2rem 1.4rem 1rem;
+.coach-card-body {
+  padding: 1.4rem 1.5rem 1.6rem;
 }
 
 .coach-role-badge {
@@ -3146,80 +3101,20 @@ a.sf-contact-item:hover .sf-ci { opacity: 1; }
   margin: 0.2rem 0 0;
 }
 
-.coach-flip-hint {
-  font-size: 0.64rem;
-  color: rgba(15,83,104,0.65);
-  text-align: right;
-  margin-top: 0.4rem;
-  letter-spacing: 0.04em;
-}
-
-.coach-back-role {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--orange);
-  margin-bottom: 0.4rem;
-  display: block;
-}
-
-.coach-back-name {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  color: var(--chalk);
-  margin: 0 0 1rem;
-  letter-spacing: 0.03em;
-  line-height: 1.05;
-}
-
-.coach-back-bio {
-  font-size: 0.86rem;
+.coach-quote {
+  font-size: 0.80rem;
   color: var(--silver);
-  line-height: 1.68;
-  margin-bottom: 1rem;
+  font-style: italic;
+  border-left: 2px solid var(--orange);
+  padding-left: 0.7rem;
+  margin: 0.7rem 0 0.5rem;
+  line-height: 1.5;
 }
 
-.coach-specs {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  margin-bottom: 1.2rem;
-}
-
-.coach-spec {
-  font-size: 0.78rem;
+.coach-bio {
+  font-size: 0.82rem;
   color: var(--steel);
-  padding-left: 1.1rem;
-  position: relative;
-}
-
-.coach-spec::before {
-  content: '->';
-  position: absolute;
-  left: 0;
-  color: var(--orange);
-}
-
-@media (max-width: 768px) {
-  .coach-flip-wrap {
-    min-height: auto;
-    cursor: default;
-    perspective: none;
-  }
-  .coach-card-flip {
-    height: auto;
-    transform: none !important;
-    transform-style: flat;
-  }
-  .coach-card-face {
-    position: static;
-    inset: auto;
-    backface-visibility: visible;
-    -webkit-backface-visibility: visible;
-  }
-  .coach-card-back { display: none; }
-  .coach-flip-hint { display: none; }
-  #coachFlipNote { display: none; }
+  line-height: 1.68;
+  margin: 0.5rem 0 1.1rem;
 }
 
