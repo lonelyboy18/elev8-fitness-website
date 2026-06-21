@@ -475,7 +475,8 @@ a.text-success:hover { color: #ff7a52 !important; }
 @media (max-width: 576px) {
   .star-rating { gap: 10px; font-size: 32px; }
   .auth-card { max-width: 100%; }
-  .navbar-brand img { max-height: 38px; }
+  .logo-crop { width: 105px; height: 42px; }
+  .logo { width: 156px; top: -17px; left: -13px; }
   .program-card { padding: 1.2rem; }
   .hero h1 { font-size: clamp(2.8rem, 14vw, 4.5rem); }
   .btn-lg { padding: 0.8rem 1.5rem; }
@@ -587,24 +588,29 @@ a.text-success:hover { color: #ff7a52 !important; }
   padding-bottom: 0.55rem;
 }
 
-.navbar-brand { display: flex; align-items: center; gap: 0.55rem; }
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.logo-crop {
+  display: inline-block;
+  width: 130px;
+  height: 52px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
 
 .logo {
+  position: absolute;
+  width: 192px;
   height: auto;
-  max-height: 38px;
-  width: auto;
+  left: -16px;
+  top: -21px;
   transition: transform 0.35s var(--ease);
 }
 .navbar-brand:hover .logo { transform: scale(1.04); }
-
-.brand-name {
-  font-family: var(--font-display);
-  font-size: 1.55rem;
-  font-weight: 400;
-  color: var(--chalk);
-  letter-spacing: 0.08em;
-  line-height: 1;
-}
 
 .navbar .nav-link {
   color: var(--silver) !important;
