@@ -1925,7 +1925,9 @@ input.is-invalid, select.is-invalid, textarea.is-invalid { border-color: #dc3545
 }
 .coach-photo-simple {
   width: 100%;
-  height: auto;
+  height: 420px;
+  object-fit: cover;
+  object-position: top;
   display: block;
 }
 .coach-card-body {

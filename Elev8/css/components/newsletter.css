@@ -120,7 +120,9 @@
 }
 .coach-photo-simple {
   width: 100%;
-  height: auto;
+  height: 420px;
+  object-fit: cover;
+  object-position: top;
   display: block;
 }
 .coach-card-body {
