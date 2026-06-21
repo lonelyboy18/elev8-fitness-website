@@ -440,7 +440,7 @@ function initPaymentForm(user) {
       name:        'ELEV8 Fitness Studio',
       description: orderData.description,
       order_id:    orderData.order_id,
-      image:       '../assets/images/common/elev8-icon-symbol.png',
+      image:       '../assets/images/icon/elev8_icon.jpg',
       prefill: {
         name:  user.name  || '',
         email: user.email || '',

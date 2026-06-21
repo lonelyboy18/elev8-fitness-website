@@ -587,15 +587,24 @@ a.text-success:hover { color: #ff7a52 !important; }
   padding-bottom: 0.55rem;
 }
 
-.navbar-brand { display: flex; align-items: center; }
+.navbar-brand { display: flex; align-items: center; gap: 0.55rem; }
 
 .logo {
-  height: 100%;
-  max-height: 46px;
+  height: auto;
+  max-height: 38px;
   width: auto;
   transition: transform 0.35s var(--ease);
 }
 .navbar-brand:hover .logo { transform: scale(1.04); }
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 400;
+  color: var(--chalk);
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
 
 .navbar .nav-link {
   color: var(--silver) !important;
@@ -2021,7 +2030,7 @@ input.is-invalid, select.is-invalid, textarea.is-invalid { border-color: #dc3545
   grid-template-columns: 1.4fr 0.9fr 1fr;
   gap: 2rem;
   padding-bottom: 32px;
-  align-items: start;
+  align-items: center;
 }
 
 .sf-col-heading {
