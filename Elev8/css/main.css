@@ -1940,6 +1940,101 @@ input.is-invalid, select.is-invalid, textarea.is-invalid { border-color: #dc3545
   margin: 0.5rem 0 0;
 }
 
+/* ── Head Coach Flip Cards ──────────────────────────────────────────────────── */
+.coach-flip-wrap {
+  perspective: 1200px;
+  cursor: pointer;
+}
+
+.coach-card-flip {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(.4,0,.2,1);
+}
+
+.coach-flip-wrap:hover .coach-card-flip,
+.coach-flip-wrap:focus-within .coach-card-flip {
+  transform: rotateY(180deg);
+}
+
+.coach-card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.coach-card-front {
+  background: rgba(6,30,40,0.82);
+  border: 1px solid rgba(15,83,104,0.38);
+}
+
+.coach-card-front .coach-photo-simple {
+  height: 100%;
+  object-position: top;
+}
+
+.coach-front-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.2rem 1.5rem 1.5rem;
+  background: linear-gradient(to top, rgba(3,20,26,0.95) 0%, rgba(3,20,26,0.55) 55%, transparent 100%);
+}
+
+.coach-front-info .coach-role-badge { margin-bottom: 0.15rem; }
+.coach-front-info .coach-card-name  { margin-bottom: 0.3rem; font-size: 2.2rem; }
+
+.coach-flip-hint {
+  display: block;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.42);
+  letter-spacing: 0.07em;
+}
+
+.coach-card-back {
+  transform: rotateY(180deg);
+  background: rgba(6,30,40,0.97);
+  border: 1px solid rgba(15,83,104,0.65);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 2.2rem;
+  overflow-y: auto;
+}
+
+.coach-card-back .coach-card-name  { font-size: 2.4rem; margin-bottom: 0.1rem; }
+.coach-card-back .coach-handle     { margin-bottom: 0.6rem; }
+.coach-card-back .coach-quote      { margin: 0 0 0.9rem; }
+.coach-card-back .coach-bio-simple { margin-top: 0; }
+
+/* Mobile: stacked (no flip) */
+@media (max-width: 768px) {
+  .coach-flip-wrap { cursor: default; perspective: none; }
+  .coach-card-flip { height: auto; transform: none !important; transform-style: flat; }
+  .coach-card-face {
+    position: static; inset: auto;
+    backface-visibility: visible;
+    -webkit-backface-visibility: visible;
+  }
+  .coach-card-front { border-radius: var(--radius) var(--radius) 0 0; }
+  .coach-card-front .coach-photo-simple { height: 380px; }
+  .coach-front-info { display: none; }
+  .coach-card-back {
+    transform: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    border-top: none;
+    justify-content: flex-start;
+    padding: 1.4rem 1.5rem 1.6rem;
+  }
+  .coach-flip-hint { display: none; }
+}
+
 /* ── Mini Coach Cards ─────────────────────────────────────────────────────── */
 .coach-card-mini {
   background: rgba(6,30,40,0.72);
