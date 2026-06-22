@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>404 — Page not found · ASCEND</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- =================================================================
+     404 ERROR PAGE  (standalone)
+     ================================================================= -->
+<main class="screen" id="screen-404" aria-label="Page not found">
+  <div class="spotlight layer" data-depth="0.4" aria-hidden="true"></div>
+  <div class="particles layer" id="error-particles" data-depth="1.2" aria-hidden="true"></div>
+
+  <div class="scene-404" id="scene404">
+    <div class="bg-404 layer" data-depth="0.6" aria-hidden="true">404</div>
+
+    <div class="ghost-bar layer" data-depth="0.9" aria-hidden="true"></div>
+    <div class="glitch" aria-hidden="true"></div>
+
+    <div class="athlete-stage layer" data-depth="1" aria-hidden="true">
+      <svg class="athlete-404" viewBox="0 0 200 320">
+        <g class="limb-glow" stroke-width="19">
+          <path d="M119 116 L135 88"></path>
+          <path d="M135 88 L129 56"></path>
+          <path d="M81 116 L67 88"></path>
+          <path d="M67 88 L75 54"></path>
+        </g>
+        <g class="limb-glow" stroke-width="22">
+          <path d="M91 170 L82 216"></path>
+          <path d="M82 216 L86 260"></path>
+          <path d="M109 170 L118 214"></path>
+          <path d="M118 214 L112 258"></path>
+        </g>
+        <g class="limb" stroke-width="13">
+          <path d="M119 116 L135 88"></path>
+          <path d="M135 88 L129 56"></path>
+          <path d="M81 116 L67 88"></path>
+          <path d="M67 88 L75 54"></path>
+        </g>
+        <g class="limb" stroke-width="16">
+          <path d="M91 170 L82 216"></path>
+          <path d="M82 216 L86 260"></path>
+          <path d="M109 170 L118 214"></path>
+          <path d="M118 214 L112 258"></path>
+        </g>
+        <path class="fig-torso" d="M81 116 C77 132 85 161 90 170 L110 170 C115 161 123 132 119 116 Z"></path>
+        <circle class="fig-head" cx="100" cy="80" r="15"></circle>
+        <circle class="fig-hand" cx="129" cy="55" r="4.5"></circle>
+        <circle class="fig-hand" cx="75"  cy="53" r="4.5"></circle>
+      </svg>
+    </div>
+
+    <div class="confused-mark layer" data-depth="1.4" aria-hidden="true">?</div>
+
+    <div class="error-copy">
+      <span class="error-eyebrow">Page not found</span>
+      <h1 class="error-headline">Looks like this page skipped leg day and disappeared.</h1>
+      <!-- Point href at your real homepage. Works without JS; JS adds the magnetic hover. -->
+      <a class="btn-cta" id="btnReturnHome" href="/">
+        <svg class="ti-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 11.5 12 4l9 7.5"></path>
+          <path d="M5 10v9h14v-9"></path>
+        </svg>
+        Return Home
+      </a>
+    </div>
+  </div>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
