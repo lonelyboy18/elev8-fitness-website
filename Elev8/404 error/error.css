@@ -1,6 +1,6 @@
 /* =====================================================================
-   ASCEND — 404 error page  (standalone)
-   styles.css
+   ELEV8 — 404 error page
+   error.css
    =====================================================================
    1. CUSTOMIZATION  — edit only this block to match your brand
    2. Base / reset
@@ -16,32 +16,32 @@
    ===================================================================== */
 :root {
   /* Core palette */
-  --bg-primary:        #0a0d14;
-  --bg-secondary:      #10151f;
-  --bg-deep:           #04060b;
+  --bg-primary:        #03141A;
+  --bg-secondary:      #061e28;
+  --bg-deep:           #010b11;
 
-  --accent-blue:       #2f9aff;
-  --accent-blue-bright:#5cb8ff;
+  --accent-blue:       #0F5368;
+  --accent-blue-bright:#1a7a96;
 
-  --text-primary:      #e6edf7;
-  --text-secondary:    #9fb2cc;
-  --text-muted:        #6f7d92;
+  --text-primary:      #FFFFFF;
+  --text-secondary:    #c8d8e0;
+  --text-muted:        #7fa4b4;
 
   /* Athlete silhouette */
-  --body-color:        #171f2e;
-  --rim-color:         #2f9aff;
-  --rim-glow:          rgba(47, 154, 255, 0.32);
+  --body-color:        #061e28;
+  --rim-color:         #0F5368;
+  --rim-glow:          rgba(15, 83, 104, 0.32);
 
   /* Button */
-  --button-color:      #2f9aff;
-  --button-hover:      #5cb8ff;
-  --button-text:       #06121f;
+  --button-color:      #FF4B1F;
+  --button-hover:      #e03a10;
+  --button-text:       #FFFFFF;
   --button-radius:     999px;
 
   /* Particles & lighting */
-  --particle-color:    #2f9aff;
-  --particle-color-alt:#cfe0f5;
-  --spotlight-color:   #1f4f82;
+  --particle-color:    #0F5368;
+  --particle-color-alt:#c8d8e0;
+  --spotlight-color:   #0a3d4e;
 
   /* Glow strength: 0 = off, 1 = max */
   --glow-strength:     0.55;
@@ -134,7 +134,7 @@ html, body {
 .limb      { stroke: var(--body-color); fill: none; stroke-linecap: round; }
 .fig-torso { fill: var(--body-color); stroke: var(--rim-color); stroke-opacity: 0.5; stroke-width: 1.4; }
 .fig-head  { fill: var(--body-color); stroke: var(--rim-color); stroke-opacity: 0.55; stroke-width: 1.4; }
-.fig-hand  { fill: color-mix(in srgb, var(--body-color) 70%, #2a3650); }
+.fig-hand  { fill: color-mix(in srgb, var(--body-color) 70%, #0a2c3a); }
 .fig-prop  { stroke: var(--rim-color); stroke-opacity: 0.45; stroke-linecap: round; fill: none; }
 
 /* =====================================================================
@@ -152,7 +152,7 @@ html, body {
   transform: translate(-50%, -54%);
   font-family: var(--font-display); font-weight: 800;
   font-size: clamp(170px, 34vw, 360px); line-height: 1;
-  letter-spacing: 0.04em; color: #232c40;
+  letter-spacing: 0.04em; color: #0a2c3a;
   -webkit-text-stroke: 1px color-mix(in srgb, var(--accent-blue) 18%, transparent);
   user-select: none; opacity: 0;
   transition: opacity 1.1s var(--ease-premium);

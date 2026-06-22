@@ -1,11 +1,11 @@
 /* =====================================================================
-   ASCEND — Loading screen  (standalone overlay)
-   script.js  (vanilla, zero dependencies)
+   ELEV8 — Page loader overlay
+   loader.js  (vanilla, zero dependencies)
    ---------------------------------------------------------------------
    1. utils          — helpers + reduced-motion flag
    2. particleField  — ambient floating particles
    3. loader         — rAF progress ring, pose/message/tracker, reveal
-   4. init           — wiring + public API
+   4. init           — sessionStorage gate + public API
 
    PUBLIC API
      AscendLoader.set(0..1)  drive the ring from real asset progress
@@ -119,6 +119,7 @@
 
     function reveal() {
       overlay.classList.add("reveal");
+      document.body.classList.remove("elev8-loading");
       var finish = function () {
         overlay.classList.add("gone");
         overlay.removeEventListener("transitionend", finish);
@@ -131,6 +132,7 @@
       if (rafId) cancelAnimationFrame(rafId);
       startTime = 0; currentStage = -1; externalTarget = null; shownP = 0;
       overlay.classList.remove("reveal", "gone");
+      document.body.classList.add("elev8-loading");
       if (prefersReducedMotion) { setProgress(1); window.setTimeout(reveal, 400); return; }
       rafId = requestAnimationFrame(tick);
     }
@@ -142,6 +144,19 @@
 
   /* ---- 4. init ---------------------------------------------------- */
   function init() {
+    /* Show on: first visit OR browser reload. Skip on: internal navigation. */
+    var nav       = performance.getEntriesByType && performance.getEntriesByType("navigation");
+    var isReload  = nav && nav.length && nav[0].type === "reload";
+    var hasLoaded = sessionStorage.getItem("elev8LoaderShown");
+
+    if (hasLoaded && !isReload) {
+      /* Internal navigation — hide overlay immediately, no animation */
+      var ov = $("#loaderOverlay");
+      if (ov) { ov.classList.add("gone"); }
+      return;
+    }
+
+    sessionStorage.setItem("elev8LoaderShown", "1");
     buildParticles($("#loader-particles"), 26);
     var replay = $("#btnReplay");
     if (replay) replay.addEventListener("click", loader.start);

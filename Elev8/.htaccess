@@ -1,0 +1,11 @@
+# ELEV8 — Apache configuration
+
+# Disable directory listing
+Options -Indexes
+
+# Custom 404 error page
+# If XAMPP serves the site at http://localhost/Elev8/, use:
+ErrorDocument 404 /Elev8/html/404.html
+
+# If your XAMPP VirtualHost serves Elev8/ as the document root, use instead:
+# ErrorDocument 404 /html/404.html

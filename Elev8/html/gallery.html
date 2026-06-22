@@ -15,9 +15,69 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="../css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../loader/loader.css">
 <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
+
+<!-- ELEV8 Loader -->
+<div class="loader-overlay" id="loaderOverlay" role="progressbar"
+     aria-label="Loading ELEV8" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+  <div class="loader-spotlight" aria-hidden="true"></div>
+  <div class="particles" id="loader-particles" aria-hidden="true"></div>
+  <div class="loader-core">
+    <div class="loader-brand"><img src="../assets/images/brand/Elev8-brand-logo.png" alt="ELEV8" class="loader-logo"></div>
+    <div class="ring-wrap">
+      <svg class="ring" viewBox="0 0 300 300" aria-hidden="true">
+        <defs>
+          <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop class="g-start" offset="0%"></stop>
+            <stop class="g-mid"   offset="55%"></stop>
+            <stop class="g-end"   offset="100%"></stop>
+          </linearGradient>
+        </defs>
+        <circle class="ring-track" cx="150" cy="150" r="98"></circle>
+        <circle class="ring-prog"  id="ringProg" cx="150" cy="150" r="98"></circle>
+        <circle class="ring-dot"   id="ringDot"  cx="150" cy="52" r="5"></circle>
+        <g class="pose" data-pose="0">
+          <line class="fig-prop" x1="88" y1="190" x2="212" y2="190" stroke-width="2" opacity="0.4"></line>
+          <g class="limb-glow" stroke-width="17"><path d="M116 154 L120 184"></path><path d="M126 156 L130 184"></path><path d="M178 160 L206 166"></path><path d="M206 166 L224 172"></path></g>
+          <g class="limb" stroke-width="11"><path d="M116 154 L120 184"></path><path d="M126 156 L130 184"></path><path d="M178 160 L206 166"></path><path d="M206 166 L224 172"></path></g>
+          <path class="fig-torso" d="M108 145 C120 142 168 150 180 160 L177 167 C165 158 120 150 110 152 Z"></path>
+          <circle class="fig-head" cx="98" cy="148" r="11"></circle>
+        </g>
+        <g class="pose" data-pose="1">
+          <line class="fig-prop" x1="118" y1="70" x2="182" y2="70" stroke-width="3"></line>
+          <g class="limb-glow" stroke-width="15"><path d="M140 112 L138 72"></path><path d="M160 112 L162 72"></path><path d="M144 152 L143 180"></path><path d="M143 180 L144 206"></path><path d="M156 152 L157 180"></path><path d="M157 180 L156 206"></path></g>
+          <g class="limb" stroke-width="10"><path d="M140 112 L138 72"></path><path d="M160 112 L162 72"></path><path d="M144 152 L143 180"></path><path d="M143 180 L144 206"></path><path d="M156 152 L157 180"></path><path d="M157 180 L156 206"></path></g>
+          <path class="fig-torso" d="M140 112 C137 126 142 146 144 152 L156 152 C158 146 163 126 160 112 Z"></path>
+          <circle class="fig-head" cx="150" cy="98" r="11"></circle>
+        </g>
+        <g class="pose active" data-pose="2">
+          <g class="limb-glow" stroke-width="15"><path d="M140 112 L124 128"></path><path d="M124 128 L132 150"></path><path d="M160 112 L176 128"></path><path d="M176 128 L168 150"></path><path d="M144 150 L130 176"></path><path d="M130 176 L120 194"></path><path d="M156 150 L170 178"></path><path d="M170 178 L182 196"></path></g>
+          <g class="limb" stroke-width="10"><path d="M140 112 L124 128"></path><path d="M124 128 L132 150"></path><path d="M160 112 L176 128"></path><path d="M176 128 L168 150"></path><path d="M144 150 L130 176"></path><path d="M130 176 L120 194"></path><path d="M156 150 L170 178"></path><path d="M170 178 L182 196"></path></g>
+          <path class="fig-torso" d="M140 112 C137 124 142 144 144 150 L156 150 C158 144 163 124 160 112 Z"></path>
+          <circle class="fig-head" cx="150" cy="98" r="11"></circle>
+        </g>
+        <g class="pose" data-pose="3">
+          <line class="fig-prop" x1="110" y1="210" x2="190" y2="210" stroke-width="2" opacity="0.4"></line>
+          <g class="limb-glow" stroke-width="15"><path d="M146 178 L138 206"></path><path d="M154 178 L162 206"></path><path d="M146 118 L143 92"></path><path d="M143 92 L138 70"></path><path d="M154 118 L157 92"></path><path d="M157 92 L164 72"></path></g>
+          <g class="limb" stroke-width="10"><path d="M146 178 L138 206"></path><path d="M154 178 L162 206"></path><path d="M146 118 L143 92"></path><path d="M143 92 L138 70"></path><path d="M154 118 L157 92"></path><path d="M157 92 L164 72"></path></g>
+          <path class="fig-torso" d="M146 178 C143 160 142 130 146 118 L154 118 C158 130 157 160 154 178 Z"></path>
+          <circle class="fig-head" cx="150" cy="192" r="11"></circle>
+        </g>
+      </svg>
+    </div>
+    <div class="loader-percent" id="loaderPercent">0%</div>
+    <div class="loader-message" id="loaderMessage"><span class="msg-inner">Building Strength…</span></div>
+    <div class="tracker" id="tracker">
+      <div class="track-step active" data-step="0"><span class="dot"></span>Push-Up</div>
+      <div class="track-step" data-step="1"><span class="dot"></span>Pull-Up</div>
+      <div class="track-step" data-step="2"><span class="dot"></span>Muscle-Up</div>
+      <div class="track-step" data-step="3"><span class="dot"></span>Handstand</div>
+    </div>
+  </div>
+</div>
 <a class="skip-link" href="#main">Skip to content</a>
 
 <video class="background-video" autoplay muted loop playsinline preload="none" aria-hidden="true">
@@ -227,5 +287,6 @@
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/core/core.js"></script>
+<script src="../loader/loader.js"></script>
 </body>
 </html>

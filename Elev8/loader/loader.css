@@ -1,14 +1,13 @@
 /* =====================================================================
-   ASCEND — Loading screen  (standalone overlay)
-   styles.css
+   ELEV8 — Page loader overlay
+   loader.css
    =====================================================================
    1. CUSTOMIZATION  — edit only this block to match your brand
    2. Base / reset
    3. Particles + spotlight + silhouette
    4. Loader overlay + progress ring
-   5. Revealed page
-   6. Responsive
-   7. Accessibility
+   5. Responsive
+   6. Accessibility
    ===================================================================== */
 
 /* =====================================================================
@@ -16,26 +15,26 @@
    ===================================================================== */
 :root {
   /* Core palette */
-  --bg-primary:        #0a0d14;
-  --bg-secondary:      #10151f;
+  --bg-primary:        #03141A;
+  --bg-secondary:      #061e28;
 
-  --accent-blue:       #2f9aff;
-  --accent-blue-bright:#5cb8ff;
-  --accent-cyan:       #37d6ef;
-  --accent-green:      #2bff88;
+  --accent-blue:       #0F5368;
+  --accent-blue-bright:#1a7a96;
+  --accent-cyan:       #134f63;
+  --accent-green:      #FF4B1F;
 
-  --text-primary:      #e6edf7;
-  --text-secondary:    #9fb2cc;
-  --text-muted:        #6f7d92;
+  --text-primary:      #FFFFFF;
+  --text-secondary:    #c8d8e0;
+  --text-muted:        #7fa4b4;
 
   /* Athlete silhouette */
-  --body-color:        #171f2e;
-  --rim-color:         #2f9aff;
-  --rim-glow:          rgba(47, 154, 255, 0.32);
+  --body-color:        #061e28;
+  --rim-color:         #0F5368;
+  --rim-glow:          rgba(15, 83, 104, 0.32);
 
   /* Particles & lighting */
-  --particle-color:    #2f9aff;
-  --particle-color-alt:#cfe0f5;
+  --particle-color:    #0F5368;
+  --particle-color-alt:#c8d8e0;
 
   /* Glow */
   --glow-strength:     0.55;
@@ -45,11 +44,11 @@
   /* Loading ring */
   --ring-size:           260px;
   --ring-stroke:         11px;
-  --ring-track:          #1a2434;
-  --ring-gradient-start: var(--accent-blue);
-  --ring-gradient-mid:   var(--accent-cyan);
-  --ring-gradient-end:   var(--accent-green);
-  --ring-dot-color:      var(--accent-green);
+  --ring-track:          rgba(255, 75, 31, 0.15);
+  --ring-gradient-start: #e03a10;
+  --ring-gradient-mid:   #FF4B1F;
+  --ring-gradient-end:   #ff7a52;
+  --ring-dot-color:      #FF4B1F;
 
   /* Typography */
   --font-primary: "Inter", "Helvetica Neue", Arial, system-ui, sans-serif;
@@ -73,16 +72,8 @@
    ===================================================================== */
 *, *::before, *::after { box-sizing: border-box; }
 
-html, body {
-  margin: 0; height: 100%;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: var(--font-primary);
-  letter-spacing: var(--letter-spacing);
-  -webkit-font-smoothing: antialiased;
-  overflow: hidden;
-}
-.screen { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+/* Prevent scroll while loader is active */
+body.elev8-loading { overflow: hidden; }
 
 /* =====================================================================
    3. Particles + spotlight + silhouette
@@ -133,10 +124,13 @@ html, body {
 }
 
 .loader-brand {
-  display: flex; align-items: center; gap: 8px; margin-bottom: 34px;
-  font-weight: 700; letter-spacing: 0.28em; font-size: 15px; color: var(--text-primary);
+  display: flex; align-items: center; justify-content: center; margin-bottom: 34px;
 }
-.loader-brand .brand-check { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--accent-green); }
+.loader-logo {
+  width: 152px; height: 47px; display: block;
+  object-fit: cover; object-position: center center;
+  filter: brightness(1.2) drop-shadow(0 0 14px rgba(255, 75, 31, 0.40));
+}
 
 .ring-wrap { position: relative; width: var(--ring-size); height: var(--ring-size); }
 .ring { width: 100%; height: 100%; display: block; }
@@ -174,7 +168,7 @@ html, body {
   transition: color var(--speed-fast) var(--ease-out);
 }
 .track-step .dot {
-  width: 8px; height: 8px; border-radius: 50%; background: #23304a;
+  width: 8px; height: 8px; border-radius: 50%; background: #0a2c3a;
   transition: background var(--speed-fast) var(--ease-out),
               box-shadow var(--speed-fast) var(--ease-out),
               transform var(--speed-fast) var(--ease-out);
@@ -190,34 +184,7 @@ html, body {
 .loader-overlay.gone                { display: none; }
 
 /* =====================================================================
-   5. Revealed page (demo content behind the overlay)
-   ===================================================================== */
-#page {
-  flex-direction: column;
-  background:
-    radial-gradient(70% 60% at 50% 0%, color-mix(in srgb, var(--accent-blue) 14%, transparent), transparent 60%),
-    var(--bg-primary);
-}
-.home-inner { text-align: center; padding: 24px; max-width: 720px; }
-.home-eyebrow { font-size: 13px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent-green); }
-.home-title {
-  margin: 16px 0 14px; font-size: clamp(40px, 8vw, 84px); font-weight: 800; line-height: 1.02;
-  background: linear-gradient(120deg, var(--text-primary), var(--accent-blue-bright));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.home-sub { color: var(--text-secondary); font-size: clamp(15px, 2vw, 19px); margin-bottom: 30px; }
-.home-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-.btn-ghost {
-  padding: 14px 26px; border-radius: var(--button-radius);
-  background: transparent; color: var(--text-primary);
-  border: 1px solid color-mix(in srgb, var(--text-primary) 26%, transparent);
-  font-size: 15px; font-weight: 600; cursor: pointer;
-  transition: border-color var(--speed-fast) var(--ease-out), transform 0.2s var(--ease-out);
-}
-.btn-ghost:hover { border-color: var(--accent-blue); transform: translateY(-2px); }
-
-/* =====================================================================
-   6. Responsive
+   5. Responsive
    ===================================================================== */
 @media (max-width: 640px) {
   :root { --ring-size: 210px; }
@@ -228,10 +195,8 @@ html, body {
 @media (max-width: 380px) { .tracker { gap: 12px; } }
 
 /* =====================================================================
-   7. Accessibility
+   6. Accessibility
    ===================================================================== */
-:focus-visible { outline: 2px solid var(--accent-blue-bright); outline-offset: 3px; border-radius: 4px; }
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important; animation-iteration-count: 1 !important;
