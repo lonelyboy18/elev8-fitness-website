@@ -58,7 +58,8 @@
     var poses    = $$(".pose");
     var steps    = $$(".track-step");
 
-    var MESSAGES = ["Building Strength…", "Developing Control…", "Unlocking Skills…", "Ready to Train."];
+    var MESSAGES   = ["Building Strength…", "Developing Control…", "Unlocking Skills…"];
+    var POSE_ORDER = [2, 1, 0]; /* stage → data-pose: 0=muscle-up, 1=pull-up, 2=push-up */
 
     var rafId = null, startTime = 0, currentStage = -1;
     var externalTarget = null, shownP = 0;
@@ -75,10 +76,11 @@
       pctEl.textContent = pct + "%";
       overlay.setAttribute("aria-valuenow", String(pct));
 
-      var stage = clamp(Math.floor(p * 4), 0, 3);
+      var stage = clamp(Math.floor(p * 3), 0, 2);
       if (stage !== currentStage) {
         currentStage = stage;
-        poses.forEach(function (g) { g.classList.toggle("active", Number(g.dataset.pose) === stage); });
+        var poseIdx = POSE_ORDER[stage];
+        poses.forEach(function (g) { g.classList.toggle("active", Number(g.dataset.pose) === poseIdx); });
         swapMessage(stage);
         steps.forEach(function (s) {
           var i = Number(s.dataset.step);

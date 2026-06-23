@@ -64,7 +64,7 @@
   --ease-in-out:  cubic-bezier(0.65, 0, 0.35, 1);
   --speed-fast: 0.35s;
   --speed-base: 0.6s;
-  --loader-duration: 4500ms;   /* full auto loading sweep */
+  --loader-duration: 6000ms;   /* 2s × 3 stages */
 }
 
 /* =====================================================================
@@ -158,6 +158,165 @@ body.elev8-loading { overflow: hidden; }
   0%   { opacity: 0; transform: translateY(6px) scale(0.96); }
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
+
+/* ── Exercise rep animations — biomechanically accurate ── */
+
+/* Pull-up: dead hang (arms fully extended) → explosive pull → chin clears bar → lower */
+@keyframes puArmL {
+  0%, 100% { d: path("M140 112 L139 92 L138 72") }  /* dead hang: arms nearly straight */
+  40%, 60% { d: path("M140 72 L120 70 L138 72") }   /* top: shoulders at bar, elbows wide */
+}
+@keyframes puArmR {
+  0%, 100% { d: path("M160 112 L161 92 L162 72") }
+  40%, 60% { d: path("M160 72 L180 70 L162 72") }
+}
+@keyframes puLegLU {
+  0%, 100% { d: path("M144 152 L143 180") }
+  40%, 60% { d: path("M144 112 L143 140") }          /* legs rise with body */
+}
+@keyframes puLegLD {
+  0%, 100% { d: path("M143 180 L144 206") }
+  40%, 60% { d: path("M143 140 L144 166") }
+}
+@keyframes puLegRU {
+  0%, 100% { d: path("M156 152 L157 180") }
+  40%, 60% { d: path("M156 112 L157 140") }
+}
+@keyframes puLegRD {
+  0%, 100% { d: path("M157 180 L156 206") }
+  40%, 60% { d: path("M157 140 L156 166") }
+}
+@keyframes puTorso {
+  0%, 100% { d: path("M140 112 C137 126 142 146 144 152 L156 152 C158 146 163 126 160 112 Z") }
+  40%, 60% { d: path("M140 72 C137 86 142 106 144 112 L156 112 C158 106 163 86 160 72 Z") }
+}
+@keyframes puHead {
+  0%, 100% { cy: 98px }
+  40%, 60% { cy: 58px }  /* chin (58+11=69) clears bar at y=70 */
+}
+
+.pose[data-pose="1"].active .limb path:nth-child(1),
+.pose[data-pose="1"].active .limb-glow path:nth-child(1) { animation: puArmL  1.4s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .limb path:nth-child(2),
+.pose[data-pose="1"].active .limb-glow path:nth-child(2) { animation: puArmR  1.4s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .limb path:nth-child(3),
+.pose[data-pose="1"].active .limb-glow path:nth-child(3) { animation: puLegLU 1.4s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .limb path:nth-child(4),
+.pose[data-pose="1"].active .limb-glow path:nth-child(4) { animation: puLegLD 1.4s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .limb path:nth-child(5),
+.pose[data-pose="1"].active .limb-glow path:nth-child(5) { animation: puLegRU 1.4s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .limb path:nth-child(6),
+.pose[data-pose="1"].active .limb-glow path:nth-child(6) { animation: puLegRD 1.4s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .fig-torso { animation: puTorso 1.4s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .fig-head  { animation: puHead  1.4s ease-in-out var(--speed-base) infinite; }
+
+/* Push-up: rigid plank — chest lowers toward floor, hips stay aligned (no pike), elbows flare out */
+@keyframes psArmL1 {
+  0%, 100% { d: path("M116 154 L118 169 L120 184") }  /* top: arms extended */
+  40%, 60% { d: path("M116 172 L100 182 L120 184") }  /* bottom: elbows flare OUT, +18px drop */
+}
+@keyframes psArmL2 {
+  0%, 100% { d: path("M126 156 L128 170 L130 184") }
+  40%, 60% { d: path("M126 174 L112 184 L130 184") }
+}
+@keyframes psArmRU {
+  0%, 100% { d: path("M178 160 L206 166") }
+  40%, 60% { d: path("M178 178 L206 182") }            /* uniform +18 rigid shift */
+}
+@keyframes psArmRD {
+  0%, 100% { d: path("M206 166 L224 172") }
+  40%, 60% { d: path("M206 182 L224 188") }
+}
+@keyframes psTorso {
+  0%, 100% { d: path("M108 145 C120 142 168 150 180 160 L177 167 C165 158 120 150 110 152 Z") }
+  40%, 60% { d: path("M108 163 C120 160 168 168 180 178 L177 185 C165 176 120 168 110 170 Z") }
+}
+@keyframes psHead {
+  0%, 100% { cy: 148px }
+  40%, 60% { cy: 166px }
+}
+
+.pose[data-pose="0"].active .limb path:nth-child(1),
+.pose[data-pose="0"].active .limb-glow path:nth-child(1) { animation: psArmL1 1.2s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="0"].active .limb path:nth-child(2),
+.pose[data-pose="0"].active .limb-glow path:nth-child(2) { animation: psArmL2 1.2s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="0"].active .limb path:nth-child(3),
+.pose[data-pose="0"].active .limb-glow path:nth-child(3) { animation: psArmRU 1.2s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="0"].active .limb path:nth-child(4),
+.pose[data-pose="0"].active .limb-glow path:nth-child(4) { animation: psArmRD 1.2s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="0"].active .fig-torso { animation: psTorso 1.2s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="0"].active .fig-head  { animation: psHead  1.2s ease-in-out var(--speed-base) infinite; }
+
+/* Muscle-up: dead hang → explosive kip/pull (chin over bar) → full lockout above bar → return */
+@keyframes muArmLU {
+  0%, 100% { d: path("M140 112 L138 92") }   /* dead hang: upper arm straight up */
+  25%      { d: path("M140 72 L122 70") }    /* pull: shoulder at bar, elbow flares wide */
+  50%, 65% { d: path("M140 54 L138 62") }    /* lockout: shoulder above bar, arm straight */
+}
+@keyframes muArmLD {
+  0%, 100% { d: path("M138 92 L138 72") }    /* dead hang: forearm to hand at bar */
+  25%      { d: path("M122 70 L138 72") }    /* pull: forearm from wide elbow to hand */
+  50%, 65% { d: path("M138 62 L138 72") }    /* lockout: forearm nearly vertical */
+}
+@keyframes muArmRU {
+  0%, 100% { d: path("M160 112 L162 92") }
+  25%      { d: path("M160 72 L178 70") }
+  50%, 65% { d: path("M160 54 L162 62") }
+}
+@keyframes muArmRD {
+  0%, 100% { d: path("M162 92 L162 72") }
+  25%      { d: path("M178 70 L162 72") }
+  50%, 65% { d: path("M162 62 L162 72") }
+}
+@keyframes muLegLU {
+  0%, 100% { d: path("M144 152 L143 180") }
+  25%      { d: path("M144 112 L143 140") }
+  50%, 65% { d: path("M144 94 L143 122") }
+}
+@keyframes muLegLD {
+  0%, 100% { d: path("M143 180 L144 206") }
+  25%      { d: path("M143 140 L144 166") }
+  50%, 65% { d: path("M143 122 L144 148") }
+}
+@keyframes muLegRU {
+  0%, 100% { d: path("M156 152 L157 180") }
+  25%      { d: path("M156 112 L157 140") }
+  50%, 65% { d: path("M156 94 L157 122") }
+}
+@keyframes muLegRD {
+  0%, 100% { d: path("M157 180 L156 206") }
+  25%      { d: path("M157 140 L156 166") }
+  50%, 65% { d: path("M157 122 L156 148") }
+}
+@keyframes muTorso {
+  0%, 100% { d: path("M140 112 C137 126 142 146 144 152 L156 152 C158 146 163 126 160 112 Z") }
+  25%      { d: path("M140 72 C137 86 142 106 144 112 L156 112 C158 106 163 86 160 72 Z") }
+  50%, 65% { d: path("M140 54 C137 68 142 88 144 94 L156 94 C158 88 163 68 160 54 Z") }
+}
+@keyframes muHead {
+  0%, 100% { cy: 98px }
+  25%      { cy: 58px }   /* chin (58+11=69) just clears bar at y=70 */
+  50%, 65% { cy: 40px }   /* well above bar at lockout */
+}
+
+.pose[data-pose="2"].active .limb path:nth-child(1),
+.pose[data-pose="2"].active .limb-glow path:nth-child(1) { animation: muArmLU 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb path:nth-child(2),
+.pose[data-pose="2"].active .limb-glow path:nth-child(2) { animation: muArmLD 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb path:nth-child(3),
+.pose[data-pose="2"].active .limb-glow path:nth-child(3) { animation: muArmRU 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb path:nth-child(4),
+.pose[data-pose="2"].active .limb-glow path:nth-child(4) { animation: muArmRD 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb path:nth-child(5),
+.pose[data-pose="2"].active .limb-glow path:nth-child(5) { animation: muLegLU 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb path:nth-child(6),
+.pose[data-pose="2"].active .limb-glow path:nth-child(6) { animation: muLegLD 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb path:nth-child(7),
+.pose[data-pose="2"].active .limb-glow path:nth-child(7) { animation: muLegRU 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb path:nth-child(8),
+.pose[data-pose="2"].active .limb-glow path:nth-child(8) { animation: muLegRD 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .fig-torso { animation: muTorso 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .fig-head  { animation: muHead  1.8s ease-in-out var(--speed-base) infinite; }
 
 .loader-percent { margin-top: 26px; font-size: 40px; font-weight: 800; color: var(--text-primary); font-variant-numeric: tabular-nums; }
 .loader-message { margin-top: 6px; font-size: 16px; font-weight: 500; letter-spacing: 0.02em; color: var(--accent-green); min-height: 22px; }
