@@ -188,27 +188,44 @@ body.elev8-loading { overflow: hidden; }
 }
 @keyframes flTorso {
   0%, 100% { d: path("M140 112 C137 126 142 146 144 152 L156 152 C158 146 163 126 160 112 Z") }
-  35%, 65% { d: path("M140 96 C152 95 170 95 188 96 L188 104 C170 105 152 105 140 104 Z") }
+
+  /* Transition into prone/front-lever: keep straight line shoulders->hips->legs */
+  25% { d: path("M140 104 C145 98 165 98 180 104 L180 110 C165 112 145 112 140 110 Z") }
+
+  /* Hold: horizontal and prone (chest facing ground). We place the head "down"-facing by lowering the head end. */
+  45%, 60% { d: path("M132 120 C146 112 166 112 188 120 L188 128 C166 134 146 134 132 128 Z") }
+
+  /* Controlled return (for seamless looping): maintain alignment while coming back to dead hang */
+  80% { d: path("M140 104 C145 98 165 98 180 104 L180 110 C165 112 145 112 140 110 Z") }
 }
 @keyframes flHead {
   0%, 100% { cx: 150px; cy: 98px }
-  35%, 65% { cx: 124px; cy: 100px }  /* head moves left — body now horizontal, head is "front" end */
+
+  /* Transition: head drops to the "ground-facing" prone end */
+  25% { cx: 138px; cy: 108px }
+
+  /* Hold: head end lower than shoulders, implying face toward ground (prone) */
+  45%, 60% { cx: 130px; cy: 126px }
+
+  80% { cx: 138px; cy: 108px }
 }
 
+
 .pose[data-pose="1"].active .limb path:nth-child(1),
-.pose[data-pose="1"].active .limb-glow path:nth-child(1) { animation: flArmL  1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .limb-glow path:nth-child(1) { animation: flArmL  2.4s ease-in-out var(--speed-base) infinite; }
 .pose[data-pose="1"].active .limb path:nth-child(2),
-.pose[data-pose="1"].active .limb-glow path:nth-child(2) { animation: flArmR  1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .limb-glow path:nth-child(2) { animation: flArmR  2.4s ease-in-out var(--speed-base) infinite; }
 .pose[data-pose="1"].active .limb path:nth-child(3),
-.pose[data-pose="1"].active .limb-glow path:nth-child(3) { animation: flLegLU 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .limb-glow path:nth-child(3) { animation: flLegLU 2.4s ease-in-out var(--speed-base) infinite; }
 .pose[data-pose="1"].active .limb path:nth-child(4),
-.pose[data-pose="1"].active .limb-glow path:nth-child(4) { animation: flLegLD 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .limb-glow path:nth-child(4) { animation: flLegLD 2.4s ease-in-out var(--speed-base) infinite; }
 .pose[data-pose="1"].active .limb path:nth-child(5),
-.pose[data-pose="1"].active .limb-glow path:nth-child(5) { animation: flLegRU 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .limb-glow path:nth-child(5) { animation: flLegRU 2.4s ease-in-out var(--speed-base) infinite; }
 .pose[data-pose="1"].active .limb path:nth-child(6),
-.pose[data-pose="1"].active .limb-glow path:nth-child(6) { animation: flLegRD 1.8s ease-in-out var(--speed-base) infinite; }
-.pose[data-pose="1"].active .fig-torso { animation: flTorso 1.8s ease-in-out var(--speed-base) infinite; }
-.pose[data-pose="1"].active .fig-head  { animation: flHead  1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .limb-glow path:nth-child(6) { animation: flLegRD 2.4s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .fig-torso { animation: flTorso 2.4s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="1"].active .fig-head  { animation: flHead  2.4s ease-in-out var(--speed-base) infinite; }
+
 
 /* Push-up: rigid plank — chest lowers toward floor, hips stay aligned (no pike), elbows flare out */
 @keyframes psArmL1 {
@@ -299,24 +316,26 @@ body.elev8-loading { overflow: hidden; }
   50%, 65% { cy: 40px }   /* well above bar at lockout */
 }
 
+/* (kept as-is structure; only longer easing to feel less snappy) */
 .pose[data-pose="2"].active .limb path:nth-child(1),
-.pose[data-pose="2"].active .limb-glow path:nth-child(1) { animation: muArmLU 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb-glow path:nth-child(1) { animation: muArmLU 2.0s ease-in-out var(--speed-base) infinite; }
 .pose[data-pose="2"].active .limb path:nth-child(2),
-.pose[data-pose="2"].active .limb-glow path:nth-child(2) { animation: muArmLD 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb-glow path:nth-child(2) { animation: muArmLD 2.0s ease-in-out var(--speed-base) infinite; }
 .pose[data-pose="2"].active .limb path:nth-child(3),
-.pose[data-pose="2"].active .limb-glow path:nth-child(3) { animation: muArmRU 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb-glow path:nth-child(3) { animation: muArmRU 2.0s ease-in-out var(--speed-base) infinite; }
 .pose[data-pose="2"].active .limb path:nth-child(4),
-.pose[data-pose="2"].active .limb-glow path:nth-child(4) { animation: muArmRD 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb-glow path:nth-child(4) { animation: muArmRD 2.0s ease-in-out var(--speed-base) infinite; }
 .pose[data-pose="2"].active .limb path:nth-child(5),
-.pose[data-pose="2"].active .limb-glow path:nth-child(5) { animation: muLegLU 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb-glow path:nth-child(5) { animation: muLegLU 2.0s ease-in-out var(--speed-base) infinite; }
 .pose[data-pose="2"].active .limb path:nth-child(6),
-.pose[data-pose="2"].active .limb-glow path:nth-child(6) { animation: muLegLD 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb-glow path:nth-child(6) { animation: muLegLD 2.0s ease-in-out var(--speed-base) infinite; }
 .pose[data-pose="2"].active .limb path:nth-child(7),
-.pose[data-pose="2"].active .limb-glow path:nth-child(7) { animation: muLegRU 1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb-glow path:nth-child(7) { animation: muLegRU 2.0s ease-in-out var(--speed-base) infinite; }
 .pose[data-pose="2"].active .limb path:nth-child(8),
-.pose[data-pose="2"].active .limb-glow path:nth-child(8) { animation: muLegRD 1.8s ease-in-out var(--speed-base) infinite; }
-.pose[data-pose="2"].active .fig-torso { animation: muTorso 1.8s ease-in-out var(--speed-base) infinite; }
-.pose[data-pose="2"].active .fig-head  { animation: muHead  1.8s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .limb-glow path:nth-child(8) { animation: muLegRD 2.0s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .fig-torso { animation: muTorso 2.0s ease-in-out var(--speed-base) infinite; }
+.pose[data-pose="2"].active .fig-head  { animation: muHead  2.0s ease-in-out var(--speed-base) infinite; }
+
 
 .loader-percent { margin-top: 26px; font-size: 40px; font-weight: 800; color: var(--text-primary); font-variant-numeric: tabular-nums; }
 .loader-message { margin-top: 6px; font-size: 16px; font-weight: 500; letter-spacing: 0.02em; color: var(--accent-green); min-height: 22px; }
@@ -326,7 +345,7 @@ body.elev8-loading { overflow: hidden; }
 }
 .loader-message.swapping .msg-inner { opacity: 0; transform: translateY(8px); }
 
-.tracker { display: flex; gap: clamp(18px, 5vw, 44px); margin-top: 30px; }
+.tracker { display: flex; gap: clamp(18px,  5vw, 44px); margin-top: 30px; }
 .track-step {
   display: flex; flex-direction: column; align-items: center; gap: 10px;
   font-size: 12px; color: var(--text-muted);

@@ -59,7 +59,14 @@
     var steps    = $$(".track-step");
 
     var MESSAGES   = ["Building Strength…", "Developing Control…", "Unlocking Skills…"];
-    var POSE_ORDER = [2, 1, 0]; /* stage → data-pose: 0=muscle-up, 1=pull-up, 2=push-up */
+/* Skill sequence stages (continuous illusion inside a looping SVG pose system)
+   stage -> data-pose:
+   0 = front lever (prone/down-facing)
+   1 = muscle-up
+   2 = push-up
+*/
+var POSE_ORDER = [1, 2, 0];
+
 
     var rafId = null, startTime = 0, currentStage = -1;
     var externalTarget = null, shownP = 0;
