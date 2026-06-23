@@ -108,7 +108,7 @@
         p = shownP;
       } else {
         var t = clamp((now - startTime) / duration, 0, 1);
-        p = easeInOutCubic(t);
+        p = t; /* linear — all four stages get equal time */
         shownP = p;
       }
 

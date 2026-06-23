@@ -312,11 +312,30 @@ async function postJSON(url, payload) {
 // Initialization
 // ============================================================
 
+function initPageTransitions() {
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('a[href]');
+    if (!link) return;
+    var href = link.getAttribute('href');
+    if (!href ||
+        href.charAt(0) === '#' ||
+        link.target === '_blank' ||
+        /^(https?:|mailto:|tel:|javascript:)/i.test(href) ||
+        document.body.classList.contains('page-leaving')) return;
+    if (link.href === window.location.href) return;
+    e.preventDefault();
+    document.body.classList.add('page-leaving');
+    var dest = link.href;
+    setTimeout(function () { window.location.href = dest; }, 200);
+  });
+}
+
 function initEnhancements() {
   initNavbarScroll();
   initReveal();
   initCounters();
   initMobileNavClose();
+  initPageTransitions();
 }
 
 function initForms() {
