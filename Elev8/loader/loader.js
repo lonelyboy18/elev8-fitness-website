@@ -319,7 +319,7 @@
         px1: 68, py1: 208, px2: 222, py2: 208, pop: 0.28 },
 
       /* 7 — Ground Front Lever Full: arms at 60° (\), body rigid */
-      { t: 0.57,
+      { t: 0.55,
         hx: 82,  hy: 150,
         lsx: 112, lsy: 152, rsx: 118, rsy: 152,
         lex: 98,  ley: 176, rex: 104, rey: 176,
@@ -329,41 +329,63 @@
         lfx: 210, lfy: 160, rfx: 216, rfy: 160,
         px1: 65, py1: 208, px2: 225, py2: 208, pop: 0.35 },
 
-      /* 8 — Push-Up Stance: arms move under shoulders, body elevated in plank */
-      { t: 0.67,
-        hx: 98,  hy: 157,
-        lsx: 113, lsy: 156, rsx: 119, rsy: 156,
-        lex: 107, ley: 176, rex: 113, rey: 176,
+      /* 7b — Hold lever: micro-pause so the skill registers visually */
+      { t: 0.63,
+        hx: 82,  hy: 150,
+        lsx: 112, lsy: 152, rsx: 118, rsy: 152,
+        lex: 98,  ley: 176, rex: 104, rey: 176,
+        lhx: 84,  lhy: 200, rhx: 90,  rhy: 200,
+        lhipx: 165, lhipy: 154, rhipx: 171, rhipy: 154,
+        lkx: 188, lky: 157, rkx: 194, rky: 157,
+        lfx: 210, lfy: 160, rfx: 216, rfy: 160,
+        px1: 65, py1: 208, px2: 225, py2: 208, pop: 0.35 },
+
+      /* 8 — Push-Up Top: plank, arms extended, body rigid */
+      { t: 0.70,
+        hx: 98,  hy: 156,
+        lsx: 113, lsy: 155, rsx: 119, rsy: 155,
+        lex: 107, ley: 175, rex: 113, rey: 175,
         lhx: 101, lhy: 202, rhx: 107, rhy: 202,
-        lhipx: 165, lhipy: 162, rhipx: 171, rhipy: 162,
-        lkx: 188, lky: 165, rkx: 194, rky: 165,
-        lfx: 210, lfy: 168, rfx: 216, rfy: 168,
+        lhipx: 165, lhipy: 161, rhipx: 171, rhipy: 161,
+        lkx: 188, lky: 164, rkx: 194, rky: 164,
+        lfx: 210, lfy: 167, rfx: 216, rfy: 167,
         px1: 78, py1: 208, px2: 222, py2: 208, pop: 0.42 },
 
-      /* 9 — Push-Up Down: elbows bent 90°, chest drops toward ground */
+      /* 9 — Push-Up Down: elbows at 90°, chest near floor, back flat */
       { t: 0.82,
-        hx: 98,  hy: 172,
+        hx: 98,  hy: 173,
         lsx: 113, lsy: 172, rsx: 119, rsy: 172,
-        lex: 113, ley: 186, rex: 119, rey: 186,
+        lex: 114, ley: 186, rex: 120, rey: 186,
         lhx: 101, lhy: 202, rhx: 107, rhy: 202,
         lhipx: 165, lhipy: 174, rhipx: 171, rhipy: 174,
         lkx: 188, lky: 177, rkx: 194, rky: 177,
         lfx: 210, lfy: 180, rfx: 216, rfy: 180,
         px1: 78, py1: 208, px2: 222, py2: 208, pop: 0.42 },
 
-      /* 10 — Hold at bottom of push-up — loader ends here */
-      { t: 1.00,
-        hx: 98,  hy: 172,
-        lsx: 113, lsy: 172, rsx: 119, rsy: 172,
-        lex: 113, ley: 186, rex: 119, rey: 186,
+      /* 10 — Push-Up Back Up: arms drive through, body rises */
+      { t: 0.94,
+        hx: 98,  hy: 156,
+        lsx: 113, lsy: 155, rsx: 119, rsy: 155,
+        lex: 107, ley: 175, rex: 113, rey: 175,
         lhx: 101, lhy: 202, rhx: 107, rhy: 202,
-        lhipx: 165, lhipy: 174, rhipx: 171, rhipy: 174,
-        lkx: 188, lky: 177, rkx: 194, rky: 177,
-        lfx: 210, lfy: 180, rfx: 216, rfy: 180,
+        lhipx: 165, lhipy: 161, rhipx: 171, rhipy: 161,
+        lkx: 188, lky: 164, rkx: 194, rky: 164,
+        lfx: 210, lfy: 167, rfx: 216, rfy: 167,
+        px1: 78, py1: 208, px2: 222, py2: 208, pop: 0.42 },
+
+      /* 11 — Hold at top — loader ends here */
+      { t: 1.00,
+        hx: 98,  hy: 156,
+        lsx: 113, lsy: 155, rsx: 119, rsy: 155,
+        lex: 107, ley: 175, rex: 113, rey: 175,
+        lhx: 101, lhy: 202, rhx: 107, rhy: 202,
+        lhipx: 165, lhipy: 161, rhipx: 171, rhipy: 161,
+        lkx: 188, lky: 164, rkx: 194, rky: 164,
+        lfx: 210, lfy: 167, rfx: 216, rfy: 167,
         px1: 78, py1: 208, px2: 222, py2: 208, pop: 0.42 }
     ];
 
-    var LOOP_MS = 12000;
+    var LOOP_MS = 7000;
     var animStart = null;
 
     function interpKF(kf1, kf2, alpha) {

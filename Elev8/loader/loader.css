@@ -64,7 +64,7 @@
   --ease-in-out:  cubic-bezier(0.65, 0, 0.35, 1);
   --speed-fast: 0.35s;
   --speed-base: 0.6s;
-  --loader-duration: 12000ms;  /* slow enough to complete a full animation cycle */
+  --loader-duration: 7000ms;
 }
 
 /* =====================================================================
