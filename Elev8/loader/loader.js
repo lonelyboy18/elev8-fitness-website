@@ -4,8 +4,9 @@
    ---------------------------------------------------------------------
    1. utils          — helpers + reduced-motion flag
    2. particleField  — ambient floating particles
-   3. loader         — rAF progress ring, pose/message/tracker, reveal
-   4. init           — sessionStorage gate + public API
+   3. loader         — rAF progress ring, message/tracker, reveal
+   4. athleteAnim    — continuous 8-second calisthenics sequence loop
+   5. init           — sessionStorage gate + public API
 
    PUBLIC API
      AscendLoader.set(0..1)  drive the ring from real asset progress
@@ -55,18 +56,9 @@
     var pctEl    = $("#loaderPercent");
     var msgEl    = $("#loaderMessage");
     var msgInner = $(".msg-inner", msgEl);
-    var poses    = $$(".pose");
     var steps    = $$(".track-step");
 
-    var MESSAGES   = ["Building Strength…", "Developing Control…", "Unlocking Skills…"];
-/* Skill sequence stages (continuous illusion inside a looping SVG pose system)
-   stage -> data-pose:
-   0 = front lever (prone/down-facing)
-   1 = muscle-up
-   2 = push-up
-*/
-var POSE_ORDER = [1, 2, 0];
-
+    var MESSAGES = ["Building Strength…", "Developing Control…", "Unlocking Skills…"];
 
     var rafId = null, startTime = 0, currentStage = -1;
     var externalTarget = null, shownP = 0;
@@ -86,12 +78,10 @@ var POSE_ORDER = [1, 2, 0];
       var stage = clamp(Math.floor(p * 3), 0, 2);
       if (stage !== currentStage) {
         currentStage = stage;
-        var poseIdx = POSE_ORDER[stage];
-        poses.forEach(function (g) { g.classList.toggle("active", Number(g.dataset.pose) === poseIdx); });
         swapMessage(stage);
         steps.forEach(function (s) {
           var i = Number(s.dataset.step);
-          s.classList.toggle("done", i < stage);
+          s.classList.toggle("done",   i < stage);
           s.classList.toggle("active", i === stage);
         });
       }
@@ -111,13 +101,12 @@ var POSE_ORDER = [1, 2, 0];
 
       var p;
       if (externalTarget !== null) {
-        /* Real-progress mode: ease the shown value toward the fed target. */
         shownP = lerp(shownP, externalTarget, 0.06);
         if (externalTarget - shownP < 0.002) shownP = externalTarget;
         p = shownP;
       } else {
         var t = clamp((now - startTime) / duration, 0, 1);
-        p = t; /* linear — all four stages get equal time */
+        p = t;
         shownP = p;
       }
 
@@ -134,7 +123,7 @@ var POSE_ORDER = [1, 2, 0];
         overlay.removeEventListener("transitionend", finish);
       };
       overlay.addEventListener("transitionend", finish);
-      window.setTimeout(finish, 1000); /* fallback */
+      window.setTimeout(finish, 1000);
     }
 
     function start() {
@@ -151,15 +140,290 @@ var POSE_ORDER = [1, 2, 0];
     return { start: start, set: set };
   })();
 
-  /* ---- 4. init ---------------------------------------------------- */
+  /* ---- 4. athleteAnim -------------------------------------------- */
+  /*
+     Continuous 8-second calisthenics sequence:
+       Muscle-Up Support → Controlled Descent → Dead Hang
+       → Descent to Floor → Push-Up → Ground Front Lever
+       → Hold → Return → Jump to Bar → (loop)
+
+     Each keyframe defines joint positions. Between keyframes,
+     all joints are smoothly interpolated with easeInOutCubic.
+     The torso path is computed dynamically from shoulder/hip joints.
+  */
+  function initAthleteAnim() {
+    var head  = document.getElementById("anim-head");
+    var prop  = document.getElementById("anim-prop");
+    var torso = document.getElementById("anim-torso");
+    if (!head || !prop || !torso) return;
+
+    var IDS = ["lau","lal","rau","ral","llu","lll","rlu","rll"];
+    var limbs = {}, glows = {};
+    IDS.forEach(function (id) {
+      limbs[id] = document.getElementById("anim-" + id);
+      glows[id] = document.getElementById("anim-g-" + id);
+    });
+
+    var f = function (v) { return v.toFixed(1); };
+
+    /* Build torso filled-path from shoulder and hip joint pairs */
+    function torsoPath(lsx, lsy, rsx, rsy, lhx, lhy, rhx, rhy) {
+      var smx = (lsx + rsx) / 2, smy = (lsy + rsy) / 2;
+      var hmx = (lhx + rhx) / 2, hmy = (lhy + rhy) / 2;
+      var dx = hmx - smx, dy = hmy - smy;
+      var len = Math.sqrt(dx * dx + dy * dy) || 1;
+      /* Perpendicular offset for body thickness / natural taper */
+      var tx = (-dy / len) * 3.5, ty = (dx / len) * 3.5;
+      var c1x = smx + dx * 0.3 + tx, c1y = smy + dy * 0.3 + ty;
+      var c2x = hmx - dx * 0.3 + tx, c2y = hmy - dy * 0.3 + ty;
+      var c3x = hmx - dx * 0.3 - tx, c3y = hmy - dy * 0.3 - ty;
+      var c4x = smx + dx * 0.3 - tx, c4y = smy + dy * 0.3 - ty;
+      return "M" + f(lsx) + " " + f(lsy) +
+        " C" + f(c1x) + " " + f(c1y) + " " + f(c2x) + " " + f(c2y) +
+        " "  + f(lhx) + " " + f(lhy) +
+        " L" + f(rhx) + " " + f(rhy) +
+        " C" + f(c3x) + " " + f(c3y) + " " + f(c4x) + " " + f(c4y) +
+        " "  + f(rsx) + " " + f(rsy) + " Z";
+    }
+
+    function lp(x1, y1, x2, y2) {
+      return "M" + f(x1) + " " + f(y1) + " L" + f(x2) + " " + f(y2);
+    }
+
+    function applyFrame(j) {
+      head.setAttribute("cx", f(j.hx));
+      head.setAttribute("cy", f(j.hy));
+
+      var paths = {
+        lau: lp(j.lsx, j.lsy, j.lex, j.ley),
+        lal: lp(j.lex, j.ley, j.lhx, j.lhy),
+        rau: lp(j.rsx, j.rsy, j.rex, j.rey),
+        ral: lp(j.rex, j.rey, j.rhx, j.rhy),
+        llu: lp(j.lhipx, j.lhipy, j.lkx, j.lky),
+        lll: lp(j.lkx, j.lky, j.lfx, j.lfy),
+        rlu: lp(j.rhipx, j.rhipy, j.rkx, j.rky),
+        rll: lp(j.rkx, j.rky, j.rfx, j.rfy)
+      };
+
+      IDS.forEach(function (id) {
+        var d = paths[id];
+        if (limbs[id]) limbs[id].setAttribute("d", d);
+        if (glows[id])  glows[id].setAttribute("d", d);
+      });
+
+      torso.setAttribute("d", torsoPath(
+        j.lsx, j.lsy, j.rsx, j.rsy,
+        j.lhipx, j.lhipy, j.rhipx, j.rhipy
+      ));
+
+      prop.setAttribute("x1", f(j.px1));
+      prop.setAttribute("y1", f(j.py1));
+      prop.setAttribute("x2", f(j.px2));
+      prop.setAttribute("y2", f(j.py2));
+      prop.style.opacity = j.pop;
+    }
+
+    /*
+      Keyframes — each entry is a snapshot of all joint positions.
+      t: normalized position in the 8-second loop [0..1].
+
+      Anatomy (side view, athlete facing left):
+        hx/hy          = head center
+        lsx/lsy        = left shoulder   rsx/rsy  = right shoulder
+        lex/ley        = left elbow      rex/rey  = right elbow
+        lhx/lhy        = left hand       rhx/rhy  = right hand
+        lhipx/lhipy    = left hip        rhipx/rhipy = right hip
+        lkx/lky        = left knee       rkx/rky  = right knee
+        lfx/lfy        = left foot       rfx/rfy  = right foot
+        px1/py1/px2/py2 = prop line      pop      = prop opacity
+
+      Bar is at y≈72 (top of ring).
+      Ground is at y≈208 (bottom of ring).
+    */
+    var KFS = [
+      /* 0 — Dead Hang */
+      { t: 0.00,
+        hx: 150, hy: 96,
+        lsx: 140, lsy: 110, rsx: 160, rsy: 110,
+        lex: 138, ley: 91,  rex: 162, rey: 91,
+        lhx: 137, lhy: 72,  rhx: 163, rhy: 72,
+        lhipx: 143, lhipy: 152, rhipx: 157, rhipy: 152,
+        lkx: 141, lky: 178, rkx: 159, rky: 178,
+        lfx: 141, lfy: 206, rfx: 159, rfy: 206,
+        px1: 118, py1: 72, px2: 182, py2: 72, pop: 1.0 },
+
+      /* 1 — Pull Phase */
+      { t: 0.07,
+        hx: 150, hy: 74,
+        lsx: 140, lsy: 88,  rsx: 160, rsy: 88,
+        lex: 136, ley: 80,  rex: 164, rey: 80,
+        lhx: 135, lhy: 72,  rhx: 165, rhy: 72,
+        lhipx: 143, lhipy: 128, rhipx: 157, rhipy: 128,
+        lkx: 141, lky: 154, rkx: 159, rky: 154,
+        lfx: 140, lfy: 180, rfx: 160, rfy: 180,
+        px1: 118, py1: 72, px2: 182, py2: 72, pop: 1.0 },
+
+      /* 2 — Kip: chin clears bar */
+      { t: 0.14,
+        hx: 150, hy: 62,
+        lsx: 140, lsy: 74,  rsx: 160, rsy: 74,
+        lex: 134, ley: 90,  rex: 166, rey: 90,
+        lhx: 133, lhy: 72,  rhx: 167, rhy: 72,
+        lhipx: 143, lhipy: 108, rhipx: 157, rhipy: 108,
+        lkx: 141, lky: 132, rkx: 159, rky: 132,
+        lfx: 140, lfy: 156, rfx: 160, rfy: 156,
+        px1: 118, py1: 72, px2: 182, py2: 72, pop: 1.0 },
+
+      /* 3 — Lockout: body above bar, arms straight */
+      { t: 0.22,
+        hx: 150, hy: 40,
+        lsx: 140, lsy: 54,  rsx: 160, rsy: 54,
+        lex: 137, ley: 64,  rex: 163, rey: 64,
+        lhx: 135, lhy: 72,  rhx: 165, rhy: 72,
+        lhipx: 143, lhipy: 94,  rhipx: 157, rhipy: 94,
+        lkx: 141, lky: 122, rkx: 159, rky: 122,
+        lfx: 140, lfy: 148, rfx: 160, rfy: 148,
+        px1: 118, py1: 72, px2: 182, py2: 72, pop: 1.0 },
+
+      /* 4 — Controlled Lower */
+      { t: 0.30,
+        hx: 150, hy: 58,
+        lsx: 140, lsy: 72,  rsx: 160, rsy: 72,
+        lex: 135, ley: 85,  rex: 165, rey: 85,
+        lhx: 133, lhy: 72,  rhx: 167, rhy: 72,
+        lhipx: 143, lhipy: 112, rhipx: 157, rhipy: 112,
+        lkx: 141, lky: 138, rkx: 159, rky: 138,
+        lfx: 140, lfy: 164, rfx: 160, rfy: 164,
+        px1: 118, py1: 72, px2: 182, py2: 72, pop: 1.0 },
+
+      /* 5 — Release: grip breaks, body pivots toward floor */
+      { t: 0.38,
+        hx: 146, hy: 122,
+        lsx: 136, lsy: 136, rsx: 156, rsy: 136,
+        lex: 128, ley: 152, rex: 164, rey: 152,
+        lhx: 120, lhy: 168, rhx: 170, rhy: 168,
+        lhipx: 142, lhipy: 164, rhipx: 156, rhipy: 164,
+        lkx: 139, lky: 184, rkx: 157, rky: 184,
+        lfx: 137, lfy: 204, rfx: 157, rfy: 204,
+        px1: 118, py1: 72, px2: 182, py2: 72, pop: 0.10 },
+
+      /* 6 — Front Lever Entry: body horizontal, arms going diagonal */
+      { t: 0.48,
+        hx: 88,  hy: 154,
+        lsx: 108, lsy: 152, rsx: 114, rsy: 152,
+        lex: 96,  ley: 168, rex: 102, rey: 168,
+        lhx: 84,  lhy: 188, rhx: 90,  rhy: 188,
+        lhipx: 165, lhipy: 156, rhipx: 171, rhipy: 156,
+        lkx: 188, lky: 159, rkx: 194, rky: 159,
+        lfx: 210, lfy: 162, rfx: 216, rfy: 162,
+        px1: 68, py1: 208, px2: 222, py2: 208, pop: 0.28 },
+
+      /* 7 — Ground Front Lever Full: arms at 60° (\), body rigid */
+      { t: 0.57,
+        hx: 82,  hy: 150,
+        lsx: 112, lsy: 152, rsx: 118, rsy: 152,
+        lex: 98,  ley: 176, rex: 104, rey: 176,
+        lhx: 84,  lhy: 200, rhx: 90,  rhy: 200,
+        lhipx: 165, lhipy: 154, rhipx: 171, rhipy: 154,
+        lkx: 188, lky: 157, rkx: 194, rky: 157,
+        lfx: 210, lfy: 160, rfx: 216, rfy: 160,
+        px1: 65, py1: 208, px2: 225, py2: 208, pop: 0.35 },
+
+      /* 8 — Push-Up Stance: arms move under shoulders, body elevated in plank */
+      { t: 0.67,
+        hx: 98,  hy: 157,
+        lsx: 113, lsy: 156, rsx: 119, rsy: 156,
+        lex: 107, ley: 176, rex: 113, rey: 176,
+        lhx: 101, lhy: 202, rhx: 107, rhy: 202,
+        lhipx: 165, lhipy: 162, rhipx: 171, rhipy: 162,
+        lkx: 188, lky: 165, rkx: 194, rky: 165,
+        lfx: 210, lfy: 168, rfx: 216, rfy: 168,
+        px1: 78, py1: 208, px2: 222, py2: 208, pop: 0.42 },
+
+      /* 9 — Push-Up Down: elbows bent 90°, chest drops toward ground */
+      { t: 0.82,
+        hx: 98,  hy: 172,
+        lsx: 113, lsy: 172, rsx: 119, rsy: 172,
+        lex: 113, ley: 186, rex: 119, rey: 186,
+        lhx: 101, lhy: 202, rhx: 107, rhy: 202,
+        lhipx: 165, lhipy: 174, rhipx: 171, rhipy: 174,
+        lkx: 188, lky: 177, rkx: 194, rky: 177,
+        lfx: 210, lfy: 180, rfx: 216, rfy: 180,
+        px1: 78, py1: 208, px2: 222, py2: 208, pop: 0.42 },
+
+      /* 10 — Hold at bottom of push-up — loader ends here */
+      { t: 1.00,
+        hx: 98,  hy: 172,
+        lsx: 113, lsy: 172, rsx: 119, rsy: 172,
+        lex: 113, ley: 186, rex: 119, rey: 186,
+        lhx: 101, lhy: 202, rhx: 107, rhy: 202,
+        lhipx: 165, lhipy: 174, rhipx: 171, rhipy: 174,
+        lkx: 188, lky: 177, rkx: 194, rky: 177,
+        lfx: 210, lfy: 180, rfx: 216, rfy: 180,
+        px1: 78, py1: 208, px2: 222, py2: 208, pop: 0.42 }
+    ];
+
+    var LOOP_MS = 12000;
+    var animStart = null;
+
+    function interpKF(kf1, kf2, alpha) {
+      var e = easeInOutCubic(alpha);
+      var KEYS = [
+        "hx","hy",
+        "lsx","lsy","rsx","rsy",
+        "lex","ley","rex","rey",
+        "lhx","lhy","rhx","rhy",
+        "lhipx","lhipy","rhipx","rhipy",
+        "lkx","lky","rkx","rky",
+        "lfx","lfy","rfx","rfy",
+        "px1","py1","px2","py2","pop"
+      ];
+      var r = {};
+      for (var i = 0; i < KEYS.length; i++) {
+        var k = KEYS[i];
+        r[k] = lerp(kf1[k], kf2[k], e);
+      }
+      return r;
+    }
+
+    function tick(now) {
+      if (!animStart) animStart = now;
+      var t = Math.min((now - animStart) / LOOP_MS, 1.0);
+
+      /* Past the last keyframe — hold final pose, stop */
+      var last = KFS[KFS.length - 1];
+      if (t >= last.t) { applyFrame(last); return; }
+
+      /* Find the two keyframes bracketing t */
+      var kf1 = KFS[0], kf2 = last;
+      for (var i = 0; i < KFS.length - 1; i++) {
+        if (KFS[i].t <= t && KFS[i + 1].t > t) {
+          kf1 = KFS[i];
+          kf2 = KFS[i + 1];
+          break;
+        }
+      }
+      var span = kf2.t - kf1.t;
+      var alpha = span > 0 ? (t - kf1.t) / span : 0;
+
+      applyFrame(interpKF(kf1, kf2, alpha));
+      requestAnimationFrame(tick);
+    }
+
+    if (prefersReducedMotion) {
+      applyFrame(KFS[0]); /* static support position for reduced-motion */
+    } else {
+      requestAnimationFrame(tick);
+    }
+  }
+
+  /* ---- 5. init ---------------------------------------------------- */
   function init() {
-    /* Show on: first visit OR browser reload. Skip on: internal navigation. */
     var nav       = performance.getEntriesByType && performance.getEntriesByType("navigation");
     var isReload  = nav && nav.length && nav[0].type === "reload";
     var hasLoaded = sessionStorage.getItem("elev8LoaderShown");
 
     if (hasLoaded && !isReload) {
-      /* Internal navigation — hide overlay immediately, no animation */
       var ov = $("#loaderOverlay");
       if (ov) { ov.classList.add("gone"); }
       return;
@@ -167,6 +431,7 @@ var POSE_ORDER = [1, 2, 0];
 
     sessionStorage.setItem("elev8LoaderShown", "1");
     buildParticles($("#loader-particles"), 26);
+    initAthleteAnim();
     var replay = $("#btnReplay");
     if (replay) replay.addEventListener("click", loader.start);
     loader.start();
