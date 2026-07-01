@@ -1,0 +1,4 @@
+/* Import order mirrors the original <link> order in every legacy HTML <head>:
+   bootstrap.min.css -> loader.css (linked directly in index.html) -> main.css */
+@import "./vendor/bootstrap.min.css";
+@import "./main.css";

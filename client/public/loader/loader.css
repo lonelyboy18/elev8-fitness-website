@@ -1,0 +1,212 @@
+/* =====================================================================
+   ELEV8 — Page loader overlay
+   loader.css
+   =====================================================================
+   1. CUSTOMIZATION  — edit only this block to match your brand
+   2. Base / reset
+   3. Particles + spotlight + silhouette
+   4. Loader overlay + progress ring
+   5. Responsive
+   6. Accessibility
+   ===================================================================== */
+
+/* =====================================================================
+   1. CUSTOMIZATION
+   ===================================================================== */
+:root {
+  /* Core palette */
+  --bg-primary:        #03141A;
+  --bg-secondary:      #061e28;
+
+  --accent-blue:       #0F5368;
+  --accent-blue-bright:#1a7a96;
+  --accent-cyan:       #134f63;
+  --accent-green:      #FF4B1F;
+
+  --text-primary:      #FFFFFF;
+  --text-secondary:    #c8d8e0;
+  --text-muted:        #7fa4b4;
+
+  /* Athlete silhouette */
+  --body-color:        #061e28;
+  --rim-color:         #0F5368;
+  --rim-glow:          rgba(15, 83, 104, 0.32);
+
+  /* Particles & lighting */
+  --particle-color:    #0F5368;
+  --particle-color-alt:#c8d8e0;
+
+  /* Glow */
+  --glow-strength:     0.55;
+  --glow-blur:         28px;
+  --glow-color-green:  color-mix(in srgb, var(--accent-green) calc(var(--glow-strength) * 100%), transparent);
+
+  /* Loading ring */
+  --ring-size:           260px;
+  --ring-stroke:         11px;
+  --ring-track:          rgba(255, 75, 31, 0.15);
+  --ring-gradient-start: #e03a10;
+  --ring-gradient-mid:   #FF4B1F;
+  --ring-gradient-end:   #ff7a52;
+  --ring-dot-color:      #FF4B1F;
+
+  /* Typography */
+  --font-primary: "Inter", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-display: "Inter", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --letter-spacing: 0.01em;
+
+  /* Button */
+  --button-radius: 999px;
+
+  /* Motion */
+  --ease-premium: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:  cubic-bezier(0.65, 0, 0.35, 1);
+  --speed-fast: 0.35s;
+  --speed-base: 0.6s;
+  --loader-duration: 7000ms;
+}
+
+/* =====================================================================
+   2. Base / reset
+   ===================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Prevent scroll while loader is active */
+body.elev8-loading { overflow: hidden; }
+
+/* =====================================================================
+   3. Particles + spotlight + silhouette
+   ===================================================================== */
+.particles { position: absolute; inset: 0; pointer-events: none; }
+.particle {
+  position: absolute;
+  width: var(--p-size, 3px); height: var(--p-size, 3px);
+  border-radius: 50%;
+  background: var(--p-color, var(--particle-color));
+  opacity: var(--p-opacity, 0.4);
+  transform: translate3d(0, 0, 0);
+  animation: drift var(--p-dur, 9s) var(--ease-in-out) var(--p-delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+@keyframes drift {
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(var(--p-dx, 14px), var(--p-dy, -22px), 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+.limb-glow { stroke: var(--rim-glow); fill: none; stroke-linecap: round; }
+.limb      { stroke: var(--body-color); fill: none; stroke-linecap: round; }
+.fig-torso { fill: var(--body-color); stroke: var(--rim-color); stroke-opacity: 0.5; stroke-width: 1.4; }
+.fig-head  { fill: var(--body-color); stroke: var(--rim-color); stroke-opacity: 0.55; stroke-width: 1.4; }
+.fig-prop  { stroke: var(--rim-color); stroke-opacity: 0.45; stroke-linecap: round; fill: none; }
+
+/* =====================================================================
+   4. Loader overlay
+   ===================================================================== */
+.loader-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-primary);
+  overflow: hidden;
+}
+.loader-spotlight {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(60% 60% at 50% 42%,
+      color-mix(in srgb, var(--accent-blue) 22%, transparent) 0%, transparent 70%);
+}
+
+@keyframes loaderCoreIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+.loader-core {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  transform: scale(1); opacity: 1;
+  animation: loaderCoreIn 0.55s var(--ease-out) both;
+  transition: transform 0.9s var(--ease-premium), opacity 0.7s ease;
+}
+
+.loader-brand {
+  display: flex; align-items: center; justify-content: center; margin-bottom: 34px;
+}
+.loader-logo {
+  width: 152px; height: 47px; display: block;
+  object-fit: cover; object-position: center center;
+  filter: brightness(1.2) drop-shadow(0 0 14px rgba(255, 75, 31, 0.40));
+}
+
+.ring-wrap { position: relative; width: var(--ring-size); height: var(--ring-size); }
+.ring { width: 100%; height: 100%; display: block; }
+
+.ring-track { fill: none; stroke: var(--ring-track); stroke-width: var(--ring-stroke); }
+.ring-prog {
+  fill: none; stroke: url(#ringGrad); stroke-width: var(--ring-stroke); stroke-linecap: round;
+  transform: rotate(-90deg); transform-origin: 150px 150px;
+  stroke-dasharray: 615.75; stroke-dashoffset: 615.75;   /* JS animates this */
+}
+.ring-dot { fill: var(--ring-dot-color); filter: drop-shadow(0 0 8px var(--glow-color-green)); }
+.g-start { stop-color: var(--ring-gradient-start); }
+.g-mid   { stop-color: var(--ring-gradient-mid); }
+.g-end   { stop-color: var(--ring-gradient-end); }
+
+/* anim-fig: the dynamic athlete SVG group driven by loader.js athleteAnim */
+#anim-fig { opacity: 1; }
+
+
+.loader-percent { margin-top: 26px; font-size: 40px; font-weight: 800; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.loader-message { margin-top: 6px; font-size: 16px; font-weight: 500; letter-spacing: 0.02em; color: var(--accent-green); min-height: 22px; }
+.loader-message .msg-inner {
+  display: inline-block;
+  transition: opacity var(--speed-fast) var(--ease-out), transform var(--speed-fast) var(--ease-premium);
+}
+.loader-message.swapping .msg-inner { opacity: 0; transform: translateY(8px); }
+
+.tracker { display: flex; gap: clamp(18px,  5vw, 44px); margin-top: 30px; }
+.track-step {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  font-size: 12px; color: var(--text-muted);
+  transition: color var(--speed-fast) var(--ease-out);
+}
+.track-step .dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #0a2c3a;
+  transition: background var(--speed-fast) var(--ease-out),
+              box-shadow var(--speed-fast) var(--ease-out),
+              transform var(--speed-fast) var(--ease-out);
+}
+.track-step.done .dot   { background: var(--accent-green); }
+.track-step.done        { color: var(--text-secondary); }
+.track-step.active .dot { background: var(--accent-blue); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent-blue) 22%, transparent); transform: scale(1.15); }
+.track-step.active      { color: var(--text-primary); font-weight: 600; }
+
+/* Hide immediately on internal nav (class set by inline head script) */
+html.no-loader .loader-overlay      { display: none !important; }
+
+/* Final reveal: ring blooms, overlay fades out */
+.loader-overlay.reveal .loader-core { transform: scale(2.6); opacity: 0; }
+.loader-overlay.reveal              { opacity: 0; transition: opacity 0.8s var(--ease-premium); }
+.loader-overlay.gone                { display: none; }
+
+/* =====================================================================
+   5. Responsive
+   ===================================================================== */
+@media (max-width: 640px) {
+  :root { --ring-size: 210px; }
+  .loader-percent { font-size: 34px; }
+  .tracker { gap: 16px; }
+  .track-step { font-size: 11px; }
+}
+@media (max-width: 380px) { .tracker { gap: 12px; } }
+
+/* =====================================================================
+   6. Accessibility
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important; animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .particle { animation: none !important; }
+}
