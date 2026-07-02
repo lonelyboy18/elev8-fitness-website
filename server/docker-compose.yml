@@ -1,0 +1,61 @@
+# Backend-only compose stack for Phase 4 (PostgreSQL + Prisma). The React frontend
+# (client/) is intentionally not included here — this phase only touches the backend.
+#
+# Usage:
+#   docker compose up -d --build
+#
+# The `server` service runs `prisma migrate deploy` automatically on startup (see
+# server/Dockerfile's CMD) before starting the API, so migrations never need to be run
+# manually against the containerized database.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: elev8
+      POSTGRES_PASSWORD: elev8_dev_password
+      POSTGRES_DB: elev8_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - elev8_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U elev8 -d elev8_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      CLIENT_ORIGIN: http://localhost:5173
+      LOG_LEVEL: info
+      DATABASE_URL: postgresql://elev8:elev8_dev_password@postgres:5432/elev8_db?schema=public
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-change_me_access_secret_min_16_chars}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change_me_refresh_secret_min_16_chars}
+      REFRESH_TOKEN_HASH_SECRET: ${REFRESH_TOKEN_HASH_SECRET:-change_me_hash_secret_min_16_chars}
+      ACCESS_TOKEN_TTL_MIN: 15
+      REFRESH_TOKEN_TTL_DAYS: 7
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-rzp_test_YOUR_KEY_ID_HERE}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-YOUR_KEY_SECRET_HERE}
+      COOKIE_SECURE: "false"
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:5000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+volumes:
+  elev8_postgres_data:

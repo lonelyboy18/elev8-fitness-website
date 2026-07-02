@@ -1,0 +1,145 @@
+// ELEV8 Fitness — Prisma schema (Phase 4: PostgreSQL persistence layer)
+// Mirrors the domain records in src/db/types.ts. Field names use camelCase in the
+// Prisma Client API and snake_case in the actual Postgres columns via @map/@@map,
+// matching this codebase's existing snake_case SQL convention.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PlanId {
+  bft
+  cst
+
+  @@map("plan_id")
+}
+
+enum SubscriptionStatus {
+  inactive
+  active
+  expired
+
+  @@map("subscription_status")
+}
+
+enum BookingStatus {
+  confirmed
+  cancelled
+
+  @@map("booking_status")
+}
+
+enum PaymentStatus {
+  pending
+  paid
+  failed
+
+  @@map("payment_status")
+}
+
+model User {
+  id                   Int                 @id @default(autoincrement())
+  name                 String              @db.VarChar(120)
+  email                String              @unique @db.VarChar(255)
+  mobile               String              @db.VarChar(20)
+  passwordHash         String              @map("password_hash") @db.VarChar(255)
+  plan                 PlanId              @default(bft)
+  subscriptionStatus   SubscriptionStatus  @default(inactive) @map("subscription_status")
+  subscriptionExpires  DateTime?           @map("subscription_expires") @db.Date
+  createdAt            DateTime            @default(now()) @map("created_at")
+  updatedAt            DateTime            @updatedAt @map("updated_at")
+
+  refreshTokens RefreshToken[] @relation("UserRefreshTokens")
+  bookings      Booking[]      @relation("UserBookings")
+  payments      Payment[]      @relation("UserPayments")
+
+  @@map("users")
+}
+
+/// Refresh-token *identifiers* (jti) are never stored in plain text — only an
+/// HMAC-SHA256 hash keyed by REFRESH_TOKEN_HASH_SECRET. See src/db/tokenHash.ts.
+model RefreshToken {
+  tokenHash        String    @id @map("token_hash") @db.VarChar(64)
+  userId           Int       @map("user_id")
+  familyId         String    @map("family_id") @db.Uuid
+  revokedAt        DateTime? @map("revoked_at")
+  replacedByHash   String?   @map("replaced_by_hash") @db.VarChar(64)
+  expiresAt        DateTime  @map("expires_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+
+  user User @relation("UserRefreshTokens", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+  @@map("refresh_tokens")
+}
+
+model Booking {
+  id         Int           @id @default(autoincrement())
+  userId     Int           @map("user_id")
+  classType  PlanId        @map("class_type")
+  classDate  DateTime      @map("class_date") @db.Date
+  // Stored as text (e.g. "05:30"), not a DB enum — the set of valid slots is a business
+  // rule enforced by Zod (shared/config/constants.ts), not a structural DB constraint.
+  timeSlot   String        @map("time_slot") @db.VarChar(10)
+  status     BookingStatus @default(confirmed)
+  createdAt  DateTime      @default(now()) @map("created_at")
+
+  user User @relation("UserBookings", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  // Backs findActiveDuplicate / countConfirmed / availability lookups — the hottest
+  // read+write path in the booking flow.
+  @@index([classDate, timeSlot, classType, status], map: "idx_booking_slot_lookup")
+  @@map("bookings")
+}
+
+model Payment {
+  id                Int           @id @default(autoincrement())
+  userId            Int           @map("user_id")
+  plan              PlanId
+  durationMonths    Int           @default(1) @map("duration_months")
+  amountPaise       Int           @map("amount_paise")
+  currency          String        @default("INR") @db.VarChar(10)
+  razorpayOrderId   String        @map("razorpay_order_id") @db.VarChar(100)
+  razorpayPaymentId String?       @unique @map("razorpay_payment_id") @db.VarChar(100)
+  status            PaymentStatus @default(pending)
+  createdAt         DateTime      @default(now()) @map("created_at")
+  paidAt            DateTime?     @map("paid_at")
+
+  user User @relation("UserPayments", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([razorpayOrderId])
+  @@map("payments")
+}
+
+model FeedbackSubmission {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(120)
+  email     String   @db.VarChar(255)
+  feedback  String
+  rating    Int      @db.SmallInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([rating])
+  @@index([createdAt])
+  @@map("feedback_submissions")
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(120)
+  email     String   @db.VarChar(255)
+  phone     String?  @db.VarChar(20)
+  message   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@map("contacts")
+}
