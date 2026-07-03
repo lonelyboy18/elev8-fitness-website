@@ -1,12 +1,18 @@
-# Backend-only compose stack for Phase 4 (PostgreSQL + Prisma). The React frontend
-# (client/) is intentionally not included here — this phase only touches the backend.
+# Full-stack local/rehearsal deployment: client (nginx, static React build) + server
+# (Node/Express API) + PostgreSQL, wired together on one Docker network.
 #
 # Usage:
 #   docker compose up -d --build
 #
-# The `server` service runs `prisma migrate deploy` automatically on startup (see
-# server/Dockerfile's CMD) before starting the API, so migrations never need to be run
-# manually against the containerized database.
+# The `server` service's Dockerfile runs `prisma migrate deploy` automatically on startup,
+# so migrations never need to be run manually against the containerized database. One
+# command starts the whole application: client at http://localhost:8080, API directly at
+# http://localhost:5000 (also reachable through the client's own /api proxy).
+#
+# NOTE: this compose stack has no TLS in front of it. COOKIE_SECURE is left "false" so auth
+# cookies actually reach the browser over plain HTTP — see server/src/config/env.ts for why
+# NODE_ENV=production does not force Secure cookies on its own. If you put this behind a
+# real TLS-terminating proxy/load balancer, set COOKIE_SECURE=true.
 
 services:
   postgres:
@@ -28,7 +34,7 @@ services:
 
   server:
     build:
-      context: .
+      context: ./server
       dockerfile: Dockerfile
     restart: unless-stopped
     depends_on:
@@ -37,7 +43,7 @@ services:
     environment:
       NODE_ENV: production
       PORT: 5000
-      CLIENT_ORIGIN: http://localhost:5173
+      CLIENT_ORIGIN: http://localhost:8080
       LOG_LEVEL: info
       DATABASE_URL: postgresql://elev8:elev8_dev_password@postgres:5432/elev8_db?schema=public
       JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-change_me_access_secret_min_16_chars}
@@ -51,11 +57,22 @@ services:
     ports:
       - "5000:5000"
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://localhost:5000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      test: ["CMD", "node", "-e", "fetch('http://localhost:5000/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 15s
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      server:
+        condition: service_healthy
+    ports:
+      - "8080:80"
 
 volumes:
   elev8_postgres_data:

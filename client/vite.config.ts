@@ -13,4 +13,16 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // Vendor deps change far less often than app code — splitting them into their own
+        // chunk means a deploy that only touches app code doesn't invalidate the browser's
+        // cached vendor bundle.
+        manualChunks: {
+          vendor: ["react", "react-dom", "react-router-dom", "@tanstack/react-query"],
+        },
+      },
+    },
+  },
 });

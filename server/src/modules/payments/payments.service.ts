@@ -52,6 +52,8 @@ export class PaymentsService {
       razorpayOrderId: order.id,
     });
 
+    logger.info({ userId, plan, duration }, "payments.order_created");
+
     return {
       order_id: order.id,
       amount: pricing.paise,
@@ -77,6 +79,7 @@ export class PaymentsService {
       expected.length === signature.length && crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
 
     if (!signaturesMatch) {
+      logger.warn({ userId, orderId }, "payments.signature_invalid");
       throw AppError.badRequest("Payment signature invalid. Contact support if amount was deducted.");
     }
 

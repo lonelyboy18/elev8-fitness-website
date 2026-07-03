@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import type { NextFunction, Request, Response } from "express";
 import { AppError } from "../errors/AppError.js";
 import { env } from "../../config/env.js";
+import { logger } from "../../config/logger.js";
 
 const CSRF_COOKIE = "csrf_token";
 const CSRF_HEADER = "x-csrf-token";
@@ -27,6 +28,7 @@ export function requireCsrf(req: Request, _res: Response, next: NextFunction): v
   const headerToken = req.header(CSRF_HEADER);
 
   if (!cookieToken || !headerToken || cookieToken !== headerToken) {
+    logger.warn({ path: req.path, method: req.method }, "security.csrf_rejected");
     next(new AppError(403, "Security token mismatch. Please refresh the page and try again."));
     return;
   }

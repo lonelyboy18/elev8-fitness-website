@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { v4 as uuid } from "uuid";
 import type { Response } from "express";
-import { env, isProduction } from "../../config/env.js";
+import { env } from "../../config/env.js";
 import type { AccessTokenPayload, AuthenticatedUser, RefreshTokenPayload } from "./auth.types.js";
 
 const ACCESS_TOKEN_TTL_SEC = env.ACCESS_TOKEN_TTL_MIN * 60;
@@ -38,9 +38,15 @@ export function refreshTokenExpiryIso(): string {
 }
 
 function baseCookieOptions() {
+  // COOKIE_SECURE is the single source of truth for the Secure flag — it must be true
+  // whenever the app is actually reached over HTTPS (directly or behind a TLS-terminating
+  // proxy/load balancer). It is intentionally NOT auto-forced by NODE_ENV: a "production
+  // mode" deployment can still legitimately run over plain HTTP for internal rehearsal
+  // (e.g. this project's own docker-compose.yml with no TLS in front) — see env.ts's
+  // startup warning for the case where this looks misconfigured.
   return {
     httpOnly: true,
-    secure: isProduction || env.COOKIE_SECURE,
+    secure: env.COOKIE_SECURE,
     sameSite: "strict" as const,
   };
 }

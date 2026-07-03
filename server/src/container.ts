@@ -27,6 +27,8 @@ import { PrismaContactRepository } from "./modules/contact/contact.repository.js
 import { ContactService } from "./modules/contact/contact.service.js";
 import { ContactController } from "./modules/contact/contact.controller.js";
 
+import { HealthController } from "./modules/health/health.controller.js";
+
 export function buildContainer() {
   // Repositories (data layer — Postgres via Prisma; see src/db/prismaClient.ts)
   const usersRepo = new PrismaUsersRepository();
@@ -51,6 +53,7 @@ export function buildContainer() {
   const paymentsController = new PaymentsController(paymentsService);
   const feedbackController = new FeedbackController(feedbackService);
   const contactController = new ContactController(contactService);
+  const healthController = new HealthController();
 
   return {
     authController,
@@ -59,6 +62,7 @@ export function buildContainer() {
     paymentsController,
     feedbackController,
     contactController,
+    healthController,
   };
 }
 

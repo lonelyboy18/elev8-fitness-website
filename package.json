@@ -1,0 +1,23 @@
+{
+  "name": "elev8-fitness-website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "ELEV8 Fitness — full-stack calisthenics/BFT studio platform (React client + Node/Express/Postgres server).",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2"
+  },
+  "lint-staged": {
+    "client/**/*.{ts,tsx}": [
+      "client/node_modules/.bin/eslint --fix --config client/eslint.config.js",
+      "client/node_modules/.bin/prettier --write"
+    ],
+    "server/**/*.ts": [
+      "server/node_modules/.bin/eslint --fix --config server/eslint.config.js",
+      "server/node_modules/.bin/prettier --write"
+    ]
+  }
+}

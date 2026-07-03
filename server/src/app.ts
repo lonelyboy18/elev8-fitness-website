@@ -3,12 +3,15 @@ import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { pinoHttp } from "pino-http";
-import { env } from "./config/env.js";
+import swaggerUi from "swagger-ui-express";
+import { env, isProduction } from "./config/env.js";
 import { logger } from "./config/logger.js";
+import { openApiSpec } from "./config/swagger.js";
 import { buildContainer } from "./container.js";
 import { ensureCsrfCookie } from "./shared/middleware/csrf.js";
 import { globalRateLimiter } from "./shared/middleware/rateLimit.js";
 import { errorHandler, notFoundHandler } from "./shared/middleware/errorHandler.js";
+import { createHealthRouter } from "./modules/health/health.routes.js";
 import { createAuthRouter } from "./modules/auth/auth.routes.js";
 import { createUsersRouter } from "./modules/users/users.routes.js";
 import { createBookingsRouter } from "./modules/bookings/bookings.routes.js";
@@ -32,11 +35,22 @@ export function createApp(): Express {
   );
   app.use(express.json({ limit: "100kb" }));
   app.use(cookieParser());
-  app.use(pinoHttp({ logger, autoLogging: { ignore: (req: { url?: string }) => req.url === "/health" } }));
+  app.use(
+    pinoHttp({
+      logger,
+      autoLogging: { ignore: (req: { url?: string }) => req.url === "/health" || req.url === "/ready" },
+    })
+  );
   app.use(globalRateLimiter);
   app.use(ensureCsrfCookie);
 
-  app.get("/health", (_req, res) => res.json({ success: true, data: { status: "ok" } }));
+  app.use(createHealthRouter(container.healthController));
+
+  // API docs aren't served in production — this is an internal-facing SaaS API with no
+  // third-party integrators today, so there's no reason to expose route/schema detail publicly.
+  if (!isProduction) {
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiSpec));
+  }
 
   app.use("/api/auth", createAuthRouter(container.authController));
   app.use("/api/users", createUsersRouter(container.usersController));

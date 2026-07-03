@@ -1,0 +1,5 @@
+dist
+node_modules
+public
+src/app/styles/vendor
+src/app/styles/main.css

@@ -1,9 +1,13 @@
+import { Prisma } from "../../generated/prisma/client.js";
 import { MAX_SLOT_CAPACITY, TIME_SLOTS, type PlanId } from "../../config/constants.js";
 import { AppError } from "../../shared/errors/AppError.js";
+import { withTransaction } from "../../db/transaction.js";
 import type { BookingRecord } from "../../db/types.js";
-import type { IBookingsRepository } from "./bookings.repository.js";
+import { bookingsRepositoryFor, type IBookingsRepository } from "./bookings.repository.js";
 import type { BookingDto, SlotAvailabilityDto } from "./bookings.types.js";
 import type { CreateBookingInput } from "./bookings.validation.js";
+
+const DUPLICATE_BOOKING_MESSAGE = "You already have a booking for this date and time slot.";
 
 function toDto(booking: BookingRecord): BookingDto {
   return {
@@ -25,23 +29,41 @@ export class BookingsService {
   }
 
   async create(userId: number, input: CreateBookingInput): Promise<BookingDto> {
-    const duplicate = await this.bookingsRepo.findActiveDuplicate(userId, input.date, input.time_slot);
-    if (duplicate) {
-      throw AppError.conflict("You already have a booking for this date and time slot.");
-    }
+    try {
+      return await withTransaction(async (tx) => {
+        const repo = bookingsRepositoryFor(tx);
 
-    const count = await this.bookingsRepo.countConfirmed(input.date, input.time_slot, input.class_type);
-    if (count >= MAX_SLOT_CAPACITY) {
-      throw AppError.conflict("This slot is full. Please choose a different time or date.");
-    }
+        // Serializes every concurrent booking attempt for this exact (date, time_slot,
+        // class_type) triple — without this, two requests can both pass the capacity
+        // check below before either inserts, over-booking the slot.
+        await repo.lockSlot(input.date, input.time_slot, input.class_type);
 
-    const booking = await this.bookingsRepo.create({
-      userId,
-      classType: input.class_type,
-      classDate: input.date,
-      timeSlot: input.time_slot,
-    });
-    return toDto(booking);
+        const duplicate = await repo.findActiveDuplicate(userId, input.date, input.time_slot);
+        if (duplicate) {
+          throw AppError.conflict(DUPLICATE_BOOKING_MESSAGE);
+        }
+
+        const count = await repo.countConfirmed(input.date, input.time_slot, input.class_type);
+        if (count >= MAX_SLOT_CAPACITY) {
+          throw AppError.conflict("This slot is full. Please choose a different time or date.");
+        }
+
+        const booking = await repo.create({
+          userId,
+          classType: input.class_type,
+          classDate: input.date,
+          timeSlot: input.time_slot,
+        });
+        return toDto(booking);
+      });
+    } catch (err) {
+      // Defense-in-depth: uq_booking_user_slot_status firing means the lock above was
+      // somehow bypassed (e.g. a direct DB write) — surface the same conflict message.
+      if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+        throw AppError.conflict(DUPLICATE_BOOKING_MESSAGE);
+      }
+      throw err;
+    }
   }
 
   async cancel(userId: number, bookingId: number): Promise<void> {

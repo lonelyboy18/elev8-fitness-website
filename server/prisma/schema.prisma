@@ -96,6 +96,10 @@ model Booking {
   // Backs findActiveDuplicate / countConfirmed / availability lookups — the hottest
   // read+write path in the booking flow.
   @@index([classDate, timeSlot, classType, status], map: "idx_booking_slot_lookup")
+  // Defense-in-depth against the capacity race (primary defense is the advisory-lock
+  // transaction in bookings.service.ts::create). status is part of the key so a user
+  // can still rebook the same slot after cancelling.
+  @@unique([userId, classDate, timeSlot, status], map: "uq_booking_user_slot_status")
   @@map("bookings")
 }
 
