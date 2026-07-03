@@ -1080,10 +1080,14 @@ input.is-invalid, select.is-invalid, textarea.is-invalid { border-color: #dc3545
 
 /* .plan-field also carries .elev8-field (for shared spacing), whose ".elev8-field label" rule
    floats the label over the input for text fields — that rule was unintentionally also matching
-   the .plan-card <label> radios here, absolutely positioning them out of flow. That collapsed
-   .plan-grid to zero height and let the submit button render on top of the (still-visible,
-   just out-of-flow) plan cards. Restore normal in-flow positioning for this specific case. */
-.plan-field .plan-card { position: static; }
+   the .plan-card <label> radios here:
+   - position: absolute collapsed .plan-grid to zero height and let the submit button render
+     on top of the (still-visible, just out-of-flow) plan cards.
+   - pointer-events: none (deliberate for floating text labels, so clicks pass through to the
+     input beneath) made the entire card unclickable — clicks fell through to .plan-grid behind
+     it, so no plan could ever be selected by clicking a card.
+   Restore normal in-flow, clickable behavior for this specific case. */
+.plan-field .plan-card { position: static; pointer-events: auto; }
 
 .plan-field-label {
   font-size: 0.78rem;

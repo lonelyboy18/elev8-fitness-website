@@ -118,7 +118,8 @@ Password: (empty — XAMPP default)
 | mobile | VARCHAR(20) | 10-digit, no country code |
 | password | VARCHAR(255) | bcrypt via PASSWORD_DEFAULT |
 | plan | VARCHAR(20) | `'bft'` or `'cst'` |
-| subscription_status | VARCHAR(20) | `'inactive'` / `'active'` / `'expired'` |
+| program | VARCHAR(20) NULL | `'bw'` or `'ct'` — schema prep only, not set anywhere yet (see docs/future-modules.md) |
+| subscription_status | VARCHAR(20) | `'inactive'` / `'active'` / `'expired'` (currently disabled — payments off) |
 | subscription_expires | DATE NULL | Set by razorpay_verify.php |
 | created_at / updated_at | TIMESTAMP | Auto |
 

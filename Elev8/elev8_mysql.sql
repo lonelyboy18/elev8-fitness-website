@@ -21,6 +21,12 @@ CREATE TABLE users (
     mobile               VARCHAR(20)     NOT NULL,          -- 10-digit, stored without country code
     password             VARCHAR(255)    NOT NULL,          -- bcrypt via password_hash(PASSWORD_DEFAULT)
     plan                 VARCHAR(20)     NOT NULL DEFAULT 'bft',   -- 'bft' | 'cst'
+    program              VARCHAR(20)     NULL,                     -- 'bw' | 'ct' — schema prep only, not
+                                                                    -- yet set by any page/endpoint. See
+                                                                    -- docs/future-modules.md. Distinct from
+                                                                    -- `plan` (the membership/pricing tier) —
+                                                                    -- this is the operational training track
+                                                                    -- for future gym-management features.
     subscription_status  VARCHAR(20)     NOT NULL DEFAULT 'inactive',  -- 'inactive' | 'active' | 'expired'
     subscription_expires DATE            NULL,
     created_at           TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -212,7 +218,10 @@ INSERT INTO blog_posts (title, slug, category, excerpt, content, author, status)
 -- =============================================================================
 -- • users.plan values:          'bft' = Bodyweight Functional Training,
 --                               'cst' = Calisthenics Skill Training
+-- • users.program values:       'bw' | 'ct' — schema prep only for future gym-management
+--                               modules (see docs/future-modules.md); not set anywhere yet
 -- • users.subscription_status:  set to 'active' by razorpay_verify.php on paid payment
+--                               (currently disabled — see razorpay_verify.php's TODO(payments))
 -- • submissions.rating:         1–5, enforced at application layer
 -- • bookings.time_slot values:  '05:30' '06:30' '07:30' '09:00' '17:00' '18:00' '19:00'
 -- • bookings capacity:          MAX_SLOT_CAPACITY = 15 per class_date + time_slot + class_type
