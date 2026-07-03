@@ -1,6 +1,13 @@
 # Security Notes
 
-## Fixed this phase
+## Fixed in Phase 6 (release-candidate audit)
+
+| Issue | Fix | File(s) |
+| --- | --- | --- |
+| Registration had the same class of race condition as the booking one: `findByEmail` then `create` as separate queries, so two concurrent registrations for the same email could both pass the check before either committed — the loser would hit an unhandled `P2002` unique-violation and surface as a raw 500 instead of the intended "email already exists" message | Catch `P2002` on the `users.create()` call and convert it to the same `422` validation error the pre-check produces | `auth.service.ts` |
+| No `unhandledRejection`/`uncaughtException` handlers; graceful shutdown had no forced-exit timeout (a hung `server.close()` callback would block forever, defeating an orchestrator's SIGTERM grace period) | Added both process handlers (log + exit) and a 10s forced-exit fallback in shutdown | `index.ts` |
+
+## Fixed in Phase 5 (production hardening)
 
 | Issue | Fix | File(s) |
 | --- | --- | --- |
@@ -35,6 +42,18 @@
   the automated test suite doesn't trip them — real production limits are unaffected.
 - **Environment validation**: Zod-validated at startup; the app fails fast rather than
   running with missing/malformed secrets.
+
+## Dependency audit (Phase 6)
+
+`npm audit` reports 4 moderate-severity findings across both workspaces. None are exploitable in this app's actual runtime:
+
+| Package | Where | Why it doesn't apply here |
+| --- | --- | --- |
+| `uuid` (<11.1.1, CVE re: buffer bounds when a `buf` argument is passed) | `server`, direct dependency | The only call site (`token.service.ts`'s `newJti()`) calls `uuid()` with zero arguments — the vulnerable code path (passing a pre-allocated buffer) is never exercised. Safe to leave; upgrading to v11+ is a breaking major bump, deferred to routine post-release maintenance rather than done under an RC freeze. |
+| `@hono/node-server` (<1.19.13, middleware bypass via repeated slashes) | `server`, transitive via `prisma`'s own `@prisma/dev` devDependency | Three levels deep inside the Prisma CLI's internal dev-server tooling (used by `prisma dev`'s local shadow-database feature) — not imported by any of this project's own code, and devDependencies aren't shipped in the Docker runtime image. Requires an upstream Prisma fix; not actionable here without downgrading Prisma to 6.x, which would break the driver-adapter API this whole backend is built on. |
+| `esbuild` (<=0.24.2, dev server accepts requests from any origin) | `client`, transitive via `vite@5.4.x` | Only affects `vite dev`'s local dev server; the shipped Docker deployment builds via `vite build` and serves static files through nginx (`client/Dockerfile`), which never runs the dev server at all. Fixing requires a Vite 6+ major bump — deferred post-release. |
+
+All three are genuine CVEs in the abstract but zero-impact given how this app actually uses (or doesn't use) the vulnerable code paths. None block release; all three are listed again under "Remaining technical debt" in the RC report as routine post-v1.0.0 maintenance.
 
 ## Known, accepted limitations
 

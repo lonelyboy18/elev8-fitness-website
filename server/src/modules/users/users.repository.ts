@@ -36,6 +36,7 @@ function toRecord(row: UserRow): UserRecord {
     mobile: row.mobile,
     passwordHash: row.passwordHash,
     plan: row.plan,
+    program: row.program,
     subscriptionStatus: row.subscriptionStatus,
     subscriptionExpires: toDateOnly(row.subscriptionExpires),
     createdAt: row.createdAt.toISOString(),

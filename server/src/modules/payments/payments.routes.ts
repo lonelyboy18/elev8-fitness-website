@@ -38,7 +38,8 @@ export function createPaymentsRouter(controller: PaymentsController): Router {
    * /api/payments/order:
    *   post:
    *     tags: [Payments]
-   *     summary: Create a pending Razorpay order for a plan/duration
+   *     summary: "DISABLED: Create a pending Razorpay order for a plan/duration"
+   *     description: Temporarily disabled — always returns 503. See payments.service.ts's TODO(payments) comments.
    *     security: [{ cookieAuth: [], csrfHeader: [] }]
    *     requestBody:
    *       required: true
@@ -74,6 +75,9 @@ export function createPaymentsRouter(controller: PaymentsController): Router {
    *         content: { application/json: { schema: { $ref: '#/components/schemas/ErrorEnvelope' } } }
    *       401: { $ref: '#/components/responses/Unauthorized' }
    *       403: { $ref: '#/components/responses/CsrfRejected' }
+   *       503:
+   *         description: Payments are temporarily disabled.
+   *         content: { application/json: { schema: { $ref: '#/components/schemas/ErrorEnvelope' } } }
    */
   router.post("/order", requireCsrf, validateBody(createOrderSchema), asyncHandler(controller.createOrder));
 
@@ -82,11 +86,13 @@ export function createPaymentsRouter(controller: PaymentsController): Router {
    * /api/payments/verify:
    *   post:
    *     tags: [Payments]
-   *     summary: Verify a completed Razorpay payment and activate the subscription
+   *     summary: "DISABLED: Verify a completed Razorpay payment and activate the subscription"
    *     description: >
-   *       Validates razorpay_signature as an HMAC-SHA256 of `order_id|payment_id` using the
-   *       server's Razorpay secret (constant-time compare). On success, marking the payment paid
-   *       and activating the user's subscription happen in a single database transaction.
+   *       Temporarily disabled — always returns 503. See payments.service.ts's TODO(payments)
+   *       comments. When re-enabled: validates razorpay_signature as an HMAC-SHA256 of
+   *       `order_id|payment_id` using the server's Razorpay secret (constant-time compare); on
+   *       success, marking the payment paid and activating the user's subscription happen in a
+   *       single database transaction.
    *     security: [{ cookieAuth: [], csrfHeader: [] }]
    *     requestBody:
    *       required: true
@@ -116,6 +122,9 @@ export function createPaymentsRouter(controller: PaymentsController): Router {
    *       401: { $ref: '#/components/responses/Unauthorized' }
    *       403: { $ref: '#/components/responses/CsrfRejected' }
    *       404: { description: No matching pending payment for this order/user. }
+   *       503:
+   *         description: Payments are temporarily disabled.
+   *         content: { application/json: { schema: { $ref: '#/components/schemas/ErrorEnvelope' } } }
    */
   router.post("/verify", requireCsrf, validateBody(verifyPaymentSchema), asyncHandler(controller.verify));
 

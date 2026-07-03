@@ -186,6 +186,22 @@
   </div><!-- /auth-card -->
 </main>
 
+<!-- Choose Your Coach — shown right after successful registration instead of a payment step.
+     Coach cards are rendered by showChooseCoachModal() in js/pages/auth.js from js/config/coaches.js. -->
+<div class="modal fade" id="chooseCoachModal" tabindex="-1" aria-labelledby="chooseCoachModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="chooseCoachModalLabel">Choose Your Coach</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="plan-grid" id="chooseCoachGrid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer class="site-footer">
   <div class="container">
     <div class="sf-grid">

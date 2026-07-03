@@ -41,6 +41,7 @@ export function AppRouter() {
           <Route path={ROUTES.gallery} element={<GalleryPage />} />
           <Route path={ROUTES.contact} element={<ContactPage />} />
           <Route path={ROUTES.feedback} element={<FeedbackPage />} />
+          <Route path={ROUTES.dashboard} element={<DashboardPage />} />
         </Route>
 
         <Route element={<AuthLayout />}>
@@ -48,8 +49,6 @@ export function AppRouter() {
           <Route path={ROUTES.signUp} element={<SignUpPage />} />
           <Route path={ROUTES.deleteAccount} element={<DeleteAccountPage />} />
         </Route>
-
-        <Route path={ROUTES.dashboard} element={<DashboardPage />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

@@ -1,3 +1,53 @@
+// Builds a wa.me link that opens WhatsApp with the registration handoff message prefilled.
+// Mirrors client/src/shared/lib/whatsapp.ts — same template, same field order.
+function buildCoachWhatsAppUrl(coach, details) {
+  var lines = [
+    'Hello Coach,',
+    '',
+    'I have registered on Elev8.',
+    '',
+    'Name: ' + details.name,
+    'Email: ' + details.email,
+    'Phone: ' + details.mobile,
+    'Selected Program: ' + details.program,
+    '',
+    'I would like to continue with my registration.',
+    '',
+    'Thank you.'
+  ];
+  return 'https://wa.me/' + coach.whatsappNumber + '?text=' + encodeURIComponent(lines.join('\n'));
+}
+
+// Renders the two coach cards into #chooseCoachModal's body and shows it. Clicking a coach's
+// "Continue on WhatsApp" link (or the close button) closes the modal, which then redirects —
+// registration already succeeded either way.
+function showChooseCoachModal(details, redirectTo) {
+  var modalEl = document.getElementById('chooseCoachModal');
+  var grid = document.getElementById('chooseCoachGrid');
+  if (!modalEl || !grid || typeof bootstrap === 'undefined') {
+    window.location.href = redirectTo;
+    return;
+  }
+
+  grid.innerHTML = '';
+  ELEV8_COACHES.forEach(function (coach) {
+    var card = document.createElement('div');
+    card.className = 'plan-content';
+    card.innerHTML =
+      '<strong class="plan-abbr">' + coach.name + '</strong>' +
+      '<a class="btn btn-success w-100 mt-2" target="_blank" rel="noopener noreferrer" data-bs-dismiss="modal" href="' +
+      buildCoachWhatsAppUrl(coach, details) + '">Continue on WhatsApp</a>';
+    grid.appendChild(card);
+  });
+
+  modalEl.addEventListener('hidden.bs.modal', function onHidden() {
+    modalEl.removeEventListener('hidden.bs.modal', onHidden);
+    window.location.href = redirectTo;
+  });
+
+  bootstrap.Modal.getOrCreateInstance(modalEl).show();
+}
+
 function initSignUpForm() {
   var form = document.getElementById('signupForm');
   if (!form) return;
@@ -56,9 +106,10 @@ function initSignUpForm() {
 
       if (data.success) {
         showToast(data.message, 'success', 3000);
-        setTimeout(function () {
-          window.location.href = data.redirect || 'index.html';
-        }, 1600);
+        showChooseCoachModal(
+          { name: name, email: email, mobile: mobile, program: plan.toUpperCase() },
+          data.redirect || 'index.html'
+        );
       } else if (data.errors) {
         applyServerErrors(data.errors);
       } else {

@@ -45,7 +45,7 @@ const FAQ_ITEMS: FaqEntry[] = [
     id: "faq6",
     question: "When are classes held?",
     answer:
-      "Six slots, every day: 5:30 AM, 6:30 AM and 7:30 AM in the morning; 5:00 PM, 6:00 PM and 7:00 PM in the evening. Each session is 60 minutes. Book your slot in advance via the member dashboard.",
+      "Seven slots, every day: 5:30 AM, 6:30 AM, 7:30 AM and 9:00 AM in the morning; 5:00 PM, 6:00 PM and 7:00 PM in the evening. Each session is 60 minutes. Book your slot in advance via the member dashboard.",
   },
   {
     id: "faq7",

@@ -1,14 +1,6 @@
 import { useState } from "react";
 import type { Booking } from "@entities/booking/model/types";
-
-const SLOT_LABELS: Record<string, string> = {
-  "05:30": "5:30 AM",
-  "06:30": "6:30 AM",
-  "07:30": "7:30 AM",
-  "17:00": "5:00 PM",
-  "18:00": "6:00 PM",
-  "19:00": "7:00 PM",
-};
+import { SLOT_LABELS } from "@shared/constants/plans";
 
 const TYPE_NAMES: Record<string, string> = {
   bft: "Bodyweight Functional Training",

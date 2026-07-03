@@ -76,7 +76,7 @@ export function FeedbackForm({ onSubmitted }: FeedbackFormProps) {
         showToast(result.message || "Submission failed. Please try again.", "error");
       }
     } catch {
-      showToast("Network error — is XAMPP running?", "error");
+      showToast("Network error — please try again.", "error");
     } finally {
       setSubmitting(false);
     }

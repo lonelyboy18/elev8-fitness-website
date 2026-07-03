@@ -140,7 +140,7 @@ function renderBookingsList(bookings) {
   }
 
   var slotLabels = {
-    '05:30': '5:30 AM', '06:30': '6:30 AM', '07:30': '7:30 AM',
+    '05:30': '5:30 AM', '06:30': '6:30 AM', '07:30': '7:30 AM', '09:00': '9:00 AM',
     '17:00': '5:00 PM', '18:00': '6:00 PM', '19:00': '7:00 PM',
   };
   var typeNames = { bft: 'Bodyweight Functional Training', cst: 'Calisthenics Skill Training' };
@@ -350,7 +350,7 @@ async function fetchSlotAvailability(date) {
   if (!data.success || !data.slots) { if (hint) hint.textContent = ''; return; }
 
   var timeLabels = {
-    '05:30': '5:30 AM', '06:30': '6:30 AM', '07:30': '7:30 AM',
+    '05:30': '5:30 AM', '06:30': '6:30 AM', '07:30': '7:30 AM', '09:00': '9:00 AM',
     '17:00': '5:00 PM', '18:00': '6:00 PM', '19:00': '7:00 PM',
   };
 

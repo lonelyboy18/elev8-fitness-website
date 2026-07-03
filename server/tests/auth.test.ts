@@ -68,6 +68,21 @@ describe("POST /api/auth/register", () => {
     expect(res.body.errors.email).toMatch(/already exists/i);
   });
 
+  it("converts a concurrent duplicate-email race into the same 422, not a 500", async () => {
+    const clients = [new TestClient(app), new TestClient(app)];
+    await Promise.all(clients.map((c) => c.get("/health")));
+
+    // Both requests pass the pre-check (findByEmail) before either commits — the unique
+    // index on users.email is the real guard; this exercises that the resulting P2002 is
+    // converted to the normal validation error rather than leaking as a raw 500.
+    const responses = await Promise.all(clients.map((c) => c.post("/api/auth/register", validUser)));
+    const statuses = responses.map((r) => r.status).sort();
+
+    expect(statuses).toEqual([201, 422]);
+    const rejected = responses.find((r) => r.status === 422)!;
+    expect(rejected.body.errors.email).toMatch(/already exists/i);
+  });
+
   it("rejects mutating requests without a matching CSRF header", async () => {
     const client = new TestClient(app);
     await client.get("/health");

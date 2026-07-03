@@ -1,13 +1,17 @@
-import crypto from "node:crypto";
-import { PLAN_PRICING, type PlanId } from "../../config/constants.js";
+import type { PlanId } from "../../config/constants.js";
 import { env } from "../../config/env.js";
 import { logger } from "../../config/logger.js";
 import { AppError } from "../../shared/errors/AppError.js";
-import { withTransaction } from "../../db/transaction.js";
 import type { PaymentRecord } from "../../db/types.js";
-import { usersRepositoryFor } from "../users/users.repository.js";
-import { paymentsRepositoryFor, type IPaymentsRepository } from "./payments.repository.js";
+import type { IPaymentsRepository } from "./payments.repository.js";
 import type { PaymentDto, RazorpayOrderDto } from "./payments.types.js";
+
+// TODO(payments): when re-enabling createOrder()/verify() below, restore these imports too:
+//   import crypto from "node:crypto";
+//   import { PLAN_PRICING } from "../../config/constants.js";
+//   import { withTransaction } from "../../db/transaction.js";
+//   import { usersRepositoryFor } from "../users/users.repository.js";
+//   import { paymentsRepositoryFor } from "./payments.repository.js";
 
 function toDto(payment: PaymentRecord): PaymentDto {
   return {
@@ -35,72 +39,93 @@ export class PaymentsService {
     return payments.map(toDto);
   }
 
-  async createOrder(userId: number, plan: PlanId, duration: number): Promise<RazorpayOrderDto> {
-    const pricing = PLAN_PRICING[plan][duration];
-    if (!pricing) {
-      throw AppError.badRequest("Invalid duration selected.");
-    }
+  /**
+   * DISABLED — payments are temporarily turned off; registration now hands the member off to a
+   * coach on WhatsApp instead of a checkout flow (see client's ChooseCoachModal). The real
+   * implementation is preserved below, commented out, so re-enabling is a small, low-risk change
+   * rather than a rewrite.
+   *
+   * TODO(payments): re-enable Razorpay order creation once the payment flow returns — restore the
+   * body below (already reads pricing from PLAN_PRICING and calls createRazorpayOrder()).
+   */
+  async createOrder(_userId: number, _plan: PlanId, _duration: number): Promise<RazorpayOrderDto> {
+    throw new AppError(503, "Payments are temporarily unavailable. Please contact your coach to complete registration.");
 
-    const receipt = `elev8_${userId}_${Date.now()}`;
-    const order = await this.createRazorpayOrder(pricing.paise, receipt);
-
-    await this.paymentsRepo.createPending({
-      userId,
-      plan,
-      durationMonths: duration,
-      amountPaise: pricing.paise,
-      razorpayOrderId: order.id,
-    });
-
-    logger.info({ userId, plan, duration }, "payments.order_created");
-
-    return {
-      order_id: order.id,
-      amount: pricing.paise,
-      currency: "INR",
-      key_id: env.RAZORPAY_KEY_ID,
-      description: `${plan.toUpperCase()} — ${duration} month${duration > 1 ? "s" : ""}`,
-      price_label: pricing.label,
-    };
+    // --- Original implementation (restore when re-enabling payments) ---
+    // const pricing = PLAN_PRICING[plan][duration];
+    // if (!pricing) {
+    //   throw AppError.badRequest("Invalid duration selected.");
+    // }
+    //
+    // const receipt = `elev8_${userId}_${Date.now()}`;
+    // const order = await this.createRazorpayOrder(pricing.paise, receipt);
+    //
+    // await this.paymentsRepo.createPending({
+    //   userId,
+    //   plan,
+    //   durationMonths: duration,
+    //   amountPaise: pricing.paise,
+    //   razorpayOrderId: order.id,
+    // });
+    //
+    // logger.info({ userId, plan, duration }, "payments.order_created");
+    //
+    // return {
+    //   order_id: order.id,
+    //   amount: pricing.paise,
+    //   currency: "INR",
+    //   key_id: env.RAZORPAY_KEY_ID,
+    //   description: `${plan.toUpperCase()} — ${duration} month${duration > 1 ? "s" : ""}`,
+    //   price_label: pricing.label,
+    // };
   }
 
+  /**
+   * DISABLED — see createOrder() above for why. Real implementation preserved below.
+   *
+   * TODO(payments): re-enable payment verification + membership activation together — restore the
+   * body below (HMAC signature check, then the transactional markPaid + activateSubscription).
+   */
   async verify(
-    userId: number,
-    paymentId: string,
-    orderId: string,
-    signature: string
+    _userId: number,
+    _paymentId: string,
+    _orderId: string,
+    _signature: string
   ): Promise<{ plan: PlanId; expires: string }> {
-    const expected = crypto
-      .createHmac("sha256", env.RAZORPAY_KEY_SECRET)
-      .update(`${orderId}|${paymentId}`)
-      .digest("hex");
+    throw new AppError(503, "Payments are temporarily unavailable. Please contact your coach to complete registration.");
 
-    const signaturesMatch =
-      expected.length === signature.length && crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
-
-    if (!signaturesMatch) {
-      logger.warn({ userId, orderId }, "payments.signature_invalid");
-      throw AppError.badRequest("Payment signature invalid. Contact support if amount was deducted.");
-    }
-
-    const payment = await this.paymentsRepo.findPendingByOrderId(orderId, userId);
-    if (!payment) {
-      throw AppError.notFound("Payment record not found or already processed.");
-    }
-
-    const expiresAt = new Date();
-    expiresAt.setMonth(expiresAt.getMonth() + payment.durationMonths);
-    const expiresIso = expiresAt.toISOString().slice(0, 10);
-
-    // Payment confirmation and subscription activation must commit together — a partial
-    // write here would either charge a member without activating them, or vice versa.
-    await withTransaction(async (tx) => {
-      await paymentsRepositoryFor(tx).markPaid(payment.id, paymentId);
-      await usersRepositoryFor(tx).activateSubscription(userId, payment.plan, expiresIso);
-    });
-
-    logger.info({ userId, plan: payment.plan }, "payments.verified");
-    return { plan: payment.plan, expires: expiresIso };
+    // --- Original implementation (restore when re-enabling payments) ---
+    // const expected = crypto
+    //   .createHmac("sha256", env.RAZORPAY_KEY_SECRET)
+    //   .update(`${orderId}|${paymentId}`)
+    //   .digest("hex");
+    //
+    // const signaturesMatch =
+    //   expected.length === signature.length && crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
+    //
+    // if (!signaturesMatch) {
+    //   logger.warn({ userId, orderId }, "payments.signature_invalid");
+    //   throw AppError.badRequest("Payment signature invalid. Contact support if amount was deducted.");
+    // }
+    //
+    // const payment = await this.paymentsRepo.findPendingByOrderId(orderId, userId);
+    // if (!payment) {
+    //   throw AppError.notFound("Payment record not found or already processed.");
+    // }
+    //
+    // const expiresAt = new Date();
+    // expiresAt.setMonth(expiresAt.getMonth() + payment.durationMonths);
+    // const expiresIso = expiresAt.toISOString().slice(0, 10);
+    //
+    // // Payment confirmation and subscription activation must commit together — a partial
+    // // write here would either charge a member without activating them, or vice versa.
+    // await withTransaction(async (tx) => {
+    //   await paymentsRepositoryFor(tx).markPaid(payment.id, paymentId);
+    //   await usersRepositoryFor(tx).activateSubscription(userId, payment.plan, expiresIso);
+    // });
+    //
+    // logger.info({ userId, plan: payment.plan }, "payments.verified");
+    // return { plan: payment.plan, expires: expiresIso };
   }
 
   private async createRazorpayOrder(amountPaise: number, receipt: string): Promise<RazorpayOrderResponse> {

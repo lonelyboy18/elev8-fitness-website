@@ -38,15 +38,19 @@ describe("Payments", () => {
     ).toBe(401);
   });
 
-  it("rejects an invalid plan/duration combination before contacting Razorpay", async () => {
+  // Payments are temporarily disabled (registration now hands off to a coach on WhatsApp instead
+  // of checkout) — createOrder()/verify() always 503 regardless of input. See payments.service.ts's
+  // TODO(payments) comments; the two tests below replace the old "rejects invalid duration" /
+  // "rejects tampered signature" cases, which exercised validation logic that's now unreachable.
+  it("createOrder is disabled — returns 503 regardless of input", async () => {
     const client = await registeredClient();
     const res = await client.post("/api/payments/order", { plan: "bft", duration: 999 });
 
-    expect(res.status).toBe(400);
-    expect(res.body.message).toMatch(/invalid duration/i);
+    expect(res.status).toBe(503);
+    expect(res.body.message).toMatch(/temporarily unavailable/i);
   });
 
-  it("rejects a tampered payment signature", async () => {
+  it("verify is disabled — returns 503 regardless of input", async () => {
     const client = await registeredClient();
     const res = await client.post("/api/payments/verify", {
       razorpay_payment_id: "pay_fake123",
@@ -54,8 +58,8 @@ describe("Payments", () => {
       razorpay_signature: "not-a-real-hmac-signature",
     });
 
-    expect(res.status).toBe(400);
-    expect(res.body.message).toMatch(/signature invalid/i);
+    expect(res.status).toBe(503);
+    expect(res.body.message).toMatch(/temporarily unavailable/i);
   });
 
   it("starts with an empty payment history", async () => {

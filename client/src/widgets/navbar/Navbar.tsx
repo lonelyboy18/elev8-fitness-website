@@ -13,7 +13,9 @@ const NAV_LINKS: { to: string; label: string }[] = [
   { to: ROUTES.home, label: "Home" },
   { to: ROUTES.about, label: "About" },
   { to: ROUTES.programs, label: "Programs" },
+  { to: ROUTES.membership, label: "Membership" },
   { to: ROUTES.gallery, label: "Gallery" },
+  { to: ROUTES.feedback, label: "Feedback" },
   { to: ROUTES.contact, label: "Contact" },
 ];
 

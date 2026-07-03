@@ -120,7 +120,7 @@ export function ContactPage() {
                   <div className="contact-ch-icon">🕐</div>
                   <div>
                     <p className="contact-ch-label">Class Hours</p>
-                    <span className="contact-ch-value">5:30 AM · 6:30 AM · 7:30 AM</span>
+                    <span className="contact-ch-value">5:30 AM · 6:30 AM · 7:30 AM · 9:00 AM</span>
                     <span className="contact-ch-value" style={{ marginTop: "0.2rem", display: "block" }}>
                       5:00 PM · 6:00 PM · 7:00 PM
                     </span>

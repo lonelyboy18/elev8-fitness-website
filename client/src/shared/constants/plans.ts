@@ -18,4 +18,14 @@ export const PLAN_PRICING: Record<PlanId, Record<number, { paise: number; label:
   },
 };
 
-export const TIME_SLOTS = ["05:30", "06:30", "07:30", "17:00", "18:00", "19:00"] as const;
+export const TIME_SLOTS = ["05:30", "06:30", "07:30", "09:00", "17:00", "18:00", "19:00"] as const;
+
+export const SLOT_LABELS: Record<string, string> = {
+  "05:30": "5:30 AM",
+  "06:30": "6:30 AM",
+  "07:30": "7:30 AM",
+  "09:00": "9:00 AM",
+  "17:00": "5:00 PM",
+  "18:00": "6:00 PM",
+  "19:00": "7:00 PM",
+};

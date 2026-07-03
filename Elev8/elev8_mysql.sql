@@ -56,7 +56,7 @@ CREATE TABLE bookings (
     user_id    INT UNSIGNED    NOT NULL,
     class_type VARCHAR(20)     NOT NULL,       -- 'bft' | 'cst'
     class_date DATE            NOT NULL,
-    time_slot  VARCHAR(10)     NOT NULL,       -- '05:30' | '06:30' | '07:30' | '17:00' | '18:00' | '19:00'
+    time_slot  VARCHAR(10)     NOT NULL,       -- '05:30' | '06:30' | '07:30' | '09:00' | '17:00' | '18:00' | '19:00'
     status     VARCHAR(20)     NOT NULL DEFAULT 'confirmed',  -- 'confirmed' | 'cancelled'
     created_at TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -214,7 +214,7 @@ INSERT INTO blog_posts (title, slug, category, excerpt, content, author, status)
 --                               'cst' = Calisthenics Skill Training
 -- • users.subscription_status:  set to 'active' by razorpay_verify.php on paid payment
 -- • submissions.rating:         1–5, enforced at application layer
--- • bookings.time_slot values:  '05:30' '06:30' '07:30' '17:00' '18:00' '19:00'
+-- • bookings.time_slot values:  '05:30' '06:30' '07:30' '09:00' '17:00' '18:00' '19:00'
 -- • bookings capacity:          MAX_SLOT_CAPACITY = 15 per class_date + time_slot + class_type
 -- • payments.amount_paise:      BFT 1mo=210000, CST 6mo=1150000, etc. (see config/razorpay.php)
 -- • blog_posts.status:          'published' visible on site, 'draft' admin-only

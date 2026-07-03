@@ -71,6 +71,7 @@ export function ProgramsPage() {
                   <li className="list-group-item">5:30 AM — 6:30 AM</li>
                   <li className="list-group-item">6:30 AM — 7:30 AM</li>
                   <li className="list-group-item">7:30 AM — 8:30 AM</li>
+                  <li className="list-group-item">9:00 AM — 10:00 AM</li>
                 </ul>
               </div>
             </div>

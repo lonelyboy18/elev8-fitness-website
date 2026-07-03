@@ -131,6 +131,6 @@ describe("Bookings", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.data.capacity).toBe(15);
-    expect(res.body.data.slots).toHaveLength(6);
+    expect(res.body.data.slots).toHaveLength(7);
   });
 });

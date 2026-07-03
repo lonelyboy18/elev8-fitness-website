@@ -10,6 +10,8 @@ import { SubmitButton } from "@shared/ui/SubmitButton";
 import { TransitionLink } from "@shared/ui/TransitionLink";
 import { ROUTES } from "@shared/constants/routes";
 import type { PlanId } from "@shared/constants/plans";
+import type { RegistrationDetails } from "@shared/lib/whatsapp";
+import { ChooseCoachModal } from "./ChooseCoachModal";
 
 type FieldErrors = Partial<Record<"name" | "email" | "mobile" | "password" | "plan", string>>;
 
@@ -23,6 +25,8 @@ export function SignUpForm() {
   const [plan, setPlan] = useState<PlanId | "">(initialPlan === "bft" || initialPlan === "cst" ? initialPlan : "");
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
+  const [registered, setRegistered] = useState<RegistrationDetails | null>(null);
+  const [redirectTo, setRedirectTo] = useState<string>(ROUTES.home);
   const { showToast } = useToast();
   const invalidateSession = useInvalidateSession();
   const navigate = useNavigate();
@@ -53,7 +57,8 @@ export function SignUpForm() {
       if (result.success) {
         showToast(result.message ?? "Welcome to ELEV8!", "success", 3000);
         invalidateSession();
-        setTimeout(() => navigate(result.data.redirect || ROUTES.home), 1600);
+        setRedirectTo(result.data.redirect || ROUTES.home);
+        setRegistered({ name, email, mobile, program: (plan as PlanId).toUpperCase() });
       } else if (result.errors) {
         setErrors(result.errors as FieldErrors);
       } else {
@@ -67,6 +72,7 @@ export function SignUpForm() {
   }
 
   return (
+    <>
     <form id="signupForm" noValidate autoComplete="off" onSubmit={handleSubmit}>
       <FloatingField
         id="su-name"
@@ -159,5 +165,8 @@ export function SignUpForm() {
         Already a member? <TransitionLink to={ROUTES.signIn}>Sign in</TransitionLink>
       </p>
     </form>
+
+    <ChooseCoachModal details={registered} onClosed={() => navigate(redirectTo)} />
+    </>
   );
 }

@@ -26,12 +26,20 @@ async function main() {
   });
   console.log(`User ready: ${demoUser.email} (password: password123)`);
 
-  const existingBooking = await prisma.booking.findFirst({ where: { userId: demoUser.id } });
-  if (!existingBooking) {
-    await prisma.booking.create({
-      data: { userId: demoUser.id, classType: "bft", classDate: new Date(), timeSlot: "05:30" },
+  const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  const demoBookings: { classType: "bft" | "cst"; classDate: Date; timeSlot: string }[] = [
+    { classType: "bft", classDate: new Date(), timeSlot: "05:30" },
+    // Showcases the new 9:00–10:00 AM morning batch.
+    { classType: "bft", classDate: tomorrow, timeSlot: "09:00" },
+  ];
+  for (const booking of demoBookings) {
+    const exists = await prisma.booking.findFirst({
+      where: { userId: demoUser.id, classDate: booking.classDate, timeSlot: booking.timeSlot },
     });
-    console.log("Seeded a demo booking.");
+    if (!exists) {
+      await prisma.booking.create({ data: { userId: demoUser.id, ...booking } });
+      console.log(`Seeded a demo booking at ${booking.timeSlot}.`);
+    }
   }
 
   const feedbackCount = await prisma.feedbackSubmission.count();

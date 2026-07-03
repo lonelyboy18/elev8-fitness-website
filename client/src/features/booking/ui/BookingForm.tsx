@@ -2,19 +2,10 @@ import { useEffect, useState, type FormEvent } from "react";
 import { bookingApi } from "@entities/booking/api/bookingApi";
 import type { SlotAvailability } from "@entities/booking/model/types";
 import type { PlanId } from "@shared/constants/plans";
-import { TIME_SLOTS } from "@shared/constants/plans";
+import { SLOT_LABELS, TIME_SLOTS } from "@shared/constants/plans";
 import { useToast } from "@shared/hooks/useToast";
 import { SubmitButton } from "@shared/ui/SubmitButton";
 import { useBootstrapModal } from "../model/useBootstrapModal";
-
-const SLOT_LABELS: Record<string, string> = {
-  "05:30": "5:30 AM",
-  "06:30": "6:30 AM",
-  "07:30": "7:30 AM",
-  "17:00": "5:00 PM",
-  "18:00": "6:00 PM",
-  "19:00": "7:00 PM",
-};
 
 type FieldErrors = Partial<Record<"type" | "date" | "slot", string>>;
 

@@ -1,7 +1,12 @@
 export const ALLOWED_PLANS = ["bft", "cst"] as const;
 export type PlanId = (typeof ALLOWED_PLANS)[number];
 
-export const TIME_SLOTS = ["05:30", "06:30", "07:30", "17:00", "18:00", "19:00"] as const;
+/** Schema prep only (no functionality wired up yet) for future gym-management modules — see
+ *  docs/future-modules.md. Distinct from PlanId (the membership/pricing tier). */
+export const ALLOWED_PROGRAMS = ["bw", "ct"] as const;
+export type ProgramId = (typeof ALLOWED_PROGRAMS)[number];
+
+export const TIME_SLOTS = ["05:30", "06:30", "07:30", "09:00", "17:00", "18:00", "19:00"] as const;
 export type TimeSlot = (typeof TIME_SLOTS)[number];
 
 export const MAX_SLOT_CAPACITY = 15;

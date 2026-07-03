@@ -19,7 +19,10 @@ const validUser = {
 beforeEach(resetDatabase);
 
 describe("Cross-table transactions", () => {
-  it("payment verification commits the payment AND the subscription activation atomically", async () => {
+  // TODO(payments): re-enable once payments.service.ts's verify() is restored (currently disabled,
+  // see its TODO(payments) comments) — the underlying withTransaction/markPaid/activateSubscription
+  // logic this test exercises is untouched, only unreachable via the API while payments are off.
+  it.skip("payment verification commits the payment AND the subscription activation atomically", async () => {
     const client = new TestClient(app);
     await client.get("/health");
     await client.post("/api/auth/register", validUser);

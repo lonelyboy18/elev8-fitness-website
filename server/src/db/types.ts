@@ -1,4 +1,4 @@
-import type { PlanId, TimeSlot } from "../config/constants.js";
+import type { PlanId, ProgramId, TimeSlot } from "../config/constants.js";
 
 /**
  * Domain records mirror the legacy MySQL schema (Elev8/config/database.php) so a Prisma-backed
@@ -12,6 +12,8 @@ export interface UserRecord {
   mobile: string;
   passwordHash: string;
   plan: PlanId;
+  /** Schema prep only — not yet set by any API or UI. See docs/future-modules.md. */
+  program: ProgramId | null;
   subscriptionStatus: "inactive" | "active" | "expired";
   subscriptionExpires: string | null;
   createdAt: string;

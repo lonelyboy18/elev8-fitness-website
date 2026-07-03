@@ -14,10 +14,11 @@ const ERROR: RatingStatsDisplay = { avgText: "—", countText: "" };
 export function useRatingStats() {
   const [stats, setStats] = useState<RatingStatsDisplay>(LOADING);
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (isCancelled: () => boolean = () => false) => {
     setStats(LOADING);
     try {
       const result = await feedbackApi.stats();
+      if (isCancelled()) return;
       if (isApiSuccess(result)) {
         const { average, count } = result.data;
         setStats({
@@ -28,12 +29,16 @@ export function useRatingStats() {
         setStats(ERROR);
       }
     } catch {
-      setStats(ERROR);
+      if (!isCancelled()) setStats(ERROR);
     }
   }, []);
 
   useEffect(() => {
-    load();
+    let cancelled = false;
+    load(() => cancelled);
+    return () => {
+      cancelled = true;
+    };
   }, [load]);
 
   return { ...stats, reload: load };

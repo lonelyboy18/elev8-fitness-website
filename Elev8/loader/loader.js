@@ -351,15 +351,21 @@
         lfx: 210, lfy: 167, rfx: 216, rfy: 167,
         px1: 78, py1: 208, px2: 222, py2: 208, pop: 0.42 },
 
-      /* 9 — Push-Up Down: elbows at 90°, chest near floor, back flat */
+      /* 9 — Push-Up Down: elbows at 90°, chest near floor, back flat.
+         Feet (lfx/lfy, rfx/rfy) are intentionally identical to keyframes 8/10/11 — the whole
+         push-up pivots around the planted feet, which must never move (previously they shifted
+         13px down here too, reading as the legs lifting instead of a real push-up). hip/knee
+         (lhipy/rhipy, lky/rky) sit exactly on the straight shoulder-to-foot line — body and
+         legs stay one rigid straight plank throughout the whole push-up; only the elbow
+         actually hinges (lex/ley) as the chest lowers toward the fixed hands/feet. */
       { t: 0.82,
         hx: 98,  hy: 173,
         lsx: 113, lsy: 172, rsx: 119, rsy: 172,
         lex: 114, ley: 186, rex: 120, rey: 186,
         lhx: 101, lhy: 202, rhx: 107, rhy: 202,
-        lhipx: 165, lhipy: 174, rhipx: 171, rhipy: 174,
-        lkx: 188, lky: 177, rkx: 194, rky: 177,
-        lfx: 210, lfy: 180, rfx: 216, rfy: 180,
+        lhipx: 165, lhipy: 169, rhipx: 171, rhipy: 169,
+        lkx: 188, lky: 168, rkx: 194, rky: 168,
+        lfx: 210, lfy: 167, rfx: 216, rfy: 167,
         px1: 78, py1: 208, px2: 222, py2: 208, pop: 0.42 },
 
       /* 10 — Push-Up Back Up: arms drive through, body rises */

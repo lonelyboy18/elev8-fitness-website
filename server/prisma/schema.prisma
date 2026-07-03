@@ -19,6 +19,16 @@ enum PlanId {
   @@map("plan_id")
 }
 
+/// Schema prep only (no functionality wired up yet) for future gym-management modules —
+/// see docs/future-modules.md. Distinct from PlanId/plan (the membership/pricing tier): this is
+/// the operational training track a member is actually enrolled in day to day.
+enum Program {
+  bw
+  ct
+
+  @@map("program_id")
+}
+
 enum SubscriptionStatus {
   inactive
   active
@@ -49,6 +59,8 @@ model User {
   mobile               String              @db.VarChar(20)
   passwordHash         String              @map("password_hash") @db.VarChar(255)
   plan                 PlanId              @default(bft)
+  /// Schema prep only — not yet set by any API or UI. See docs/future-modules.md.
+  program              Program?
   subscriptionStatus   SubscriptionStatus  @default(inactive) @map("subscription_status")
   subscriptionExpires  DateTime?           @map("subscription_expires") @db.Date
   createdAt            DateTime            @default(now()) @map("created_at")

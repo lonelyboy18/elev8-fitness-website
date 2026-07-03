@@ -1078,6 +1078,13 @@ input.is-invalid, select.is-invalid, textarea.is-invalid { border-color: #dc3545
 }
 .plan-field:focus-within { border: none; box-shadow: none; background: none; }
 
+/* .plan-field also carries .elev8-field (for shared spacing), whose ".elev8-field label" rule
+   floats the label over the input for text fields — that rule was unintentionally also matching
+   the .plan-card <label> radios here, absolutely positioning them out of flow. That collapsed
+   .plan-grid to zero height and let the submit button render on top of the (still-visible,
+   just out-of-flow) plan cards. Restore normal in-flow positioning for this specific case. */
+.plan-field .plan-card { position: static; }
+
 .plan-field-label {
   font-size: 0.78rem;
   font-weight: 600;

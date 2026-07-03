@@ -30,7 +30,7 @@ const PLAN_PRICING = [
 define('MAX_SLOT_CAPACITY', 15);
 
 // All valid time slots (24-hour format stored in DB)
-const TIME_SLOTS = ['05:30', '06:30', '07:30', '17:00', '18:00', '19:00'];
+const TIME_SLOTS = ['05:30', '06:30', '07:30', '09:00', '17:00', '18:00', '19:00'];
 
 // Blog admin key — change this before going live
 // Can also be set via BLOG_ADMIN_KEY environment variable

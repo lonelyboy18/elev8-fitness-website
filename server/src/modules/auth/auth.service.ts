@@ -1,3 +1,4 @@
+import { Prisma } from "../../generated/prisma/client.js";
 import { AppError } from "../../shared/errors/AppError.js";
 import { hashPassword, verifyPassword, verifyPasswordAgainstDummy } from "../../shared/utils/password.js";
 import { cleanMobile } from "../../shared/utils/mobile.js";
@@ -35,13 +36,26 @@ export class AuthService {
     }
 
     const passwordHash = await hashPassword(input.password);
-    const user = await this.usersRepo.create({
-      name: cleanText(input.name),
-      email: input.email,
-      mobile: cleanMobile(input.mobile),
-      passwordHash,
-      plan: input.plan,
-    });
+
+    let user: UserRecord;
+    try {
+      user = await this.usersRepo.create({
+        name: cleanText(input.name),
+        email: input.email,
+        mobile: cleanMobile(input.mobile),
+        passwordHash,
+        plan: input.plan,
+      });
+    } catch (err) {
+      // The check above is a TOCTOU race: two concurrent registrations for the same email
+      // can both pass findByEmail before either commits. The `users.email` unique index is
+      // the actual guard; this just converts its violation into the same validation error
+      // findByEmail already produces for the non-concurrent case, instead of a raw 500.
+      if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+        throw AppError.validation({ email: "An account with this email already exists." });
+      }
+      throw err;
+    }
 
     logger.info({ userId: user.id }, "auth.register");
     return this.issueSession(user);

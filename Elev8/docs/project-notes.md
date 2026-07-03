@@ -139,7 +139,7 @@ Password: (empty — XAMPP default)
 | user_id | INT UNSIGNED | FK → users.id |
 | class_type | VARCHAR(20) | `'bft'` or `'cst'` |
 | class_date | DATE | YYYY-MM-DD |
-| time_slot | VARCHAR(10) | `'05:30'` `'06:30'` `'07:30'` `'17:00'` `'18:00'` `'19:00'` |
+| time_slot | VARCHAR(10) | `'05:30'` `'06:30'` `'07:30'` `'09:00'` `'17:00'` `'18:00'` `'19:00'` |
 | status | VARCHAR(20) | `'confirmed'` or `'cancelled'` |
 | created_at | TIMESTAMP | Auto |
 
@@ -182,7 +182,7 @@ Capacity limit: **15 confirmed bookings per class_date + time_slot + class_type*
 ---
 
 ## Class Schedule
-- **Morning:** 5:30 AM · 6:30 AM · 7:30 AM
+- **Morning:** 5:30 AM · 6:30 AM · 7:30 AM · 9:00 AM
 - **Evening:** 5:00 PM · 6:00 PM · 7:00 PM
 
 ---
