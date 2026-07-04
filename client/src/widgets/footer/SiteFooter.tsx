@@ -137,8 +137,8 @@ export function SiteFooter() {
 
       <div className="sf-bottom">
         <div className="container sf-bottom-inner">
-          <span className="sf-copy">&copy; 2026 Elev8 Fitness. All rights reserved.</span>
-          <span className="sf-credit">Built with passion for movement.</span>
+          <span className="sf-copy">&copy; 2026 <span className="sf-brand-em">Elev8 Fitness</span>. All rights reserved.</span>
+          <span className="sf-credit">Built with <span className="sf-credit-em">passion</span> for movement.</span>
         </div>
       </div>
     </footer>

@@ -3,6 +3,7 @@ import { TransitionLink } from "@shared/ui/TransitionLink";
 import { useDocumentTitle } from "@shared/hooks/useDocumentTitle";
 import { ASSET_PATHS } from "@shared/constants/assetPaths";
 import { ROUTES } from "@shared/constants/routes";
+import { MembersShowcase } from "./MembersShowcase";
 
 export function AboutPage() {
   useDocumentTitle("About — ELEV8 Calisthenics & Fitness Studio Goa");
@@ -389,6 +390,9 @@ export function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Our Members ───────────────────────────────────────── */}
+      <MembersShowcase />
 
       {/* ── Mission & Vision ─────────────────────────────────── */}
       <section className="section" style={{ paddingTop: 0 }}>
