@@ -24,6 +24,11 @@ export function createApp(): Express {
   const container = buildContainer();
 
   app.disable("x-powered-by");
+  // Railway (and most PaaS hosts) terminate TLS and proxy requests through an edge layer,
+  // so req.ip/X-Forwarded-For are only trustworthy once Express is told to trust that one
+  // hop. Must be set before any middleware that reads req.ip — globalRateLimiter in
+  // particular keys its per-client limit off it.
+  app.set("trust proxy", 1);
   app.use(helmet());
   app.use(
     cors({

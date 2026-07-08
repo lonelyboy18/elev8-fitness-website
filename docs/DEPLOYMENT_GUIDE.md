@@ -739,9 +739,11 @@ Create `client/vercel.json`:
 }
 ```
 
-Commit and push this file — Vercel picks up `vercel.json` automatically on the next deploy, no dashboard configuration needed.
+This file already exists in the repo at `client/vercel.json` — nothing to create, just push it. Vercel picks up `vercel.json` automatically on the next deploy, no dashboard configuration needed.
 
 > **Note:** This mirrors what `client/nginx.conf` already does for the Docker Compose deployment (`location /api/ { proxy_pass http://server:5000/api/; }`) and what `client/vite.config.ts`'s dev server proxy does locally. Production is now consistent with both of your existing local setups — same pattern, three different proxies.
+
+> **Why a rewrite, not a redirect or a direct call to the Railway URL:** A **redirect** would send the browser an HTTP 3xx pointing at `api.elev8calisthenicsgoa.com` — the browser would then issue a *second*, cross-origin request, which is exactly the problem this avoids, not a fix for it. Calling the Railway URL **directly** from frontend code (e.g. `fetch('https://api.elev8calisthenicsgoa.com/...')`) would work, but turns every request cross-origin: the `httpOnly` auth cookie and the CSRF cookie would need `SameSite=None; Secure`, the backend CORS config would need to handle credentialed cross-origin requests, and the Railway hostname would be baked into the shipped JS bundle for anyone to read. A **rewrite** keeps the browser's view of the world at exactly one origin — `elev8calisthenicsgoa.com` — so cookies stay ordinary first-party/`SameSite=Lax` cookies, no code in `client/src` needs to know the backend's real address, and swapping backend hosts later (e.g. off Railway) only ever means editing this one `destination` field.
 
 ### 7.3 CORS — still worth setting correctly
 
