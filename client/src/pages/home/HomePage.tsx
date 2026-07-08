@@ -1,10 +1,15 @@
 import { useDocumentTitle } from "@shared/hooks/useDocumentTitle";
 import { useReveal } from "@shared/hooks/useReveal";
 import { AnimatedCounter } from "@shared/ui/AnimatedCounter";
+import { CoachSelectionModal } from "@shared/ui/CoachSelectionModal";
 import { TransitionLink } from "@shared/ui/TransitionLink";
 import { ASSET_PATHS } from "@shared/constants/assetPaths";
 import { ROUTES } from "@shared/constants/routes";
+import { buildFreeTrialMessage, buildJoinCommunityMessage } from "@shared/lib/whatsapp";
 import { TESTIMONIALS } from "./testimonials";
+
+const TRIAL_MODAL_ID = "trialCoachModal";
+const COMMUNITY_MODAL_ID = "communityCoachModal";
 
 export function HomePage() {
   useDocumentTitle("ELEV8 | Premium Calisthenics & Fitness Studio in Goa");
@@ -49,9 +54,14 @@ export function HomePage() {
                 training. Coaching for every level — from your first push-up to your first muscle-up.
               </p>
               <div ref={heroActions.ref} className={`hero-actions ${heroActions.className}`} data-delay="3">
-                <TransitionLink to={ROUTES.signUp} className="btn btn-success btn-lg">
+                <button
+                  type="button"
+                  className="btn btn-success btn-lg"
+                  data-bs-toggle="modal"
+                  data-bs-target={`#${TRIAL_MODAL_ID}`}
+                >
                   Book a Free Trial
-                </TransitionLink>
+                </button>
                 <TransitionLink to={ROUTES.programs} className="btn btn-outline-success btn-lg">
                   Explore Programs
                 </TransitionLink>
@@ -206,9 +216,14 @@ export function HomePage() {
                 beginner, intermediate, or advanced athlete, we have a program tailored for you.
               </p>
               <div className="hero-actions mt-4">
-                <TransitionLink to={ROUTES.signUp} className="btn btn-success btn-lg">
+                <button
+                  type="button"
+                  className="btn btn-success btn-lg"
+                  data-bs-toggle="modal"
+                  data-bs-target={`#${COMMUNITY_MODAL_ID}`}
+                >
                   Join the Community
-                </TransitionLink>
+                </button>
                 <TransitionLink to={ROUTES.gallery} className="btn btn-outline-success btn-lg">
                   See the Gallery
                 </TransitionLink>
@@ -262,9 +277,14 @@ export function HomePage() {
               stay strong, elevate yourself.
             </p>
             <div className="cta-actions">
-              <TransitionLink to={ROUTES.signUp} className="btn btn-success btn-lg">
+              <button
+                type="button"
+                className="btn btn-success btn-lg"
+                data-bs-toggle="modal"
+                data-bs-target={`#${TRIAL_MODAL_ID}`}
+              >
                 Book a Free Trial
-              </TransitionLink>
+              </button>
               <a
                 href="https://wa.me/917066131474"
                 target="_blank"
@@ -277,6 +297,9 @@ export function HomePage() {
           </div>
         </div>
       </section>
+
+      <CoachSelectionModal id={TRIAL_MODAL_ID} buildMessage={(coach) => buildFreeTrialMessage(coach.name)} />
+      <CoachSelectionModal id={COMMUNITY_MODAL_ID} buildMessage={(coach) => buildJoinCommunityMessage(coach.name)} />
     </>
   );
 }

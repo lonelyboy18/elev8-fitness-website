@@ -1654,6 +1654,56 @@ input.is-invalid, select.is-invalid, textarea.is-invalid { border-color: #dc3545
   margin-bottom: 0.65rem;
 }
 
+/* ── Coach Selection Modal (Home CTA) ──────── */
+.coach-select-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.3rem;
+  height: 100%;
+  padding: 1.4rem 1.1rem;
+  border: 1px solid rgba(15, 83, 104, 0.38);
+  border-radius: var(--radius-sm);
+  background: rgba(15, 83, 104, 0.10);
+}
+.coach-select-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), #0d6e8a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--chalk);
+  margin-bottom: 0.4rem;
+}
+.coach-select-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--chalk);
+  font-size: 1.05rem;
+  margin: 0;
+}
+.coach-select-role {
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin: 0;
+}
+.coach-select-phone {
+  font-size: 0.85rem;
+  color: var(--steel);
+  margin: 0.1rem 0 0.7rem;
+}
+.coach-select-card .btn { margin-top: auto; }
+
+@media (max-width: 576px) {
+  .coach-select-grid { grid-template-columns: 1fr; }
+}
+
 /* ── Slot Grid ───────────────────────────── */
 .slot-grid {
   display: grid;

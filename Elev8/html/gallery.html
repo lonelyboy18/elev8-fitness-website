@@ -206,13 +206,29 @@
       <p>Follow us on Instagram for regular training highlights, events and athlete showcases from the ELEV8 community.</p>
       <div class="cta-actions">
         <a href="https://www.instagram.com/elev8.goa/" target="_blank" rel="noopener noreferrer" class="btn btn-success btn-lg">Follow on Instagram</a>
-        <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success btn-lg">Book a Free Trial</a>
+        <button type="button" class="btn btn-outline-success btn-lg" data-bs-toggle="modal" data-bs-target="#galleryTrialCoachModal">Book a Free Trial</button>
       </div>
     </div>
   </div>
 </section>
 
 </main>
+
+<!-- Coach Selection Modal — Book a Free Trial -->
+<div class="modal fade" id="galleryTrialCoachModal" data-coach-context="gallery-trial" tabindex="-1" aria-labelledby="galleryTrialCoachModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="galleryTrialCoachModalLabel">Choose Your Coach</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">Select a coach to continue your conversation on WhatsApp.</p>
+        <div class="plan-grid coach-select-grid" data-coach-cards></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer class="site-footer">
   <div class="container">
@@ -285,6 +301,8 @@
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/core/core.js"></script>
+<script src="../js/config/coachContacts.js"></script>
+<script src="../js/shared/coachSelectionModal.js"></script>
 <script src="../loader/loader.js"></script>
 </body>
 </html>

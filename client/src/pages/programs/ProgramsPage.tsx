@@ -1,7 +1,15 @@
 import { useReveal } from "@shared/hooks/useReveal";
 import { useDocumentTitle } from "@shared/hooks/useDocumentTitle";
 import { TransitionLink } from "@shared/ui/TransitionLink";
+import { CoachSelectionModal } from "@shared/ui/CoachSelectionModal";
 import { ROUTES } from "@shared/constants/routes";
+import { buildProgramEnrollMessage, buildProgramGuidanceMessage } from "@shared/lib/whatsapp";
+
+const BFT_MODAL_ID = "bftCoachModal";
+const CST_MODAL_ID = "cstCoachModal";
+const GUIDANCE_MODAL_ID = "programsGuidanceCoachModal";
+const BFT_PROGRAM_NAME = "Bodyweight Functional Training (BFT)";
+const CST_PROGRAM_NAME = "Calisthenics Skill Training (CST)";
 
 export function ProgramsPage() {
   useDocumentTitle("Programs — ELEV8 Calisthenics & Fitness Studio");
@@ -178,9 +186,9 @@ export function ProgramsPage() {
               <p className="text-center mt-2" style={{ fontSize: "0.82rem", color: "var(--steel)" }}>
                 Questions?{" "}
                 <a
-                  href="https://wa.me/917066131474"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target={`#${BFT_MODAL_ID}`}
                   style={{ color: "var(--steel)" }}
                 >
                   Chat on WhatsApp →
@@ -257,9 +265,9 @@ export function ProgramsPage() {
               <p className="text-center mt-2" style={{ fontSize: "0.82rem", color: "var(--steel)" }}>
                 Questions?{" "}
                 <a
-                  href="https://wa.me/917066131474"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target={`#${CST_MODAL_ID}`}
                   style={{ color: "var(--steel)" }}
                 >
                   Chat on WhatsApp →
@@ -280,14 +288,14 @@ export function ProgramsPage() {
             <h2>Not sure where to start?</h2>
             <p>Drop us a message and we'll help you choose the right program for your level and goals.</p>
             <div className="cta-actions">
-              <a
-                href="https://wa.me/917066131474"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
                 className="btn btn-success btn-lg"
+                data-bs-toggle="modal"
+                data-bs-target={`#${GUIDANCE_MODAL_ID}`}
               >
                 Ask on WhatsApp
-              </a>
+              </button>
               <TransitionLink to={ROUTES.signUp} className="btn btn-outline-success btn-lg">
                 Create Account
               </TransitionLink>
@@ -295,6 +303,16 @@ export function ProgramsPage() {
           </div>
         </div>
       </section>
+
+      <CoachSelectionModal
+        id={BFT_MODAL_ID}
+        buildMessage={(coach) => buildProgramEnrollMessage(coach.name, BFT_PROGRAM_NAME)}
+      />
+      <CoachSelectionModal
+        id={CST_MODAL_ID}
+        buildMessage={(coach) => buildProgramEnrollMessage(coach.name, CST_PROGRAM_NAME)}
+      />
+      <CoachSelectionModal id={GUIDANCE_MODAL_ID} buildMessage={(coach) => buildProgramGuidanceMessage(coach.name)} />
     </>
   );
 }

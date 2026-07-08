@@ -1,9 +1,13 @@
 import { useDocumentTitle } from "@shared/hooks/useDocumentTitle";
 import { useReveal } from "@shared/hooks/useReveal";
 import { TransitionLink } from "@shared/ui/TransitionLink";
+import { CoachSelectionModal } from "@shared/ui/CoachSelectionModal";
 import { ROUTES } from "@shared/constants/routes";
+import { buildEnquiryMessage } from "@shared/lib/whatsapp";
 import { ContactForm } from "@features/contact/ui/ContactForm";
 import { ReviewsSection } from "./ReviewsSection";
+
+const ENQUIRY_MODAL_ID = "contactEnquiryCoachModal";
 
 export function ContactPage() {
   useDocumentTitle("Contact Us — ELEV8 Calisthenics & Fitness Studio Goa");
@@ -86,9 +90,9 @@ export function ContactPage() {
                   <div>
                     <p className="contact-ch-label">WhatsApp</p>
                     <a
-                      href="https://wa.me/917066131474"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href="#"
+                      data-bs-toggle="modal"
+                      data-bs-target={`#${ENQUIRY_MODAL_ID}`}
                       className="contact-ch-value"
                     >
                       Chat on WhatsApp
@@ -170,18 +174,20 @@ export function ContactPage() {
               <TransitionLink to={ROUTES.signUp} className="btn btn-success btn-lg">
                 Join Now
               </TransitionLink>
-              <a
-                href="https://wa.me/917066131474"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
                 className="btn btn-outline-success btn-lg"
+                data-bs-toggle="modal"
+                data-bs-target={`#${ENQUIRY_MODAL_ID}`}
               >
                 WhatsApp Us
-              </a>
+              </button>
             </div>
           </div>
         </div>
       </section>
+
+      <CoachSelectionModal id={ENQUIRY_MODAL_ID} buildMessage={(coach) => buildEnquiryMessage(coach.name)} />
     </>
   );
 }

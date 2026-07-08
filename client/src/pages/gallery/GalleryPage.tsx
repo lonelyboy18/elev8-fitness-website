@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useDocumentTitle } from "@shared/hooks/useDocumentTitle";
 import { useReveal } from "@shared/hooks/useReveal";
+import { CoachSelectionModal } from "@shared/ui/CoachSelectionModal";
 import { ASSET_PATHS } from "@shared/constants/assetPaths";
+import { buildGalleryTrialMessage } from "@shared/lib/whatsapp";
+
+const TRIAL_MODAL_ID = "galleryTrialCoachModal";
 
 type Category = "all" | "training" | "community";
 
@@ -277,18 +281,20 @@ export function GalleryPage() {
               >
                 Follow on Instagram
               </a>
-              <a
-                href="https://wa.me/917066131474"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
                 className="btn btn-outline-success btn-lg"
+                data-bs-toggle="modal"
+                data-bs-target={`#${TRIAL_MODAL_ID}`}
               >
                 Book a Free Trial
-              </a>
+              </button>
             </div>
           </div>
         </div>
       </section>
+
+      <CoachSelectionModal id={TRIAL_MODAL_ID} buildMessage={(coach) => buildGalleryTrialMessage(coach.name)} />
     </>
   );
 }

@@ -212,7 +212,7 @@
         </table>
 
         <a href="sign_up.html?plan=bft" class="btn btn-success btn-lg mt-4 w-100">Enroll Now — BFT</a>
-        <p class="text-center mt-2" style="font-size:0.82rem; color:var(--steel);">Questions? <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer" style="color:var(--steel);">Chat on WhatsApp →</a></p>
+        <p class="text-center mt-2" style="font-size:0.82rem; color:var(--steel);">Questions? <a href="#" data-bs-toggle="modal" data-bs-target="#bftCoachModal" style="color:var(--steel);">Chat on WhatsApp →</a></p>
       </div>
 
       <!-- Program 2: CST -->
@@ -258,7 +258,7 @@
         </table>
 
         <a href="sign_up.html?plan=cst" class="btn btn-success btn-lg mt-4 w-100">Enroll Now — CST</a>
-        <p class="text-center mt-2" style="font-size:0.82rem; color:var(--steel);">Questions? <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer" style="color:var(--steel);">Chat on WhatsApp →</a></p>
+        <p class="text-center mt-2" style="font-size:0.82rem; color:var(--steel);">Questions? <a href="#" data-bs-toggle="modal" data-bs-target="#cstCoachModal" style="color:var(--steel);">Chat on WhatsApp →</a></p>
       </div>
 
     </div>
@@ -273,7 +273,7 @@
       <h2>Not sure where to start?</h2>
       <p>Drop us a message and we'll help you choose the right program for your level and goals.</p>
       <div class="cta-actions">
-        <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer" class="btn btn-success btn-lg">Ask on WhatsApp</a>
+        <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#programsGuidanceCoachModal">Ask on WhatsApp</button>
         <a href="sign_up.html" class="btn btn-outline-success btn-lg">Create Account</a>
       </div>
     </div>
@@ -281,6 +281,54 @@
 </section>
 
 </main>
+
+<!-- Coach Selection Modal — Enroll in BFT -->
+<div class="modal fade" id="bftCoachModal" data-coach-context="bft-enroll" tabindex="-1" aria-labelledby="bftCoachModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bftCoachModalLabel">Choose Your Coach</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">Select a coach to continue your conversation on WhatsApp.</p>
+        <div class="plan-grid coach-select-grid" data-coach-cards></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Coach Selection Modal — Enroll in CST -->
+<div class="modal fade" id="cstCoachModal" data-coach-context="cst-enroll" tabindex="-1" aria-labelledby="cstCoachModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cstCoachModalLabel">Choose Your Coach</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">Select a coach to continue your conversation on WhatsApp.</p>
+        <div class="plan-grid coach-select-grid" data-coach-cards></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Coach Selection Modal — Not Sure Where to Start -->
+<div class="modal fade" id="programsGuidanceCoachModal" data-coach-context="program-guidance" tabindex="-1" aria-labelledby="programsGuidanceCoachModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="programsGuidanceCoachModalLabel">Choose Your Coach</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">Select a coach to continue your conversation on WhatsApp.</p>
+        <div class="plan-grid coach-select-grid" data-coach-cards></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer class="site-footer">
   <div class="container">
@@ -353,6 +401,8 @@
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/core/core.js"></script>
+<script src="../js/config/coachContacts.js"></script>
+<script src="../js/shared/coachSelectionModal.js"></script>
 <script src="../loader/loader.js"></script>
 </body>
 </html>

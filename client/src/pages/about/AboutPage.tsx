@@ -1,9 +1,13 @@
 import { useReveal } from "@shared/hooks/useReveal";
 import { TransitionLink } from "@shared/ui/TransitionLink";
+import { CoachSelectionModal } from "@shared/ui/CoachSelectionModal";
 import { useDocumentTitle } from "@shared/hooks/useDocumentTitle";
 import { ASSET_PATHS } from "@shared/constants/assetPaths";
 import { ROUTES } from "@shared/constants/routes";
+import { buildFreeTrialMessage } from "@shared/lib/whatsapp";
 import { MembersShowcase } from "./MembersShowcase";
+
+const TRIAL_MODAL_ID = "aboutTrialCoachModal";
 
 export function AboutPage() {
   useDocumentTitle("About — ELEV8 Calisthenics & Fitness Studio Goa");
@@ -520,9 +524,14 @@ export function AboutPage() {
             <h2>Ready to start?</h2>
             <p>Book a free trial. No experience needed — just show up.</p>
             <div className="cta-actions">
-              <TransitionLink to={ROUTES.signUp} className="btn btn-success btn-lg">
+              <button
+                type="button"
+                className="btn btn-success btn-lg"
+                data-bs-toggle="modal"
+                data-bs-target={`#${TRIAL_MODAL_ID}`}
+              >
                 Book a Free Trial
-              </TransitionLink>
+              </button>
               <TransitionLink to={ROUTES.programs} className="btn btn-outline-success btn-lg">
                 View Programs
               </TransitionLink>
@@ -530,6 +539,8 @@ export function AboutPage() {
           </div>
         </div>
       </section>
+
+      <CoachSelectionModal id={TRIAL_MODAL_ID} buildMessage={(coach) => buildFreeTrialMessage(coach.name)} />
     </>
   );
 }

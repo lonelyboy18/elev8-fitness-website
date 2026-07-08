@@ -134,7 +134,7 @@
           push-up to your first muscle-up.
         </p>
         <div class="hero-actions reveal" data-delay="3">
-          <a href="sign_up.html" class="btn btn-success btn-lg">Book a Free Trial</a>
+          <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#trialCoachModal">Book a Free Trial</button>
           <a href="programs.html" class="btn btn-outline-success btn-lg">Explore Programs</a>
         </div>
 
@@ -260,7 +260,7 @@
         <p class="section-lead">Join ELEV8 and become part of a community dedicated to mastering calisthenics.
           Whether you're a beginner, intermediate, or advanced athlete, we have a program tailored for you.</p>
         <div class="hero-actions mt-4">
-          <a href="sign_up.html" class="btn btn-success btn-lg">Join the Community</a>
+          <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#communityCoachModal">Join the Community</button>
           <a href="gallery.html" class="btn btn-outline-success btn-lg">See the Gallery</a>
         </div>
       </div>
@@ -451,7 +451,7 @@
       <p>Book a free trial session and feel the difference structured calisthenics coaching makes.
          Train hard, stay strong, elevate yourself.</p>
       <div class="cta-actions">
-        <a href="sign_up.html" class="btn btn-success btn-lg">Book a Free Trial</a>
+        <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#trialCoachModal">Book a Free Trial</button>
         <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success btn-lg">Chat on WhatsApp</a>
       </div>
     </div>
@@ -529,8 +529,42 @@
   </div>
 </footer>
 
+<!-- Coach Selection Modal — Book a Free Trial -->
+<div class="modal fade" id="trialCoachModal" data-coach-context="trial" tabindex="-1" aria-labelledby="trialCoachModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="trialCoachModalLabel">Choose Your Coach</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">Select a coach to continue your conversation on WhatsApp.</p>
+        <div class="plan-grid coach-select-grid" data-coach-cards></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Coach Selection Modal — Join the Community -->
+<div class="modal fade" id="communityCoachModal" data-coach-context="community" tabindex="-1" aria-labelledby="communityCoachModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="communityCoachModalLabel">Choose Your Coach</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">Select a coach to continue your conversation on WhatsApp.</p>
+        <div class="plan-grid coach-select-grid" data-coach-cards></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/core/core.js"></script>
+<script src="../js/config/coachContacts.js"></script>
+<script src="../js/shared/coachSelectionModal.js"></script>
 <script src="../loader/loader.js"></script>
 </body>
 </html>
