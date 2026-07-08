@@ -340,54 +340,51 @@
         lfx: 210, lfy: 160, rfx: 216, rfy: 160,
         px1: 65, py1: 208, px2: 225, py2: 208, pop: 0.35 },
 
-      /* 8 — Push-Up Top: plank, arms extended, body rigid */
+      /* 8 — Push-Up Top: plank, arms extended, hands AND feet planted on ground (y=208) */
       { t: 0.70,
         hx: 98,  hy: 156,
         lsx: 113, lsy: 155, rsx: 119, rsy: 155,
-        lex: 107, ley: 175, rex: 113, rey: 175,
-        lhx: 101, lhy: 202, rhx: 107, rhy: 202,
-        lhipx: 165, lhipy: 161, rhipx: 171, rhipy: 161,
-        lkx: 188, lky: 164, rkx: 194, rky: 164,
-        lfx: 210, lfy: 167, rfx: 216, rfy: 167,
+        lex: 108, ley: 178, rex: 114, rey: 178,
+        lhx: 101, lhy: 205, rhx: 107, rhy: 205,
+        lhipx: 165, lhipy: 183, rhipx: 171, rhipy: 183,
+        lkx: 188, lky: 196, rkx: 194, rky: 196,
+        lfx: 210, lfy: 208, rfx: 216, rfy: 208,
         px1: 78, py1: 208, px2: 222, py2: 208, pop: 0.42 },
 
-      /* 9 — Push-Up Down: elbows at 90°, chest near floor, back flat.
-         Feet (lfx/lfy, rfx/rfy) are intentionally identical to keyframes 8/10/11 — the whole
-         push-up pivots around the planted feet, which must never move (previously they shifted
-         13px down here too, reading as the legs lifting instead of a real push-up). hip/knee
-         (lhipy/rhipy, lky/rky) sit exactly on the straight shoulder-to-foot line — body and
-         legs stay one rigid straight plank throughout the whole push-up; only the elbow
-         actually hinges (lex/ley) as the chest lowers toward the fixed hands/feet. */
+      /* 9 — Push-Up Down: hands & feet stay fixed on the ground (same coords as 8/10/11).
+         The rigid shoulder→hip→knee→foot line pivots about the planted foot as the shoulder
+         drops toward the fixed hand and the elbow bends to ~90°. Hip/knee are recomputed
+         along that line so the torso+legs stay one straight plank — no sagging, no floating feet. */
       { t: 0.82,
-        hx: 98,  hy: 173,
-        lsx: 113, lsy: 172, rsx: 119, rsy: 172,
-        lex: 114, ley: 186, rex: 120, rey: 186,
-        lhx: 101, lhy: 202, rhx: 107, rhy: 202,
-        lhipx: 165, lhipy: 169, rhipx: 171, rhipy: 169,
-        lkx: 188, lky: 168, rkx: 194, rky: 168,
-        lfx: 210, lfy: 167, rfx: 216, rfy: 167,
+        hx: 89,  hy: 193,
+        lsx: 104, lsy: 192, rsx: 110, rsy: 192,
+        lex: 110, ley: 194, rex: 116, rey: 194,
+        lhx: 101, lhy: 205, rhx: 107, rhy: 205,
+        lhipx: 161, lhipy: 201, rhipx: 167, rhipy: 201,
+        lkx: 186, lky: 204, rkx: 192, rky: 204,
+        lfx: 210, lfy: 208, rfx: 216, rfy: 208,
         px1: 78, py1: 208, px2: 222, py2: 208, pop: 0.42 },
 
-      /* 10 — Push-Up Back Up: arms drive through, body rises */
+      /* 10 — Push-Up Back Up: mirrors keyframe 8 (arms drive through, body rises) */
       { t: 0.94,
         hx: 98,  hy: 156,
         lsx: 113, lsy: 155, rsx: 119, rsy: 155,
-        lex: 107, ley: 175, rex: 113, rey: 175,
-        lhx: 101, lhy: 202, rhx: 107, rhy: 202,
-        lhipx: 165, lhipy: 161, rhipx: 171, rhipy: 161,
-        lkx: 188, lky: 164, rkx: 194, rky: 164,
-        lfx: 210, lfy: 167, rfx: 216, rfy: 167,
+        lex: 108, ley: 178, rex: 114, rey: 178,
+        lhx: 101, lhy: 205, rhx: 107, rhy: 205,
+        lhipx: 165, lhipy: 183, rhipx: 171, rhipy: 183,
+        lkx: 188, lky: 196, rkx: 194, rky: 196,
+        lfx: 210, lfy: 208, rfx: 216, rfy: 208,
         px1: 78, py1: 208, px2: 222, py2: 208, pop: 0.42 },
 
-      /* 11 — Hold at top — loader ends here */
+      /* 11 — Hold at top — loader ends here (identical to 8/10) */
       { t: 1.00,
         hx: 98,  hy: 156,
         lsx: 113, lsy: 155, rsx: 119, rsy: 155,
-        lex: 107, ley: 175, rex: 113, rey: 175,
-        lhx: 101, lhy: 202, rhx: 107, rhy: 202,
-        lhipx: 165, lhipy: 161, rhipx: 171, rhipy: 161,
-        lkx: 188, lky: 164, rkx: 194, rky: 164,
-        lfx: 210, lfy: 167, rfx: 216, rfy: 167,
+        lex: 108, ley: 178, rex: 114, rey: 178,
+        lhx: 101, lhy: 205, rhx: 107, rhy: 205,
+        lhipx: 165, lhipy: 183, rhipx: 171, rhipy: 183,
+        lkx: 188, lky: 196, rkx: 194, rky: 196,
+        lfx: 210, lfy: 208, rfx: 216, rfy: 208,
         px1: 78, py1: 208, px2: 222, py2: 208, pop: 0.42 }
     ];
 
