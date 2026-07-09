@@ -285,14 +285,14 @@ export function HomePage() {
               >
                 Book a Free Trial
               </button>
-              <a
-                href="https://wa.me/917066131474"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
                 className="btn btn-outline-success btn-lg"
+                data-bs-toggle="modal"
+                data-bs-target={`#${TRIAL_MODAL_ID}`}
               >
                 Chat on WhatsApp
-              </a>
+              </button>
             </div>
           </div>
         </div>

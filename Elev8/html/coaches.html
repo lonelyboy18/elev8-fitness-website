@@ -277,7 +277,7 @@
       <h2>Train with the best.</h2>
       <p>Book a free trial session and experience ELEV8 coaching first-hand. No experience needed — just show up.</p>
       <div class="cta-actions">
-        <a href="https://wa.me/917066131474" target="_blank" rel="noopener noreferrer" class="btn btn-success btn-lg">Book a Free Trial</a>
+        <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#coachesTrialCoachModal">Book a Free Trial</button>
         <a href="programs.html" class="btn btn-outline-success btn-lg">View Programs</a>
       </div>
     </div>
@@ -285,6 +285,22 @@
 </section>
 
 </main>
+
+<!-- Coach Selection Modal — Book a Free Trial -->
+<div class="modal fade" id="coachesTrialCoachModal" data-coach-context="trial" tabindex="-1" aria-labelledby="coachesTrialCoachModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="coachesTrialCoachModalLabel">Choose Your Coach</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">Select a coach to continue your conversation on WhatsApp.</p>
+        <div class="plan-grid coach-select-grid" data-coach-cards></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer class="site-footer">
   <div class="container">
@@ -357,6 +373,8 @@
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/core/core.js"></script>
+<script src="../js/config/coachContacts.js"></script>
+<script src="../js/shared/coachSelectionModal.js"></script>
 <script src="../loader/loader.js"></script>
 </body>
 </html>

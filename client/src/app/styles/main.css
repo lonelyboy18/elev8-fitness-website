@@ -1698,7 +1698,12 @@ input.is-invalid, select.is-invalid, textarea.is-invalid { border-color: #dc3545
   color: var(--steel);
   margin: 0.1rem 0 0.7rem;
 }
-.coach-select-card .btn { margin-top: auto; }
+.coach-select-card .btn {
+  margin-top: auto;
+  padding: 0.65rem 0.6rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
 
 @media (max-width: 576px) {
   .coach-select-grid { grid-template-columns: 1fr; }

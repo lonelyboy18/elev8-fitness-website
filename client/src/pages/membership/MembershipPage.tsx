@@ -2,7 +2,11 @@ import { useState } from "react";
 import { useReveal } from "@shared/hooks/useReveal";
 import { useDocumentTitle } from "@shared/hooks/useDocumentTitle";
 import { TransitionLink } from "@shared/ui/TransitionLink";
+import { CoachSelectionModal } from "@shared/ui/CoachSelectionModal";
 import { ROUTES } from "@shared/constants/routes";
+import { buildFreeTrialMessage } from "@shared/lib/whatsapp";
+
+const TRIAL_MODAL_ID = "membershipTrialCoachModal";
 
 interface FaqEntry {
   id: string;
@@ -123,14 +127,14 @@ export function MembershipPage() {
                 <li className="mem-feat no">Progress tracking</li>
                 <li className="mem-feat no">Skill-specific coaching</li>
               </ul>
-              <a
-                href="https://wa.me/917066131474?text=Hi%21+I%27d+like+to+book+a+free+trial+at+ELEV8."
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
                 className="btn btn-outline-success w-100"
+                data-bs-toggle="modal"
+                data-bs-target={`#${TRIAL_MODAL_ID}`}
               >
                 Book on WhatsApp
-              </a>
+              </button>
             </div>
 
             {/* BFT */}
@@ -320,14 +324,14 @@ export function MembershipPage() {
             <h2>Your first class is free.</h2>
             <p>Book a free trial and see what structured calisthenics coaching actually feels like. No pressure, just progress.</p>
             <div className="cta-actions">
-              <a
-                href="https://wa.me/917066131474?text=Hi%21+I%27d+like+to+book+a+free+trial."
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
                 className="btn btn-success btn-lg"
+                data-bs-toggle="modal"
+                data-bs-target={`#${TRIAL_MODAL_ID}`}
               >
                 Book Free Trial
-              </a>
+              </button>
               <TransitionLink to={ROUTES.signUp} className="btn btn-outline-success btn-lg">
                 Create Account
               </TransitionLink>
@@ -335,6 +339,8 @@ export function MembershipPage() {
           </div>
         </div>
       </section>
+
+      <CoachSelectionModal id={TRIAL_MODAL_ID} buildMessage={(coach) => buildFreeTrialMessage(coach.name)} />
     </>
   );
 }

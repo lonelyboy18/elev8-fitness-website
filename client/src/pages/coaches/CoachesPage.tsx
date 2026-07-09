@@ -1,8 +1,12 @@
 import { useDocumentTitle } from "@shared/hooks/useDocumentTitle";
 import { useReveal } from "@shared/hooks/useReveal";
 import { TransitionLink } from "@shared/ui/TransitionLink";
+import { CoachSelectionModal } from "@shared/ui/CoachSelectionModal";
 import { ROUTES } from "@shared/constants/routes";
 import { ASSET_PATHS } from "@shared/constants/assetPaths";
+import { buildFreeTrialMessage } from "@shared/lib/whatsapp";
+
+const TRIAL_MODAL_ID = "coachesTrialCoachModal";
 
 export function CoachesPage() {
   useDocumentTitle("Our Coaches — ELEV8 Calisthenics & Fitness Studio Goa");
@@ -265,14 +269,14 @@ export function CoachesPage() {
               show up.
             </p>
             <div className="cta-actions">
-              <a
-                href="https://wa.me/917066131474"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
                 className="btn btn-success btn-lg"
+                data-bs-toggle="modal"
+                data-bs-target={`#${TRIAL_MODAL_ID}`}
               >
                 Book a Free Trial
-              </a>
+              </button>
               <TransitionLink to={ROUTES.programs} className="btn btn-outline-success btn-lg">
                 View Programs
               </TransitionLink>
@@ -280,6 +284,8 @@ export function CoachesPage() {
           </div>
         </div>
       </section>
+
+      <CoachSelectionModal id={TRIAL_MODAL_ID} buildMessage={(coach) => buildFreeTrialMessage(coach.name)} />
     </>
   );
 }

@@ -142,9 +142,7 @@
           <li class="mem-feat no">Progress tracking</li>
           <li class="mem-feat no">Skill-specific coaching</li>
         </ul>
-        <a href="https://wa.me/917066131474?text=Hi%21+I%27d+like+to+book+a+free+trial+at+ELEV8."
-           target="_blank" rel="noopener noreferrer"
-           class="btn btn-outline-success w-100">Book on WhatsApp</a>
+        <button type="button" class="btn btn-outline-success w-100" data-bs-toggle="modal" data-bs-target="#membershipTrialCoachModal">Book on WhatsApp</button>
       </div>
 
       <!-- BFT -->
@@ -392,13 +390,28 @@
       <h2>Your first class is free.</h2>
       <p>Book a free trial and see what structured calisthenics coaching actually feels like. No pressure, just progress.</p>
       <div class="cta-actions">
-        <a href="https://wa.me/917066131474?text=Hi%21+I%27d+like+to+book+a+free+trial."
-           target="_blank" rel="noopener noreferrer" class="btn btn-success btn-lg">Book Free Trial</a>
+        <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#membershipTrialCoachModal">Book Free Trial</button>
         <a href="sign_up.html" class="btn btn-outline-success btn-lg">Create Account</a>
       </div>
     </div>
   </div>
 </section>
+
+<!-- Coach Selection Modal — Book a Free Trial -->
+<div class="modal fade" id="membershipTrialCoachModal" data-coach-context="trial" tabindex="-1" aria-labelledby="membershipTrialCoachModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="membershipTrialCoachModalLabel">Choose Your Coach</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">Select a coach to continue your conversation on WhatsApp.</p>
+        <div class="plan-grid coach-select-grid" data-coach-cards></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 </main>
 
@@ -473,6 +486,8 @@
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/core/core.js"></script>
+<script src="../js/config/coachContacts.js"></script>
+<script src="../js/shared/coachSelectionModal.js"></script>
 <script src="../loader/loader.js"></script>
 </body>
 </html>
